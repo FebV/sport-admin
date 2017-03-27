@@ -1,5 +1,7 @@
 import React from 'react';
 
+import CampusList from './CampusList';
+
 export default class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -8,7 +10,7 @@ export default class Home extends React.Component {
     render() {
         return (
             <div>
-                <div>轮播</div>
+                <CampusList />
                 <div>新闻</div>
                 <div>通知公告</div>
             </div>

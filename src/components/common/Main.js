@@ -18,7 +18,6 @@ export default class Main extends React.Component {
             drawerState: isLandscape 
         }
         onresize = () => {
-            console.log(`resize`);
             if (matchMedia('(orientation: landscape)').matches != this.state.isLandscape) {
                 this.setState({isLandscape: !this.state.isLandscape, drawerState: !this.state.isLandscape});
         }
@@ -26,7 +25,6 @@ export default class Main extends React.Component {
     }
 
     handleDrawer() {
-        console.log(`handleDrawer`);
         this.setState({drawerState: !this.state.drawerState});
     }
 
