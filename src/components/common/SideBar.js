@@ -10,7 +10,6 @@ export default class SideBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {open: true};
     this.sideBarItems = [
         {
             iconFamily: "fa fa-home",
@@ -59,7 +58,7 @@ export default class SideBar extends React.Component {
       <div>
         <MuiThemeProvider>
         <Drawer
-            open={this.state.open}
+            open={this.props.open}
             >
           <MenuItem style={{height: "64px"}}></MenuItem>
             {this.sideBarItems.map(
