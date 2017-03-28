@@ -59,6 +59,7 @@ export default class SideBar extends React.Component {
         <MuiThemeProvider>
         <Drawer
             open={this.props.open}
+            width={256}
             >
           <MenuItem style={{height: "64px"}}></MenuItem>
             {this.sideBarItems.map(
@@ -68,7 +69,7 @@ export default class SideBar extends React.Component {
                         isCurrent = "lightgray"
                     return (
                     <Link key={idx} to={e.link}>
-                        <MenuItem style={{height: "8vh", lineHeight: "8vh", backgroundColor: isCurrent}}>
+                        <MenuItem style={{height: "8vh", lineHeight: "8vh", backgroundColor: isCurrent, fontSize: "3vh"}}>
                             <i style={{width:"5vh"}} className={e.iconFamily}></i>
                             {e.content}
                         </MenuItem>
