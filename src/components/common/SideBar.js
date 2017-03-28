@@ -51,36 +51,24 @@ export default class SideBar extends React.Component {
                 iconFamily: "fa fa-user",
                 content: "管理员",
                 link: "/admin",
-                hide: !Auth.isLogin()
+                option: true
             },
             {
                 iconFamily: "fa fa-calendar",
                 content: "财务管理",
                 link: "/financial",
-                hide: !Auth.isLogin()
+                option: true
             }
         ];
     this.state = {
-        sideBarItems: [...this.sideBarItems],
+        isLogin: Auth.isLogin()
     }
     
-    //}
-    addEventListener('login', () => this.forceUpdate() );
-    addEventListener('logout', () => {
+
+    addEventListener('logStatusChange', () => {
 //        this.setState({login: Auth.isLogin()});
-        this.resetItems();
-        console.log('got log out');
+        this.setState({isLogin: Auth.isLogin()});
      } );
-  }
-
-  resetItems() {
-    let newItems = [...this.state.sideBarItems];
-    newItems = newItems.forEach( e => {
-        if(e.hide != undefined)
-            e.hide = Auth.isLogin();
-    });
-    this.setState({sideBarItems: newItems});
-
   }
 
   handleToggle() {
@@ -98,7 +86,7 @@ export default class SideBar extends React.Component {
           <MenuItem style={{height: "64px"}}></MenuItem>
             {this.sideBarItems.map(
                 (e, idx) => {
-                    if(e.hide == true)
+                    if(e.option && !this.state.isLogin)
                         return null;
                     let isCurrent = "white";
                     if(e.link == location.pathname)

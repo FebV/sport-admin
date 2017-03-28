@@ -8,6 +8,7 @@ import SideBar from './SideBar';
 import Home from '../home/Home';
 import Intro from '../Intro/Intro';
 import Apply from '../apply/Apply';
+import Comment from '../comment/Comment';
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -37,6 +38,7 @@ export default class Main extends React.Component {
                 <Route exact path="/" component={ Home } />
                 <Route path="/intro" component={ Intro } />
                 <Route path="/apply" component={ Apply } />
+                <Route path="/comment" component={ Comment } />
             </div>
         </div>
         )
