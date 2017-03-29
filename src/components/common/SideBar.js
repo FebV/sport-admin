@@ -56,7 +56,7 @@ export default class SideBar extends React.Component {
             {
                 iconFamily: "fa fa-calendar",
                 content: "财务管理",
-                link: "/financial",
+                link: "/finance",
                 option: true
             }
         ];
@@ -65,7 +65,7 @@ export default class SideBar extends React.Component {
     }
     
 
-    addEventListener('logStatusChange', () => {
+    addEventListener('log status change', () => {
 //        this.setState({login: Auth.isLogin()});
         this.setState({isLogin: Auth.isLogin()});
      } );
@@ -93,7 +93,7 @@ export default class SideBar extends React.Component {
                         isCurrent = "lightgray"
                     return (
                     <Link key={idx} to={e.link}>
-                        <MenuItem style={{height: "8vh", lineHeight: "8vh", backgroundColor: isCurrent, fontSize: "3vh"}}>
+                        <MenuItem style={{height: "8vh", lineHeight: "8vh", backgroundColor: isCurrent, fontSize: "15px"}}>
                             <i style={{width:"5vh"}} className={e.iconFamily}></i>
                             {e.content}
                         </MenuItem>

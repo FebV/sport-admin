@@ -50,7 +50,7 @@ export default class Intro extends React.Component {
         return (
             <MuiThemeProvider>
                 <Tabs>
-                    {this.list.map( (e, idx) => <Tab style={{fontSize: "2vw"}} key={idx} label={e.label}>{e.ele}</Tab>)}
+                    {this.list.map( (e, idx) => <Tab style={{fontSize: "15px"}} key={idx} label={e.label}>{e.ele}</Tab>)}
                 </Tabs>
             </MuiThemeProvider>
         )
