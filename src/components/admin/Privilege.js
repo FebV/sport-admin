@@ -5,6 +5,8 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
+import User from '../../controllers/User';
+
 export default class Privilege extends React.Component {
     constructor(props) {
         super(props);
@@ -19,10 +21,11 @@ export default class Privilege extends React.Component {
 
     render() {
         return (
-        <div style={{height: "calc(100% - 48px - 64px - 20px)"}}>
+        <div style={{height: "calc(100% - 48px - 64px)"}}>
         
-        {this.state.selectedIndex == 0 ? <Profile /> : null}
-
+        <div style={{padding: "50px"}}>
+            {this.state.selectedIndex == 0 ? <Profile /> : null}
+        </div>
         <Paper style={{position: 'absolute', bottom: "0px", width: "100%"}}>
         <BottomNavigation selectedIndex={this.state.selectedIndex}>
           <BottomNavigationItem
@@ -84,7 +87,7 @@ class Profile extends React.Component {
                 },
             ],
             info: {
-                schoolnum: 'root',
+                schoolnum: 'gagagaga',
                 username: '',
                 realname: '',
                 campus: '',
@@ -93,21 +96,40 @@ class Profile extends React.Component {
         }
     }
 
+    componentDidMount() {
+        User.getInfo()
+            .then(res => this.setState({info: res}));
+    }
+
     switchModify(index) {
         let tfs = [...this.state.tfs];
+        let isModify = false;
         let newTfs = tfs.map( (e, idx) => {
             if(idx == index) {
+                if(e.disabled == false)
+                    isModify = true;
                 let newE = {floatHint: e.floatHint, name: e.name, disabled: !e.disabled};
                 return newE;
             }
             return e;
         })
         this.setState({tfs: newTfs});
+        if(isModify)
+            console.log`modify`;
+    }
+
+    handleModify(ev, nv, name) {
+        let newInfo = this.state.info;
+        for(let i in newInfo) {
+            if(i == name)
+                newInfo[name] = nv;
+        }
+        this.setState({info: newInfo});
     }
 
     render() {
         return (
-            <Paper style={{margin: "20px", padding: "40px"}}>
+            <Paper  style={{padding: "50px"}}>
             {this.state.tfs.map( (e, idx) => {
                 return (
                     <div key={idx}>
@@ -115,8 +137,9 @@ class Profile extends React.Component {
                         floatingLabelText={e.floatHint}
                         disabled={e.disabled}
                         value={this.state.info[e.name]}
+                        onChange={(ev, nv) => this.handleModify(ev, nv, e.name)}
                     />
-                    <RaisedButton style={{marginLeft: '40px'}} onClick={() => this.switchModify(idx)} label={e.disabled ? "修改" : "确定"}  />
+                    <RaisedButton style={{marginLeft: '40px'}} disabled={idx == 0 ? true : false} onClick={() => this.switchModify(idx)} label={e.disabled ? "修改" : "确定"}  />
                     </div>
                 );
             })}
