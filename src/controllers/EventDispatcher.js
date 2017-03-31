@@ -36,6 +36,12 @@ export default class EventHandler {
             dispatchEvent(eAlert);
             return;
         }
+        if(type == 'info put fail') {
+            dispatchEvent(new Event(type));
+            const eAlert = new Event('alert');
+            eAlert.msg = msg;
+            dispatchEvent(eAlert);
+        }
         if(type == 'alert') {
             const e = new Event('alert');
             e.msg = msg;

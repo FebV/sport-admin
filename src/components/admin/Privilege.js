@@ -25,6 +25,7 @@ export default class Privilege extends React.Component {
         
         <div style={{padding: "50px"}}>
             {this.state.selectedIndex == 0 ? <Profile /> : null}
+            {this.state.selectedIndex == 2 ? <Creation /> : null}
         </div>
         <Paper style={{position: 'absolute', bottom: "0px", width: "100%"}}>
         <BottomNavigation selectedIndex={this.state.selectedIndex}>
@@ -130,6 +131,7 @@ class Profile extends React.Component {
     render() {
         return (
             <Paper  style={{padding: "50px"}}>
+            <div>个人资料</div>
             {this.state.tfs.map( (e, idx) => {
                 return (
                     <div key={idx}>
@@ -144,6 +146,38 @@ class Profile extends React.Component {
                 );
             })}
             </Paper>
+        )
+    }
+}
+
+class Creation extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <div>
+                <Paper style={{padding: "50px"}}>
+                <div>创建管理员</div>
+                <TextField 
+                    floatingLabelText="账号"
+                />
+                <br />
+                <TextField 
+                    floatingLabelText="校区"
+                />
+                <br />                
+                <TextField 
+                    floatingLabelText="密码"
+                />
+                <br />
+                <RaisedButton
+                    style={{marginTop: "20px"}}
+                    label="创建"
+                />
+                </Paper>
+            </div>
         )
     }
 }

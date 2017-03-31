@@ -9,6 +9,7 @@ import Avatar from 'material-ui/Avatar';
 import Popover from 'material-ui/Popover';
 import Menu from 'material-ui/Menu';
 import MenuItem from 'material-ui/MenuItem';
+import { Link } from 'react-router-dom';
 
 import Auth from '../../controllers/Auth';
 import User from '../../controllers/User';
@@ -136,10 +137,13 @@ class UserBio extends React.Component {
                     onRequestClose={() => {this.setState({popOpen: false})}}
                 >
                 <Menu>
+                    {<Link to="/admin/mine">
+                        <MenuItem primaryText="个人中心" />
+                    </Link>}
                     <MenuItem onClick={Auth.logout} primaryText="退出登陆" />
                 </Menu>
                 </Popover>
-                <span style={{margin: "0px 20px", fontSize: "20px"}}>Welcome, {this.state.username}</span>
+                <span style={{margin: "0px 20px", fontSize: "15px"}}>欢迎， {this.state.username}</span>
             </div>
         )
     }

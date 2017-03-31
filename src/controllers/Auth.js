@@ -37,6 +37,8 @@ export default class Auth {
                 }
                 ED.dispatch({type: 'alert', msg: '登出成功'});
             })
+            .catch(err => ED.dispatch({type: 'alert', msg: '网络错误'})
+)
         localStorage.clear();
         ED.dispatch({type: 'logout'});
     }

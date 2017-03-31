@@ -42,11 +42,7 @@ export default class Admin extends React.Component{
 
     render() {
         return (
-            <MuiThemeProvider>
-                <Tabs>
-                    {this.list.map( (e, idx) => <Tab style={{fontSize: "12px"}} key={idx} label={e.label}>{e.ele}</Tab>)}
-                </Tabs>
-            </MuiThemeProvider>
+            <div>admin</div>
         )
     }
 }

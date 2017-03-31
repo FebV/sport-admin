@@ -14,6 +14,16 @@ export default class Request {
         });
     }
 
+    static put({url, data}) {
+        return fetch(url, {
+            method: 'PUT',
+            headers: {
+                "Content-Type": 'application/x-www-form-urlencoded'
+            },
+            body: Request.parseData({data})
+        })
+    }
+
     static delete({url, data}) {
         return fetch(url, {
             method: "DELETE",
