@@ -7,6 +7,15 @@ const API = {
     //User Info
     getInfo: `${base}users/i/info`,
     putInfo: `${base}users/i/info`,
+    getLevel: `${base}users/i/gp`,
     // getInfo: `${base}info.json`,
+
+    //People  下属相关
+    getPeople: `${base}users/info`,
+    postPeople: `${base}users`,
+    deletePeople: function(id){return `${base}users/i/people/${id}`},
+    authPeople: function(id){return `${base}users/i/people/${id}/auth`}
+
+
 }
 export default API;

@@ -115,8 +115,6 @@ class Profile extends React.Component {
             return e;
         })
         this.setState({tfs: newTfs});
-        if(isModify)
-            console.log`modify`;
     }
 
     handleModify(ev, nv, name) {

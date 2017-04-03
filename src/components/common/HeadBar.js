@@ -116,12 +116,19 @@ class UserBio extends React.Component {
             popOpen: false,
             username: 'admin'
         }
+
+        addEventListener('info put ok', () => this.getInfo());
     }
 
     componentDidMount() {
-        User.getInfo()
-            .then(res => this.setState({username: res.username}));
+        this.getInfo();
     }
+
+    getInfo() {
+        User.getInfo()
+            .then(res => this.setState({username: res.realname}));
+    }
+
     render() {
         return(
             <div style={{marginTop: "4px"}}>

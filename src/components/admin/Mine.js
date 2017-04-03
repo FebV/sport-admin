@@ -32,8 +32,8 @@ export default class Profile extends React.Component {
                     name: 'campus',
                 },
                 {
-                    floatHint: '用户名',
-                    name: 'username',
+                    floatHint: '管理员级别',
+                    name: 'level',
                 },
                 {
                     floatHint: '姓名',
@@ -46,8 +46,8 @@ export default class Profile extends React.Component {
             ],
         this.state = {
             schoolnum: '',
-            username: '',
             realname: '',
+            level: '',
             campus: '',
             tel: '',
             switch: [true, true, true, true, true]
@@ -63,7 +63,6 @@ export default class Profile extends React.Component {
         addEventListener('logout', () => {
             this.setState({
                 schoolnum: 'gaha',
-                username: '',
                 realname: '',
                 campus: '',
                 tel: '',
@@ -76,10 +75,13 @@ export default class Profile extends React.Component {
         User.getInfo()
             .then(res => this.setState({
                 schoolnum: res.schoolnum,
-                username: res.username,
                 realname: res.realname,
                 campus: this.schoolNameMap[res.campus],
                 tel: res.tel
+            }));
+        User.getLevel()
+            .then(res => this.setState({
+                level: res,
             }));
     }
 
@@ -106,6 +108,7 @@ export default class Profile extends React.Component {
 
     render() {
         return (
+            <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
             <MuiThemeProvider>
             <Paper style={{padding: "50px"}}>
             <div>个人资料</div>
@@ -119,12 +122,13 @@ export default class Profile extends React.Component {
                         value={this.state[e.name]}
                         onChange={(ev, nv) => this.handleModify(ev, nv, e.name)}
                     />
-                    <RaisedButton style={{marginLeft: '40px'}} disabled={ (idx == 0 || idx == 1 ) || !Auth.isLogin() ? true : false} onClick={() => this.switchModify(idx)} label={this.state.switch[idx] ? "修改" : "确定"}  />
+                    <RaisedButton style={{marginLeft: '40px'}} disabled={ (idx < 3 ) || !Auth.isLogin() ? true : false} onClick={() => this.switchModify(idx)} label={this.state.switch[idx] ? "修改" : "确定"}  />
                     </div>
                 );
             })}
             </Paper>
             </MuiThemeProvider>
+            </div>
         )
     }
 }

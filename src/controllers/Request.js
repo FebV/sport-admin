@@ -4,6 +4,7 @@ export default class Request {
         return fetch(`${url}?${Request.parseData({data})}`);
     }
 
+
     static post({url, data}) {
         return fetch(url, {
             method: 'POST',

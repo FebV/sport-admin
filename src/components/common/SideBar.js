@@ -22,7 +22,7 @@ export default class SideBar extends React.Component {
             },
             {
                 iconFamily: "fa fa-tachometer",
-                content: "体育场馆介绍",
+                content: "场馆介绍",
                 subItems: [
                     {
                         content: "综合体育馆",
@@ -71,6 +71,11 @@ export default class SideBar extends React.Component {
             //     content: "大型活动专栏",
             //     link: "/activity",
             // },
+            {
+                iconFamily: "fa fa-search",
+                content: "场馆查询",
+                link: "/query",
+            },
             {
                 iconFamily: "fa fa-pencil-square-o",
                 content: "场馆申请",
@@ -176,8 +181,10 @@ export default class SideBar extends React.Component {
       <div>
         <MuiThemeProvider>
         <Drawer
+            docked={this.props.drawerDocked}
             open={this.props.open}
             width={256}
+            onRequestChange={this.props.handleDrawer}
             >
             <List style={{padding: "80px 0px"}}>
             {this.sideBarItems.map( (e, idx) => {
@@ -189,7 +196,6 @@ export default class SideBar extends React.Component {
                         <ListItem
                             key={sidx}
                             containerElement={<Link to={se.link}></Link>}
-                            style={{marginLeft: "30px"}}
                             primaryText={se.content}
                             leftIcon={<i className={se.iconFamily}></i>}
                         />
@@ -197,6 +203,7 @@ export default class SideBar extends React.Component {
                 }
                 return ( 
                     <ListItem
+                        insetChildren={true}
                         key={idx}
                         containerElement={e.link ? <Link to={e.link}></Link> : <span></span>}
                         primaryText={e.content}
