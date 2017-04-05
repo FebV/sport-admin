@@ -68,6 +68,9 @@ export default class EventHandler {
         }
         if(type == 'user auth ok') {
             dispatchEvent(new Event(type));
+            const eAlert = new Event('alert');
+            eAlert.msg = '权限设置成功';
+            dispatchEvent(eAlert);
         }
         if(type == 'alert') {
             const e = new Event('alert');

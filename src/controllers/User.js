@@ -15,6 +15,11 @@ export default class User {
             User.info = Request.get({url: API.getInfo, data: {api_token: Auth.getToken()}})
                 .then(res => res.json())
                 .then(json => {
+                    if(json.code != 1) {
+                        localStorage.clear();
+                        ED.dispatch({type: 'logout'});
+                        return ED.dispatch({type: 'alert', msg: '登录失败'});
+                    }
                     return User.info = Promise.resolve(json.data);
                 })
                 .catch(err => ED.dispatch({type: 'alert', msg: '网络错误'}));
