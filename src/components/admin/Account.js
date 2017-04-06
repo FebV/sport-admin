@@ -10,7 +10,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
+import Auth from '../../controllers/Auth';
 import User from '../../controllers/User';
 
 export default class Account extends React.Component {
@@ -195,6 +195,7 @@ class AddAdmin extends React.Component {
     }
 
     componentDidMount() {
+        if(Auth.isLogin())
         User.getLevel()
             .then(res => this.setState({level: 1*res}));
     }

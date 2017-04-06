@@ -62,10 +62,11 @@ export default class Profile extends React.Component {
         });
         addEventListener('logout', () => {
             this.setState({
-                schoolnum: 'gaha',
+                schoolnum: '',
                 realname: '',
                 campus: '',
                 tel: '',
+                level: '',
                 switch: [true, true, true, true, true]
             })
         });
