@@ -213,7 +213,6 @@ class AddAdmin extends React.Component {
             campus: this.schoolNameMap[this.state.campus],
             grade: this.state.level+1,
         });
-        // this.setState({addAdminDialogOpen: false});
     }
 
     render() {

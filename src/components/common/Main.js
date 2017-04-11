@@ -13,6 +13,7 @@ import Query from '../query/Query';
 import Admin from '../admin/Admin';
 import Mine from '../admin/Mine';
 import Account from '../admin/Account';
+import Gym from '../admin/Gym';
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -52,6 +53,7 @@ export default class Main extends React.Component {
                 <Route exact path="/admin" component={ Admin } />
                 <Route path="/admin/mine" component={ Mine } />
                 <Route path="/admin/account" component={ Account } />
+                <Route path="/admin/gym" component={ Gym } />
                 </div>
             </div>
             <AlertBar />

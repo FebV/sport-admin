@@ -14,8 +14,11 @@ const API = {
     getPeople: `${base}users/info`,
     postPeople: `${base}users`,
     deletePeople: function(id){return `${base}users/i/people/${id}`},
-    authPeople: function(id){return `${base}users/i/people/${id}/auth`}
+    authPeople: function(id){return `${base}users/i/people/${id}/auth`},
 
-
+    //Schedule 排期相关
+    //getSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,
+    getSchedules: () => `/mock/gym.json`,
+    postSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,    
 }
 export default API;
