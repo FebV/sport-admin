@@ -14,6 +14,7 @@ import Admin from '../admin/Admin';
 import Mine from '../admin/Mine';
 import Account from '../admin/Account';
 import Gym from '../admin/Gym';
+import AdminApply from '../admin/Apply';
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -54,6 +55,7 @@ export default class Main extends React.Component {
                 <Route path="/admin/mine" component={ Mine } />
                 <Route path="/admin/account" component={ Account } />
                 <Route path="/admin/gym" component={ Gym } />
+                <Route path="/admin/apply" component={ AdminApply } />
                 </div>
             </div>
             <AlertBar />

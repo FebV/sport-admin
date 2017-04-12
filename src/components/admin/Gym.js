@@ -3,18 +3,21 @@ import DatePicker from 'material-ui/DatePicker';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Paper from 'material-ui/Paper';
-import Schedule from '../../controllers/Schedule';
 import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
+import Menu from 'material-ui/Menu';
+import Popover from 'material-ui/Popover';
 
+import Schedule from '../../controllers/Schedule';
 import camGym from '../../config/cam-gym';
 
 export default class Gym extends React.Component {
     constructor(props) {
         super(props);
+        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'];
         this.state = {
             start: '',
             end: '',
@@ -23,7 +26,16 @@ export default class Gym extends React.Component {
             records: [],
             uploadModalOpen: false,
             isModifying: false,
+            isClicking: false,
+            arrangeModifierOpen: false,
+            anchorEl: null,
+            date: null,
+            nthClass: null,
         }
+
+        addEventListener("put schedules ok", () => {
+            this.query();
+        })
     }
 
     query() {
@@ -53,11 +65,11 @@ export default class Gym extends React.Component {
     showStatus(status) {
         let backgroundColor = null;
         if(status == '有课')
-            backgroundColor = 'red';
+            backgroundColor = '#F44336';
         if(status == '空闲')
-            backgroundColor = 'green';
+            backgroundColor = '#FAFAFA';
         if(status == '安排')
-            backgroundColor = 'white';
+            backgroundColor = '#006064';
         return backgroundColor;
     }
 
@@ -69,8 +81,23 @@ export default class Gym extends React.Component {
         this.setState({gym: v})
     }
 
-    modify(date, items) {
-        console.log(date, items);
+    //show a popover
+    modify(r, c, p, e) {
+        if(!this.state.isModifying)
+            return;
+        this.setState({arrangeModifierOpen: true});
+        this.setState({anchorEl: p.target});
+        this.setState({date: this.state.records[r].date, nthClass: this.serial[c-4]});
+    }
+
+    postModify(targetStatus) {
+        Schedule.putSchedules({
+            campus: this.state.campus,
+            gym: this.state.gym,
+            date: this.state.date,
+            nthClass: this.state.nthClass,
+            targetStatus
+        })
     }
 
     render() {
@@ -142,27 +169,29 @@ export default class Gym extends React.Component {
             <MuiThemeProvider>
             <RaisedButton
                 style={{marginLeft: "20px"}}
-                label="修改"
+                label={this.state.isModifying ? "确定" : "修改"}
                 onClick={() => this.setState({isModifying: !this.state.isModifying})}
             />
             </MuiThemeProvider>
             </div>
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
             <MuiThemeProvider>
-            <Paper style={{width: "100%"}}>
+            <Paper style={{width: "90%"}}>
             <Table
+                onCellClick={(r, c, p, e) => {
+                    this.modify(r, c, p,e);
+                }}
                 selectable={false}
-                style={{padding: "20px", width: "100%"}}>
+                style={{width: "100%"}}>
             <TableHeader
                 displaySelectAll={false}
                 adjustForCheckbox={false}
             >
                 <TableRow>
                 <TableHeaderColumn style={{width: "20px"}}>#</TableHeaderColumn>
-                <TableHeaderColumn style={{width: "80px"}}>日期</TableHeaderColumn>
+                <TableHeaderColumn>日期</TableHeaderColumn>
                 <TableHeaderColumn>星期</TableHeaderColumn>
-                {[...Array(11).keys()].map((ele, idx) => <TableHeaderColumn style={{width: "20px"}} key={idx}>{1*idx+1}</TableHeaderColumn>)}
-                <TableHeaderColumn>修改</TableHeaderColumn>
+                {[...Array(11).keys()].map((ele, idx) => <TableHeaderColumn  style={{width: "5%"}} key={idx}>{1*idx+1}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -172,14 +201,16 @@ export default class Gym extends React.Component {
                     return (
                         <TableRow key={idx}>
                         <TableRowColumn style={{width: "20px"}}>{1 + 1*idx}</TableRowColumn>                            
-                        <TableRowColumn style={{width: "80px"}}>{ele.date}</TableRowColumn>
+                        <TableRowColumn>{ele.date}</TableRowColumn>
                         <TableRowColumn>{ele.week}</TableRowColumn>
-                        {['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'].map(
-                            (d, idx) => <TableRowColumn onClick={() => console.log(ele.data, d)} key={idx} style={{backgroundColor: this.showStatus(ele[d]), border: "2px solid", width: "20px", opacity: !this.state.isModifying ? "1" : "0.7", cursor: this.state.isModifying ? "pointer" : ""}}></TableRowColumn>
+                        {this.serial.map(
+                            (d, idx) => (
+                                    <TableRowColumn
+                                        key={idx}
+                                        style={{backgroundColor: this.showStatus(ele[d]), border: "1px solid", width: "5%", opacity: !this.state.isModifying ? "1" : "0.7", cursor: this.state.isModifying ? "pointer" : ""}}
+                                    ></TableRowColumn>
+                                )
                         )}
-                        <TableRowColumn>
-                            <i onClick={() => this.setState({isModifying: !this.state.isModifying})} style={{cursor: "pointer"}} className={this.state.isModifying ? "fa fa-floppy-o fa-lg" : "fa fa-lg fa-gavel"}></i>
-                        </TableRowColumn>
                     </TableRow>
                     );
                 })}
@@ -194,6 +225,12 @@ export default class Gym extends React.Component {
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
             </MuiThemeProvider>
+            <ArrangeModifier
+                postModify={this.postModify.bind(this)}
+                anchorEl={this.state.anchorEl}
+                open={this.state.arrangeModifierOpen}
+                close={() => this.setState({arrangeModifierOpen: false})}
+            />
             </div>
         )
     }
@@ -325,6 +362,43 @@ class UploadArrangeExcel extends React.Component {
                 onClick={this.props.onRequestClose}
             />
             </Dialog>
+            </MuiThemeProvider>
+        )
+    }
+}
+
+class ArrangeModifier extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            <MuiThemeProvider>
+            <Popover
+                anchorOrigin={{vertical: 'center', horizontal: 'middle'}}
+                anchorEl={this.props.anchorEl}
+                open={this.props.open}
+                onRequestClose={this.props.close}
+                >
+                <Menu>
+                    <MenuItem onClick={() => {
+                        this.props.postModify('有课')
+                        this.props.close();
+                        }}
+                        primaryText="调为有课" />
+                    <MenuItem onClick={() => {
+                        this.props.postModify('空闲')
+                        this.props.close();
+                        }}
+                        primaryText="调为空闲" />
+                    <MenuItem onClick={() => {
+                        this.props.postModify('安排')
+                        this.props.close();
+                        }}
+                        primaryText="调为安排" />
+                </Menu>
+            </Popover>
             </MuiThemeProvider>
         )
     }

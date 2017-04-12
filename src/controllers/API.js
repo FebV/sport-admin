@@ -17,8 +17,13 @@ const API = {
     authPeople: function(id){return `${base}users/i/people/${id}/auth`},
 
     //Schedule 排期相关
-    //getSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,
-    getSchedules: () => `/mock/gym.json`,
-    postSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,    
+    getSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,
+    //getSchedules: () => `/mock/gym.json`,
+    postSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,
+    putSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,
+
+    //apply 申请相关
+    getApply: ({campus, gym}) => `${base}apply/campus/${campus}/gym/${gym}`,
+    postApply: `${base}apply`,
 }
 export default API;

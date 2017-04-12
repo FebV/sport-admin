@@ -36,7 +36,7 @@ const camGym = {
         ],
     zx: [
         {
-            name: 'groundTrack',
+            name: 'groundtrack',
             label: '田径场',
         },
         {
