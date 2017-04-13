@@ -34,6 +34,8 @@ export default class Apply extends React.Component {
             campus: 'zx',
             gym: 'basketball',
             records: [],
+            detailDialogOpen: false,
+            detailIdx: null,
         }
     }
 
@@ -148,13 +150,10 @@ export default class Apply extends React.Component {
                 <TableHeaderColumn>日期</TableHeaderColumn>
                 <TableHeaderColumn>节次</TableHeaderColumn>
                 <TableHeaderColumn>院系</TableHeaderColumn>
-                <TableHeaderColumn>活动内容</TableHeaderColumn>
-                <TableHeaderColumn>参加人数</TableHeaderColumn>
-                <TableHeaderColumn>负责人</TableHeaderColumn>
                 <TableHeaderColumn>联系方式</TableHeaderColumn>
-                <TableHeaderColumn>花费</TableHeaderColumn>
                 <TableHeaderColumn>备注</TableHeaderColumn>
                 <TableHeaderColumn>状态</TableHeaderColumn>
+                <TableHeaderColumn>查看详情</TableHeaderColumn>
             </TableRow>
             </TableHeader>
             <TableBody
@@ -168,9 +167,9 @@ export default class Apply extends React.Component {
                         break;
                     }
                 }
-                let targetClsTime = null;
+                let targetClsTime = ele.classtime;
                 for(let i in this.serial) {
-                    targetClsTime = ele.classtime.replace(this.serial[i], i-1);
+                    targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
                 }
                 return (
                     <TableRow key={idx}>
@@ -179,13 +178,15 @@ export default class Apply extends React.Component {
                         <TableRowColumn title={ele.time}>{ele.time}</TableRowColumn>
                         <TableRowColumn title={targetClsTime}>{targetClsTime}</TableRowColumn>
                         <TableRowColumn title={ele.major}>{ele.major}</TableRowColumn>
-                        <TableRowColumn title={ele.content}>{ele.content}</TableRowColumn>
-                        <TableRowColumn title={ele.pnumber}>{ele.pnumber}</TableRowColumn>
-                        <TableRowColumn title={ele.charger}>{ele.charger}</TableRowColumn>
                         <TableRowColumn title={ele.tel}>{ele.tel}</TableRowColumn>
-                        <TableRowColumn title={ele.cost}>{ele.cost}</TableRowColumn>
                         <TableRowColumn title={ele.remark}>{ele.remark}</TableRowColumn>
                         <TableRowColumn title={ele.state}>{ele.state}</TableRowColumn>
+                        <TableRowColumn>
+                            <RaisedButton onClick={() => {
+                                    this.setState({detailIdx: idx});
+                                    this.setState({detailDialogOpen: true});
+                                }} label="查看详情" />
+                        </TableRowColumn>
                     </TableRow>
                 )
             })}
@@ -193,7 +194,57 @@ export default class Apply extends React.Component {
             </Table>
             </Paper>
             </MuiThemeProvider>
+            <Detail
+                open={this.state.detailDialogOpen}
+                onRequestClose={() => this.setState({detailDialogOpen: false})}
+                record={this.state.records[this.state.detailIdx]}
+            />
             </div>
+        )
+    }
+}
+
+class Detail extends React.Component {
+    constructor(props) {
+        super(props);
+        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'];
+        this.schoolNameMap = {
+            'mu': '综合体育馆',
+            'zx': '中心校区',
+            'hj': '洪家楼校区',
+            'qf': '千佛山校区',
+            'bt': '趵突泉校区',
+            'xl': '兴隆山校区',
+            'rj': '软件园校区',
+        }
+    }
+
+    render() {
+        if(!this.props.record)
+            return <div></div>
+        let targetName = null;
+            for(let i of camGym[this.props.record.campus]) {
+                if(i.name == this.props.record.gym) {
+                    targetName = i.label;
+                    break;
+                }
+            }
+        return (
+            <MuiThemeProvider>
+            <Dialog
+                style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
+                title="申请详情"
+                modal={false}
+                open={this.props.open}
+                onRequestClose={this.props.onRequestClose}
+            >
+                <div>
+                    <span>校区：</span><span>{this.schoolNameMap[this.props.record.campus]}</span>
+                    <span>场馆：</span><span>{targetName}</span>
+                    <span>使用时间：</span><span>{this.props.record.classtime}</span>
+                </div>
+            </Dialog>
+            </MuiThemeProvider>
         )
     }
 }
