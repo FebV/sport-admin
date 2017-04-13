@@ -31,6 +31,7 @@ export default class Apply extends React.Component {
             tel: '',
             cost: '',
             remark: '',
+            department: '',
             classtimeDisTable: Array(11).fill(false)
         }
     }
@@ -69,7 +70,7 @@ export default class Apply extends React.Component {
         return date;
     }
 
-    postApply() {
+    postInnerApply() {
         let ClsTime = [];
         this.state.classtime.map( (e, idx) => {
             if(e)
@@ -91,11 +92,122 @@ export default class Apply extends React.Component {
         })
     }
 
+    postOuterApply() {
+        let ClsTime = [];
+        this.state.classtime.map( (e, idx) => {
+            if(e)
+                ClsTime.push(this.serial[idx]);
+        });
+        ClsTime = ClsTime.join(',');
+        Applies.postOuterApply({
+            campus: this.state.campus,
+            gym: this.state.gym,
+            time: this.state.time,
+            classtime: ClsTime,
+            department: this.state.department,
+            content: this.state.content,
+            charger: this.state.charger,
+            tel: this.state.tel,
+        })
+    }
+
     render() {
         return (
             <MuiThemeProvider>
             <Tabs>
-                <Tab label="校内申请" style={{width: "100%"}}>
+                <Tab label="校内申请">
+                <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+                <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
+                校区
+            <MuiThemeProvider>
+            <DropDownMenu
+                style={{position: 'relative', top: '20px'}}
+                value={this.state.campus}
+                onChange={this.handleCampusChange.bind(this)}
+            >
+                <MenuItem value={"mu"} primaryText="综合体育馆" />
+                <MenuItem value={"zx"} primaryText="中心校区" />
+                <MenuItem value={"hj"} primaryText="洪家楼校区" />
+                <MenuItem value={"qf"} primaryText="千佛山校区" />
+                <MenuItem value={"bt"} primaryText="趵突泉校区" />
+                <MenuItem value={"xl"} primaryText="兴隆山校区" />
+                <MenuItem value={"rj"} primaryText="软件园校区" />
+            </DropDownMenu>
+            </MuiThemeProvider>
+            场馆
+            <MuiThemeProvider>
+                <DropDownMenu
+                    style={{position: 'relative', top: '20px'}}
+                    value={this.state.gym}
+                    onChange={this.handleGymChange.bind(this)}
+                >
+                    {camGym[this.state.campus].map((e, idx) => {
+                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
+                    })}
+                    
+                </DropDownMenu>
+            </MuiThemeProvider><br />
+                <DatePicker
+                    style={{display: "inline-block", marginTop: "20px"}}
+                    hintText="使用日期"
+                    DateTimeFormat={Intl.DateTimeFormat}
+                    locale="zh-CN"
+                    cancelLabel="取消"
+                    okLabel="确定"
+                    onChange={this.handleDateChange.bind(this)}
+                /><br />
+                <div style={{marginTop: "10px 0"}}>使用节次</div>
+                <div style={{textAlign: "left"}}>
+                    {[...Array(11).keys()].map(e => {
+                        return (
+                            <span key={e}><Checkbox
+                                style={{display: "inline-block", height: "15px", width: "8%", margin: "10px 0px 10px 80px"}}
+                                label={e+1}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[e]}
+                            /></span>)
+                    })}
+                </div>
+                <TextField
+                    onChange={(e, v) => this.setState({major: v})}
+                    floatingLabelText="使用学院"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({content: v})}                
+                    floatingLabelText="活动内容"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({pnumber: v})}                
+                    floatingLabelText="参加人数"
+                /><br />
+                <TextField 
+                    onChange={(e, v) => this.setState({charger: v})}                
+                    floatingLabelText="负责人姓名"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({tel: v})}                
+                    floatingLabelText="联系方式"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({cost: v})}                
+                    floatingLabelText="花费"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({remark: v})}
+                    floatingLabelText="备注"
+                /><br />
+                <RaisedButton
+                    onClick={this.postInnerApply.bind(this)}
+                    label="提交"
+                />
+                </Paper>
+                </div>
+                </Tab>
+                <Tab label="校外申请" >
                 <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
                 校区
@@ -153,16 +265,12 @@ export default class Apply extends React.Component {
                     })}
                 </div>
                 <TextField
-                    onChange={(e, v) => this.setState({major: v})}
-                    floatingLabelText="使用学院"
+                    onChange={(e, v) => this.setState({department: v})}
+                    floatingLabelText="使用单位"
                 /><br />
                 <TextField
                     onChange={(e, v) => this.setState({content: v})}                
                     floatingLabelText="活动内容"
-                /><br />
-                <TextField
-                    onChange={(e, v) => this.setState({pnumber: v})}                
-                    floatingLabelText="参加人数"
                 /><br />
                 <TextField 
                     onChange={(e, v) => this.setState({charger: v})}                
@@ -172,74 +280,12 @@ export default class Apply extends React.Component {
                     onChange={(e, v) => this.setState({tel: v})}                
                     floatingLabelText="联系方式"
                 /><br />
-                <TextField
-                    onChange={(e, v) => this.setState({cost: v})}                
-                    floatingLabelText="花费"
-                /><br />
-                <TextField
-                    onChange={(e, v) => this.setState({remark: v})}
-                    floatingLabelText="备注"
-                /><br />
                 <RaisedButton
-                    onClick={this.postApply.bind(this)}
+                    onClick={this.postOuterApply.bind(this)}
                     label="提交"
                 />
                 </Paper>
                 </div>
-                </Tab>
-                <Tab label="校外申请" >
-                <MuiThemeProvider>
-                <div style={{margin: "40px 0", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <Paper style={{width: "40%", padding: "20px"}}>
-                 <SelectField
-                    floatingLabelText="选择校区"
-                    value="123"
-                    >
-                    <MenuItem value={1} primaryText="Never" />
-                    <MenuItem value={2} primaryText="Every Night" />
-                    <MenuItem value={3} primaryText="Weeknights" />
-                    <MenuItem value={4} primaryText="Weekends" />
-                    <MenuItem value={5} primaryText="Weekly" />
-                </SelectField><br />
-                <SelectField
-                    floatingLabelText="选择场馆"
-                    value="123"
-                    >
-                    <MenuItem value={1} primaryText="Never" />
-                    <MenuItem value={2} primaryText="Every Night" />
-                    <MenuItem value={3} primaryText="Weeknights" />
-                    <MenuItem value={4} primaryText="Weekends" />
-                    <MenuItem value={5} primaryText="Weekly" />
-                </SelectField><br />
-                <DatePicker
-                    style={{display: "inline-block"}}
-                    hintText="使用日期"
-                    DateTimeFormat={Intl.DateTimeFormat}
-                    locale="zh-CN"
-                    cancelLabel="取消"
-                    okLabel="确定"
-                /><br />
-                <TextField 
-                    floatingLabelText="使用单位"
-                /><br />
-                <TextField 
-                    floatingLabelText="活动内容"
-                /><br />
-                <TextField 
-                    floatingLabelText="负责人姓名"
-                /><br />
-                <TextField 
-                    floatingLabelText="联系方式"
-                /><br />
-                <TextField 
-                    floatingLabelText="备注"
-                /><br />
-                <RaisedButton
-                    label="提交"
-                />
-                </Paper>
-                </div>
-                </MuiThemeProvider>
                 </Tab>
             </Tabs>
             </MuiThemeProvider>

@@ -23,7 +23,11 @@ const API = {
     putSchedules: ({campus, gym}) => `${base}schedules/campus/${campus}/gym/${gym}`,
 
     //apply 申请相关
-    getApply: ({campus, gym}) => `${base}apply/campus/${campus}/gym/${gym}`,
+    getInnerApply: ({campus, gym}) => `${base}apply/campus/${campus}/gym/${gym}`,
+    getOuterApply: ({campus, gym}) => `${base}apply/train/campus/${campus}/gym/${gym}`,
     postApply: `${base}apply`,
+    postOuterApply: `${base}apply/train`,
+    putApply: id => `${base}apply/${id}`,
+    deleteApply: id => `${base}apply/${id}`,
 }
 export default API;

@@ -15,9 +15,20 @@ export default class Applies {
             .then(res => console.log(res))
     }
 
-    static getApply({campus, gym, start, end}) {
+    static postOuterApply({campus, gym, time, classtime, department, content, charger, tel}) {
+        Request.post({
+            url: API.postOuterApply,
+            data: {
+                campus, gym, time, classtime, department, content, charger, tel,
+            }
+        })
+            .then(res => res.json())
+            .then(res => console.log(res))
+    }
+
+    static getInnerApply({campus, gym, start, end}) {
         return Request.get({
-            url: API.getApply({campus, gym}),
+            url: API.getInnerApply({campus, gym}),
             data: {
                 api_token: Auth.getToken(),
                 start,
@@ -30,5 +41,46 @@ export default class Applies {
                     return [];
                 return res.data;
             })
+    }
+
+    static getOuterApply({campus, gym, start, end}) {
+        return Request.get({
+            url: API.getOuterApply({campus, gym}),
+            data: {
+                api_token: Auth.getToken(),
+                start,
+                end,
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                if(res.code != 1)
+                    return [];
+                return res.data;
+            })
+    }
+
+    static putApply({applyId, state}) {
+        return Request.put({
+            url: API.putApply(applyId),
+            data: {api_token: Auth.getToken(), state}
+        })
+            .then(res => res.json())
+            .then(res => {
+                ED.dispatch({type: "put apply ok"});
+            });
+    }
+
+    static deleteApply({applyId}) {
+        return Request.delete({
+            url: API.deleteApply(applyId),
+            data: {
+                api_token: Auth.getToken()
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                ED.dispatch({type: "delete apply ok"});
+            });
     }
 }

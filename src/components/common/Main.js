@@ -6,7 +6,7 @@ import SideBar from './SideBar';
 import AlertBar from './AlertBar';
 
 import Home from '../home/Home';
-import Intro from '../Intro/Intro';
+import Intro from '../intro/Intro';
 import Apply from '../apply/Apply';
 import Comment from '../comment/Comment';
 import Query from '../query/Query';
