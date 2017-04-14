@@ -34,5 +34,7 @@ const API = {
 
     //留言板
     getInnerComment: `${base}messages/type/1`, //1内部留言
+    postInnerComment: `${base}messages`,
+    deleteInnerComment: id => `${base}messages/${id}`,
 }
 export default API;

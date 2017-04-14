@@ -40,12 +40,13 @@ export default class headBar extends React.Component {
             <MuiThemeProvider>
             <div>
             <AppBar
-                style={{zIndex: 1500}}
+                style={{zIndex: 1500, position: 'fixed'}}
                 title="山东大学体育场馆管理平台"
                 iconElementLeft={this.props.leftIcon ? null : <i></i>}
                 onLeftIconButtonTouchTap={this.props.handleDrawer}
                 iconElementRight={this.state.isLogin ? <UserBio></UserBio> : <LoginButton openDialog={this.openDialog.bind(this)} />}
             />
+            <div style={{height: "64px"}}></div>
             <LoginDialog closeDialog={this.closeDialog.bind(this)} open={this.state.dialogOpen} />
             </div>
             </MuiThemeProvider>
