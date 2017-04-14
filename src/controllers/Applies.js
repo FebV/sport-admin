@@ -60,27 +60,51 @@ export default class Applies {
             })
     }
 
-    static putApply({applyId, state}) {
+    static putInnerApply({applyId, state}) {
         return Request.put({
-            url: API.putApply(applyId),
+            url: API.putInnerApply(applyId),
             data: {api_token: Auth.getToken(), state}
         })
             .then(res => res.json())
             .then(res => {
-                ED.dispatch({type: "put apply ok"});
+                ED.dispatch({type: "put innerApply ok"});
             });
     }
 
-    static deleteApply({applyId}) {
+    static putOuterApply({applyId, state}) {
+        return Request.put({
+            url: API.putOuterApply(applyId),
+            data: {api_token: Auth.getToken(), state}
+        })
+            .then(res => res.json())
+            .then(res => {
+                ED.dispatch({type: "put outerApply ok"});
+            });
+    }
+
+    static deleteInnerApply({applyId}) {
         return Request.delete({
-            url: API.deleteApply(applyId),
+            url: API.deleteInnerApply(applyId),
             data: {
                 api_token: Auth.getToken()
             }
         })
             .then(res => res.json())
             .then(res => {
-                ED.dispatch({type: "delete apply ok"});
+                ED.dispatch({type: "delete innerApply ok"});
+            });
+    }
+
+    static deleteOuterApply({applyId}) {
+        return Request.delete({
+            url: API.deleteOuterApply(applyId),
+            data: {
+                api_token: Auth.getToken()
+            }
+        })
+            .then(res => res.json())
+            .then(res => {
+                ED.dispatch({type: "delete outerApply ok"});
             });
     }
 }

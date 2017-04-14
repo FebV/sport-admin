@@ -27,7 +27,12 @@ const API = {
     getOuterApply: ({campus, gym}) => `${base}apply/train/campus/${campus}/gym/${gym}`,
     postApply: `${base}apply`,
     postOuterApply: `${base}apply/train`,
-    putApply: id => `${base}apply/${id}`,
-    deleteApply: id => `${base}apply/${id}`,
+    putInnerApply: id => `${base}apply/${id}`,
+    putOuterApply: id => `${base}apply/train/${id}`,
+    deleteInnerApply: id => `${base}apply/${id}`,
+    deleteOuterApply: id => `${base}apply/train/${id}`,
+
+    //留言板
+    getInnerComment: `${base}messages/type/1`, //1内部留言
 }
 export default API;

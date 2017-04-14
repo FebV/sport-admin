@@ -390,11 +390,11 @@ class InnerDetail extends React.Component {
     }
 
     putApplyState(state) {
-        ApplyModel.putApply({applyId: this.props.applyId, state});
+        ApplyModel.putInnerApply({applyId: this.props.applyId, state});
     }
 
     deleteApplyState() {
-        ApplyModel.deleteApply({applyId: this.props.applyId});
+        ApplyModel.deleteInnerApply({applyId: this.props.applyId});
     }
 
     render() {
@@ -488,11 +488,11 @@ class OuterDetail extends React.Component {
     }
 
     putApplyState(state) {
-        ApplyModel.putApply({applyId: this.props.applyId, state});
+        ApplyModel.putOuterApply({applyId: this.props.applyId, state});
     }
 
     deleteApplyState() {
-        ApplyModel.deleteApply({applyId: this.props.applyId});
+        ApplyModel.deleteOuterApply({applyId: this.props.applyId});
     }
 
     render() {
