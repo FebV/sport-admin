@@ -16,6 +16,9 @@ import Account from '../admin/Account';
 import Gym from '../admin/Gym';
 import AdminApply from '../admin/Apply';
 
+import BriefIntro from '../intro/BriefIntro';
+
+
 export default class Main extends React.Component {
     constructor(props) {
         super(props);
@@ -50,6 +53,15 @@ export default class Main extends React.Component {
                 <Route path="/apply" component={ Apply } />
                 <Route path="/comment" component={ Comment } />
                 <Route path="/query" component={ Query } />
+
+                    <Route exact path="/intro" component={ Admin } />
+                    <Route path="/intro/Btq"  />
+                    <Route path="/intro/Hjl"  />
+                    <Route path="/intro/Qfs" />
+                    <Route path="/intro/Rjy"  />
+                    <Route path="/intro/Zh"  />
+                    <Route path="/intro/Zx" />
+
 
                 <Route exact path="/admin" component={ Admin } />
                 <Route path="/admin/mine" component={ Mine } />

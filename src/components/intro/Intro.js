@@ -3,54 +3,49 @@ import React from 'react';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
-import ZhTab from './ZhTab';
-import ZxTab from './ZxTab';
-import HjlTab from './HjlTab';
-import QfsTab from './QfsTab';
-import BtqTab from './BtqTab';
-import XlsTab from './XlsTab';
-import RjyTab from './RjyTab';
+import BriefIntro from './BriefIntro';
+import PlayGround from './PlayGround';
+import Manage from './Manage';
+import ActiveReview from './AcitveReview';
+import OpenTime from './OpenTime';
+
 
 export default class Intro extends React.Component {
     constructor(props) {
         super(props);
-        this.list =[
+         this.list =[
             {
-                label: '综合体育馆',
-                ele: <ZhTab />
-            }, 
-            {
-                label: '中心校区',
-                ele: <ZxTab />
+                label: '简介',
+                ele: <BriefIntro />
             },
             {
-                label: "洪家楼校区",
-                ele: <HjlTab />
+                label: '场馆设施',
+                ele: <PlayGround />
             },
             {
-                label: "千佛山校区",
-                ele: <QfsTab />
+                label: "管理规定",
+                ele: <Manage />
             },
             {
-                label: "趵突泉校区",
-                ele: <BtqTab />
+                label: "活动回顾",
+                ele: <ActiveReview />
             },
             {
-                label: "兴隆山校区",
-                ele: <XlsTab />
-            },
-            {
-                label: "软件园校区",
-                ele: <RjyTab />
+                label: "场馆开放时间表",
+                ele: <OpenTime />
             }
         ]
     }
-/*<Tabs>
-                    {this.list.map( (e, idx) => <Tab style={{fontSize: "12px"}} key={idx} label={e.label}>{e.ele}</Tab>)}
-                </Tabs>*/
+
     render() {
         return (
-            <div>intro</div>
+            <MuiThemeProvider>
+                <div>
+                    <Tabs>
+                    {this.list.map( (e, idx) => <Tab value={idx} style={{fontSize: "12px"}} key={idx} label={e.label}>{e.ele}</Tab>)}
+                    </Tabs>
+                </div>
+            </MuiThemeProvider>
         )
     }
 }
