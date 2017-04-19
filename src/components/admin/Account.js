@@ -106,7 +106,7 @@ export default class Account extends React.Component {
             <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
             <MuiThemeProvider>
             <Paper style={{width: "80%"}}>
-            <Table>
+            <Table selectable={false} >
             <TableHeader
                 displaySelectAll={false}
                 adjustForCheckbox={false}
