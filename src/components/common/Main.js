@@ -15,6 +15,7 @@ import Mine from '../admin/Mine';
 import Account from '../admin/Account';
 import Gym from '../admin/Gym';
 import AdminApply from '../admin/Apply';
+import AdminEquip from '../admin/Equipment';
 
 import BriefIntro from '../intro/BriefIntro';
 
@@ -68,6 +69,7 @@ export default class Main extends React.Component {
                 <Route path="/admin/account" component={ Account } />
                 <Route path="/admin/gym" component={ Gym } />
                 <Route path="/admin/apply" component={ AdminApply } />
+                <Route path="/admin/equipment" component={ AdminEquip } />
                 </div>
             </div>
             <AlertBar />

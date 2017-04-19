@@ -36,5 +36,14 @@ const API = {
     getInnerComment: `${base}messages/type/1`, //1内部留言
     postInnerComment: `${base}messages`,
     deleteInnerComment: id => `${base}messages/${id}`,
+
+    //器材管理
+    getEquipment: (campus) => `${base}equipments/campus/${campus}`,
+    postEquipment: `${base}equipments`,
+    deleteEquipment: (id) => `${base}equipments/id/${id}`,
+
+    transEquipment: `${base}equipments/adjust`,
+    getTrans:  (campus) => `${base}equipments/adjust/campus/${campus}`,
+    deleteTrans:  (id) => `${base}equipments/adjust/id/${id}`,
 }
 export default API;
