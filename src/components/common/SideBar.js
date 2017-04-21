@@ -21,6 +21,11 @@ export default class SideBar extends React.Component {
                 link: "/",
             },
             {
+                iconFamily: "fa fa-home",
+                content: "新闻",
+                link: "/news",
+            },
+            {
                 iconFamily: "fa fa-tachometer",
                 content: "场馆介绍",
                 subItems: [

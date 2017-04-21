@@ -6,12 +6,14 @@ import SideBar from './SideBar';
 import AlertBar from './AlertBar';
 
 import Home from '../home/Home';
+import News from '../NewsInfo/News';
 import Intro from '../intro/Intro';
 import Apply from '../apply/Apply';
 import Comment from '../comment/Comment';
 import Query from '../query/Query';
 import Admin from '../admin/Admin';
 import Mine from '../admin/Mine';
+import Announce from '../admin/Announce';
 import Account from '../admin/Account';
 import Gym from '../admin/Gym';
 import AdminApply from '../admin/Apply';
@@ -50,6 +52,7 @@ export default class Main extends React.Component {
             <div style={{marginLeft: this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 64px)"}}>
                 <div style={{height: "100%"}}>
                 <Route exact path="/" component={ Home } />
+                <Route path="/news" component={ News } />
                 <Route path="/intro" component={ Intro } />
                 <Route path="/apply" component={ Apply } />
                 <Route path="/comment" component={ Comment } />
@@ -66,6 +69,7 @@ export default class Main extends React.Component {
 
                 <Route exact path="/admin" component={ Admin } />
                 <Route path="/admin/mine" component={ Mine } />
+                <Route path="/admin/announce" component={ Announce } />
                 <Route path="/admin/account" component={ Account } />
                 <Route path="/admin/gym" component={ Gym } />
                 <Route path="/admin/apply" component={ AdminApply } />

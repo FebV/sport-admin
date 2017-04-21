@@ -45,5 +45,9 @@ const API = {
     transEquipment: `${base}equipments/adjust`,
     getTrans:  (campus) => `${base}equipments/adjust/campus/${campus}`,
     deleteTrans:  (id) => `${base}equipments/adjust/id/${id}`,
+
+
+    //新闻相关
+    getNews: `${base}news/list`,
 }
 export default API;
