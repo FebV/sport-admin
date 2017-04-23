@@ -81,13 +81,13 @@ export default class PictureComponent extends React.Component{
             "../images/cardbg2.jpg"
         ]
 
-
+        window.picInterval=setInterval(()=>this.handleNext(),3000);
     }
     handleNext(){
         if(this.state.isChange){
 
         }else{
-
+            clearInterval(picInterval);
             let sec = this.refs.sec;
             sec.className="goSmallLeft";
             let third = this.refs.third;
@@ -140,9 +140,10 @@ export default class PictureComponent extends React.Component{
                     first.className="";
                     third.className="";
                     forth.className="";
+
                 }
                 ,300);
-
+            picInterval=setInterval(()=>this.handleNext(),3000);
 
 
         }
@@ -155,7 +156,7 @@ export default class PictureComponent extends React.Component{
 
         }else {
 
-
+            clearInterval(picInterval);
             let sec = ReactDOM.findDOMNode(this.refs.sec);
             sec.className = "goSmallRight";
             let third = ReactDOM.findDOMNode(this.refs.third);
@@ -210,8 +211,9 @@ export default class PictureComponent extends React.Component{
                     forth.className = "";
                 }
                 , 300);
+            picInterval=setInterval(()=>this.handleNext(),3000);
         }
-        setInterval(()=>this.handleNext(),3000);
+
 
     }
 
