@@ -49,5 +49,8 @@ const API = {
 
     //新闻相关
     getNews: `${base}news/list`,
+    getAllNews: `${base}news/list/all`,
+    postNews: `${base}news/content`,
+    getNewsDetail: id => `${base}news/content/id/${id}`,
 }
 export default API;

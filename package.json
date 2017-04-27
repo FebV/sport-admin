@@ -19,8 +19,10 @@
     "material-ui": "^0.17.1",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
+    "react-quill": "^1.0.0-rc.2",
     "react-router": "^4.0.0",
     "react-router-dom": "^4.0.0",
+    "react-rte": "^0.11.0",
     "react-tap-event-plugin": "^2.0.1",
     "webpack": "^2.3.2",
     "webpack-dev-server": "^2.4.2"

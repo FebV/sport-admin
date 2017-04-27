@@ -40,7 +40,8 @@ export default class Request {
         //     throw new Error('no data provided @ parseData @ Controller/Request')
         let query = '';
         for(let i in data) {
-            query += `&${i}=${data[i]}`
+            const encoded = encodeURIComponent(data[i]);
+            query += `&${ i}=${encoded}`
         }
         return query.substr(1);
     }
