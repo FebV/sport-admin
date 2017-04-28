@@ -53,5 +53,14 @@ const API = {
     postNews: `${base}news/content`,
     getNewsDetail: id => `${base}news/content/id/${id}`,
     acceptNews: id => `${base}news/id/${id}`,
+
+//财务相关
+    getFinance:`${base}api/finances`,
+    deleteFinance: (id)=>`${base}api/finances/id/${id}`,
+    postFinance:`${base}api/finances`,
+    potFinance: (id)=>`${base}api/finances/id/${id}`,
+
+
+
 }
 export default API;
