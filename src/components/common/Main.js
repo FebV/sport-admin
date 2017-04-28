@@ -18,8 +18,8 @@ import Account from '../admin/Account';
 import Gym from '../admin/Gym';
 import AdminApply from '../admin/Apply';
 import AdminEquip from '../admin/Equipment';
-
-import BriefIntro from '../intro/BriefIntro';
+import DownLoad from '../DownLoad/DownLoad';
+import Finances from '../admin/Finances';
 
 
 export default class Main extends React.Component {
@@ -57,6 +57,7 @@ export default class Main extends React.Component {
                 <Route path="/apply" component={ Apply } />
                 <Route path="/comment" component={ Comment } />
                 <Route path="/query" component={ Query } />
+                <Route path="/download" component={ DownLoad } />
 
                     <Route exact path="/intro" component={ Admin } />
                     <Route path="/intro/Btq"  />
@@ -74,6 +75,7 @@ export default class Main extends React.Component {
                 <Route path="/admin/gym" component={ Gym } />
                 <Route path="/admin/apply" component={ AdminApply } />
                 <Route path="/admin/equipment" component={ AdminEquip } />
+                <Route path="/admin/finance" component={ Finances } />
                 </div>
             </div>
             <AlertBar />
