@@ -15,9 +15,6 @@ export default class EventHandler {
             e.msg = msg;
             dispatchEvent(e);
         }
-        if(EventHandler.hasLogStatusChanged(type))
-            dispatchEvent(new Event('log status change'));
-        return;
         // if(type == 'login')
         // if(type == 'login') {
         //     dispatchEvent(new Event('login'));

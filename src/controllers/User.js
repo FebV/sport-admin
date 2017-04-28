@@ -11,18 +11,10 @@ export default class User {
     }
 
     static getInfo(force = false) {
-        if(!User.info || force)
+        if(!User.info || force) {
             User.info = Request.get({url: API.getInfo, data: {api_token: Auth.getToken()}})
-                .then(res => res.json())
-                .then(json => {
-                    if(json.code != 1) {
-                        localStorage.clear();
-                        ED.dispatch({type: 'logout'});
-                        return ED.dispatch({type: 'alert', msg: '登录失败'});
-                    }
-                    return User.info = Promise.resolve(json.data);
-                })
-                .catch(err => ED.dispatch({type: 'alert', msg: '网络错误'}));
+                .then(res => res ? User.info = Promise.resolve(res) : ED.dispatch({type: 'alert', msg: '获取用户信息失败'}))
+        }
         return User.info;
     }
 
@@ -32,47 +24,22 @@ export default class User {
             realname: info.realname,
             tel: info.tel,
         }})
-            .then(res => res.json())
-            .then(json => {
-                if(json.code != 1)
-                    return ED.dispatch({type: 'info put fail', msg: json.status});
-                User.getInfo(true);
-                return ED.dispatch({type: 'info put ok', msg: "修改成功"});
-            })
-            .catch(err => ED.dispatch({type: 'alert', msg: '网络错误'}))
+            .then(res => ED.dispatch({type: 'info put ok', msg: "修改成功"}))
     }
 
     static getPeople() {
         if(!Auth.isLogin()) {
-            ED.dispatch({type: 'alert', msg: '未登录'})
-            return Promise.resolve([]);
+            return;
         }
         return Request.get({url: API.getPeople, data: {api_token: Auth.getToken()}})
-                .then(res => res.json())
-                .then(json => {
-                    if(json.code != 1)
-                        return ED.dispatch({type: 'alert', msg: '管理员列表请求失败'})
-                    return json.data
-                })
-                .catch(err => {
-                    ED.dispatch({type: 'alert', msg: '网络错误'})
-                })
+                .then(res => res ? res : ED.dispatch({type: 'alert', msg: '管理员列表请求失败'}))
     }
 
     static getLevel() {
         if(User.level)
             return User.level;
         return User.level = Request.get({url: API.getLevel, data: {api_token: Auth.getToken()}})
-                        .then(res => res.json())
-                        .then(json => {
-                            if(json.code != 1)
-                                return ED.dispatch({type: 'alert', msg: '请求用户级别失败'})
-                            User.level = Promise.resolve(json.data.grade);
-                            return User.level;
-                        })
-                        .catch(err => {
-                            return ED.dispatch({type: 'alert', msg: '网络错误'});
-                        })
+                        .then(res => res ? res.grade : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
     }
 
     static postPeople({schoolnum, password, grade, campus, realname}) {
@@ -86,29 +53,14 @@ export default class User {
                 realname,
             }
         })
-            .then(res => res.json())
-            .then(json => {
-                if(json.code != 1)
-                    return ED.dispatch({type: 'user post fail', msg: json.status});
-                return ED.dispatch({type: 'user post ok', msg: '新增管理员成功'});
-            })
-            .catch(err => ED.dispatch({type: 'alert', msg: '网络错误'}))
+            .then(res => ED.dispatch({type: 'user post ok', msg: '新增管理员成功'}))
     }
 
     static deletePeople(id) {
         Request.delete({url: `${API.deletePeople(id)}`, data: {
             api_token: Auth.getToken()
         }})
-            .then(res => res.json())
-            .then(json => {
-                if(json.code != 1) {
-                    return ED.dispatch({type: 'alert', msg: json.status});
-                }
-                return ED.dispatch({type: 'user delete ok', msg: '删除成功'});
-            })
-            .catch(err => {
-                return ED.dispatch({type: 'alert', msg: '网络错误'})
-            })
+            .then(json => ED.dispatch({type: 'user delete ok', msg: '删除成功'}))
     }
 
     static authPeople(id, permission) {
@@ -116,15 +68,6 @@ export default class User {
             api_token: Auth.getToken(),
             permission,
         }})
-            .then(res => res.json())
-            .then(json => {
-                if(json.code != 1) {
-                    return ED.dispatch({type: 'alert', msg: json.status});
-                }
-                return ED.dispatch({type: 'user auth ok', msg: '权限修改成功'});
-            })
-            .catch(err => {
-                return ED.dispatch({type: 'alert', msg: '网络错误'})
-            })
+            .then(res => ED.dispatch({type: 'user auth ok', msg: '权限修改成功'}))
     }
 }

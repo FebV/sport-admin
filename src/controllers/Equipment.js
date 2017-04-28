@@ -12,8 +12,7 @@ export default class User {
                 api_token: Auth.getToken()
             }
         })
-            .then(res => res.json())
-            .then(res => res.data)
+            .then(res => res ? res : [])
     }
 
     static postEquipment({campus, gym, equipment_name, buy_date, buy_number, in_number, no_number, use_campus, use_number, price, remark}) {
@@ -24,11 +23,7 @@ export default class User {
                 campus, gym, equipment_name, buy_date, buy_number, in_number, no_number, use_campus, use_number, price, remark
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                if(res.code == 1)
-                    ED.dispatch({type: 'post equipment ok'})
-            });
+            .then(res => ED.dispatch({type: 'post equipment ok'}))
     }
 
     static deleteEquipment(id) {
@@ -38,8 +33,7 @@ export default class User {
                 api_token: Auth.getToken()
             }
         })
-            .then(res => res.json())
-            .then(res => res.code == 1 ? ED.dispatch({type: 'delete equipment ok'}) : null)
+            .then(res => ED.dispatch({type: 'delete equipment ok'}))
     }
 
     static transEquipment({belong_campus, use_campus, belong_gym, use_gym, equipment_name, use_number, remark}) {
@@ -50,8 +44,7 @@ export default class User {
                 belong_campus, belong_gym, use_campus, use_gym, equipment_name, use_number, remark
             }
         })
-            .then(res => res.json())
-            .then(res => res.code == 1 ? ED.dispatch({type: 'trans Equipment ok', msg: '新增器材调入记录成功'}) : '')
+            .then(res => ED.dispatch({type: 'trans Equipment ok', msg: '新增器材调入记录成功'}))
     }
 
     static getTrans(campus) {
@@ -61,8 +54,7 @@ export default class User {
                 api_token: Auth.getToken(),
             }
         })
-            .then(res => res.json())
-            .then(res => res.data);
+            .then(res => res ? res : []);
     }
 
     static deleteTrans(id) {
@@ -72,7 +64,6 @@ export default class User {
                 api_token: Auth.getToken(),
             }
         })
-            .then(res => res.json())
-            .then(res => res.code == 1 ? ED.dispatch({type: 'delete trans ok', msg: '记录删除成功'}) : null)
+            .then(res => ED.dispatch({type: 'delete trans ok', msg: '记录删除成功'}))
     }
 }

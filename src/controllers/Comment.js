@@ -11,7 +11,7 @@ export default class Comment {
                 page, rows: 10,
             }
         })
-            .then(res => res.json())
+            .then(res => res ? res : [])
     }
 
     static postInnerComment({title, content, name, tel, email}) {
@@ -22,10 +22,7 @@ export default class Comment {
                 title, content, name, tel, email
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                ED.dispatch({type: "post comment ok", msg: "评论发布成功"})
-            });
+            .then(res => ED.dispatch({type: "post comment ok", msg: "评论发布成功"}))
     }
 
     static deleteInnerComment({id}) {
@@ -33,7 +30,6 @@ export default class Comment {
             url: API.deleteInnerComment(id),
             data: {api_token: Auth.getToken()}
         })
-            .then(res => res.json())
             .then(res => ED.dispatch({type: 'delete comment ok', msg: "删除成功"}))
     }
 }

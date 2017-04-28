@@ -13,35 +13,23 @@ export default class Auth {
         return localStorage.getItem('token');
     }
 
+    static loginCallback(token) {
+        
+    }
+
     static login({schoolnum, password}) {
         Request.post({url: API.login, data: {schoolnum, password}})
-            .then(res => res.json())
-            .then(json => {
-                if(json.code == 1) {
-                    localStorage.setItem('token', json.data);
-                    ED.dispatch({type: 'login', msg: json.status});
-                }
-                else {
-                    ED.dispatch({type: 'login fail', msg: json.status});
-                }
+            .then(res => {
+                localStorage.setItem('token', json.data);
+                ED.dispatch({type: 'login ok', msg: '登录成功'})
             })
-            .catch(e => {
-                ED.dispatch({type: 'login fail', msg: '网络错误'});
-            });
     }
+
     static logout() {
         Request.delete({url: API.logout, data: {"api_token": Auth.getToken()}})
-            .then(res => res.json())
             .then(json => {
-                if(json.code != 1) {
-                    ED.dispatch({type: 'alert', msg: '登出失败'});
-                    return;
-                }
-                ED.dispatch({type: 'alert', msg: '登出成功'});
+                ED.dispatch({type: 'logout ok', msg: '登出成功'});
+                localStorage.clear();
             })
-            .catch(err => ED.dispatch({type: 'alert', msg: '网络错误'})
-)
-        localStorage.clear();
-        ED.dispatch({type: 'logout'});
     }
 }

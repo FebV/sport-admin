@@ -56,8 +56,8 @@ export default class Comment extends React.Component {
             .then(res => {
                 this.isLoading = false;
                 this.setState({loading: false});
-                if(res.data.data) {
-                    this.setState({comments: [...this.state.comments, ...res.data.data]});
+                if(res.data) {
+                    this.setState({comments: [...this.state.comments, ...res.data]});
                 }
             });
     }

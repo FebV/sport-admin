@@ -20,27 +20,60 @@ export default class Announce extends React.Component {
         this.state = {
             newsList: [],
             postNewsModalOpen: false,
-            articleDetailModalOpen: true,
+            articleDetailModalOpen: false,
             articleDetailId: null,
             newsDetail: null,
+            mode: 'post', //or edit
+            title: '',
+            writer: '',
+            article: '',
+            time: '',
         }
+
+        addEventListener('put news ok', () => this.componentDidMount());
+        addEventListener('post news ok', () => this.componentDidMount());
+        addEventListener('accept news ok', () => this.componentDidMount());
+        addEventListener('decline news ok', () => this.componentDidMount());
     }
 
     componentDidMount() {
         NewsInfoModel.getAllNews(0)
             .then(res => {
-                console.log(res);
                 this.setState({newsList: res});
             });
     }
 
     queryDetail(id) {
         NewsInfoModel.getNewsDetail(id)
-            .then(res => this.setState({newsDetail: res}));
+            .then(res => {
+                console.log(res);
+                this.setState(res)//, () => this.forceUpdate())
+            });
+    }
+
+    postNews() {
+        NewsInfoModel.postNews({
+            title: this.state.title,
+            writer: this.state.writer,
+            time: this.fitDate(this.state.time),
+            article: this.state.content,
+        })
+    }
+
+    fitDate(date) {
+        const d = new Date(date);
+        return `${this.leftPadding(d.getFullYear())}-${this.leftPadding((d.getMonth()+1))}-${this.leftPadding(d.getDate())}`;
+    }
+
+    leftPadding(date) {
+        if(1*date < 10)
+            date = '0' + date;
+        return date;
     }
 
 
     render() {
+        // console.log(this.state.newsDetail);
         return (
             <div style={{padding: "20px", width: "calc(100% - 40px)", height: "clac(100% - 20px)", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             <MuiThemeProvider>
@@ -58,6 +91,7 @@ export default class Announce extends React.Component {
                 <TableHeaderColumn>日期</TableHeaderColumn>
                 <TableHeaderColumn>文章状态</TableHeaderColumn>
                 <TableHeaderColumn>查看详情</TableHeaderColumn>
+                <TableHeaderColumn>编辑</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -81,9 +115,19 @@ export default class Announce extends React.Component {
                             <RaisedButton onClick={() => {
                                     this.setState({articleDetailId: 1*(ele.id)});
                                     this.setState({articleDetailModalOpen: true});
+                                    this.setState({mode: 'post'});
                                     this.setState({articleIdx: idx});
                                     this.queryDetail(1*(ele.id));
                                 }} label="查看详情" />
+                        </TableRowColumn>
+                        <TableRowColumn>
+                            <RaisedButton onClick={() => {
+                                    this.setState({articleDetailId: 1*(ele.id)});
+                                    this.setState({postNewsModalOpen: true});
+                                    this.setState({articleIdx: idx});
+                                    this.setState({mode: 'edit'});
+                                    this.queryDetail(1*(ele.id));
+                                }} label="编辑新闻" />
                         </TableRowColumn>
                     </TableRow>
                     );
@@ -97,8 +141,8 @@ export default class Announce extends React.Component {
                     <i className="fa fa-plus fa-lg"></i>
                 </FloatingActionButton>
                 </MuiThemeProvider>
-            <PostNewsModal open={this.state.postNewsModalOpen} close={() => this.setState({postNewsModalOpen: false})} />
-            <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} newsId={this.state.articleDetailId} detail={this.state.newsDetail} />
+            <PostNewsModal open={this.state.postNewsModalOpen} close={() => this.setState({postNewsModalOpen: false})} mode={this.state.mode} news={this.state.newsDetail} newsId={this.state.articleDetailId} props={this} detail={this.state.newsDetail} />
+            <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} newsId={this.state.articleDetailId} detail={this.state.newsDetail} />
             </div>
         )
     }
@@ -115,39 +159,30 @@ class PostNewsModal extends React.Component {
             ['link', 'image'],
             ['clean']
             ],
-        },
-        this.state = {
-            content: '',
-            title: '',
-            writer: '',
-            time: '',
         }
     }
+
+
+    // componentReceiveProps() {
+    //     console.log(this.props);
+    //     this.setState({
+    //         content: this.props.article,
+    //         title: this.props.title,
+    //         writer: this.props.writer,
+    //         time: this.props.time,
+    //     });
+    // }
 
     submit() {
         this.props.close();
         const {title, content, writer, time} = this.state;
-        console.log(content);
-        NewsInfoModel.postNews({
-            title,
-            writer,
-            time: this.fitDate(time),
-            article: encodeURIComponent(content),
-        })
+
     }
 
-    fitDate(date) {
-        const d = new Date(date);
-        return `${this.leftPadding(d.getFullYear())}-${this.leftPadding((d.getMonth()+1))}-${this.leftPadding(d.getDate())}`;
-    }
 
-    leftPadding(date) {
-        if(1*date < 10)
-            date = '0' + date;
-        return date;
-    }
 
     render() {
+        let {props} = this.props;
         return (
         <MuiThemeProvider>
             <Dialog
@@ -162,32 +197,32 @@ class PostNewsModal extends React.Component {
                 <MuiThemeProvider>
                     <DatePicker
                     style={{display: "inline-block"}}
-                    hintText="新闻时间"
+                    hintText={props.mode == 'post' ? "新闻时间" : props.state.time}
                     DateTimeFormat={Intl.DateTimeFormat}
                     locale="zh-CN"
                     cancelLabel="取消"
                     okLabel="确定"
                     onChange={(e, v) => {
-                        this.setState({time: v});
+                        props.setState({time: v});
                         }}
                 />
                 </MuiThemeProvider>
                 <MuiThemeProvider>
-                    <TextField floatingLabelText="标题" value={this.state.title} onChange={(e, v) => this.setState({title: v})} fullWidth={true} />
+                    <TextField floatingLabelText="标题" value={props.state.title} onChange={(e, v) => props.setState({title: v})} fullWidth={true} />
                 </MuiThemeProvider><br />
                 <MuiThemeProvider>                
-                    <TextField floatingLabelText="作者" value={this.state.writer} onChange={(e, v) => this.setState({writer: v})} fullWidth={true} />
+                    <TextField floatingLabelText="作者" value={props.state.writer} onChange={(e, v) => props.setState({writer: v})} fullWidth={true} />
                 </MuiThemeProvider>
                 </div>
                 <div style={{marginTop: "50px", height: "30%"}}>
-                <ReactQuill modules={this.modules} theme="snow" onChange={(s) => this.setState({content: s})} value={this.state.content} style={{height: "60%"}} />
+                <ReactQuill modules={this.modules} theme="snow" onChange={(s) => props.setState({article: s})} value={props.state.article} style={{height: "60%"}} />
                 </div>
                 <div style={{width: "100%", textAlign: "right"}}>
                 <MuiThemeProvider>
                     <RaisedButton label="取消" onClick={() => this.props.close()} />
                 </MuiThemeProvider>
                 <MuiThemeProvider>
-                    <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={this.submit.bind(this)} />
+                    <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={props.postNews.bind(props)} />
                 </MuiThemeProvider>
                 </div>
 
@@ -197,18 +232,28 @@ class PostNewsModal extends React.Component {
     }
 }
 
+
+
 class ArticleDetail extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {
-            article: null,
-        }
+
+    }
+
+    accept() {
+        NewsInfoModel.acceptNews({newsId: this.props.newsId});
+        this.props.close();
+    }
+
+    decline() {
+        NewsInfoModel.declineNews({newsId: this.props.newsId});
+        this.props.close();        
     }
 
 
     render() {
-        setTimeout(() => dispatchEvent(new Event('resize')), 1000);
-        if(!this.props.detail)
+        setTimeout(() => dispatchEvent(new Event('resize')), 500);
+        if(!this.props.detail || this.props.mode == 'edit')
             return null;
         return (
             <MuiThemeProvider>
@@ -220,13 +265,18 @@ class ArticleDetail extends React.Component {
                 open={this.props.open}
                 onRequestClose={this.props.close}
                 actions={
-                    <div style={{width: "100%", textAlign: "right"}}>
+                    <div style={{width: "100%"}}>
+                    <span style={{width: '50%', textAlign: "right"}}>
                         <MuiThemeProvider>
                             <RaisedButton label="取消" onClick={() => this.props.close()} />
                         </MuiThemeProvider>
                         <MuiThemeProvider>
-                            <RaisedButton style={{marginLeft: "20px"}} label="提交" />
+                            <RaisedButton style={{marginLeft: "20px"}} label="不通过" onClick={this.decline.bind(this)} />
                         </MuiThemeProvider>
+                        <MuiThemeProvider>
+                            <RaisedButton style={{marginLeft: "20px"}} label="通过" onClick={this.accept.bind(this)} />
+                        </MuiThemeProvider>
+                    </span>
                     </div>
                 }
                 children={

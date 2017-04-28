@@ -11,8 +11,7 @@ export default class News {
                 page, rows: 10,
             }
         })
-            .then(res => res.json())
-            .then(res => res.data)
+            .then(res => res ? res : [])
     }
 
     static getAllNews(page) {
@@ -23,12 +22,7 @@ export default class News {
                 page, rows: 10,
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                if(res.code != 1)
-                    return [];
-                return res.data;
-            })
+            .then(res => res ? res : [])
 
     }
 
@@ -36,8 +30,7 @@ export default class News {
         return Request.get({
             url: API.getNewsDetail(id),
         })
-            .then(res => res.json())
-            .then(res => res.data);
+            .then(res => res ? res : []);
     }
 
 
@@ -46,7 +39,22 @@ export default class News {
             url: API.postNews,
             data: {api_token: Auth.getToken(), title, time, article, writer}
         })
-            .then(res => res.json())
-            .then(res => console.log(res));
+            .then(res => ED.dispatch({type: 'post news ok'}));
+    }
+
+    static acceptNews({newsId}) {
+        Request.put({
+            url: API.acceptNews(newsId),
+            data: {api_token: Auth.getToken(), state: 3}
+        })
+            .then(res => ED.dispatch({type: 'accept news ok'}));
+    }
+
+    static declineNews({newsId}) {
+        Request.put({
+            url: API.acceptNews(newsId),
+            data: {api_token: Auth.getToken(), state: 2}
+        })
+            .then(res => ED.dispatch({type: 'decline news ok'}));
     }
 }

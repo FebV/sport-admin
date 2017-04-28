@@ -10,12 +10,7 @@ export default class Schedule {
             url: API.getSchedules({campus, gym}),
             data: {start, end},
         })
-            .then(res => res.json())
-            .then(res => {
-                if(res.code != 1)
-                    return [];
-                return res.data;
-            })
+            .then(res => res ? res : [])
     }
 
     static getSchedulesOfDay({campus, gym, day}) {
@@ -24,11 +19,7 @@ export default class Schedule {
             data: {start: day, end: day},
         })
             .then(res => res.json())
-            .then(res => {
-                if(res.code != 1)
-                    return null;
-                return res.data[0];
-            })
+            .then(res => res ? res[0] : {})
     } 
 
     static postSchedules({campus, gym, file}) {
@@ -39,8 +30,7 @@ export default class Schedule {
             method: "POST",
             body: fd,
         })
-            .then(res => res.json())
-            .then(res => console.log(res));
+            .then(res => ED.dispatch({type: 'post schedules ok'}));
     }
 
     static putSchedules({campus, gym, date, nthClass, targetStatus}) {
@@ -52,15 +42,8 @@ export default class Schedule {
                 [nthClass]: targetStatus
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                if(res.code != 1)
-                    ED.dispatch({type: "put schedules fail", msg: "排期修改失败"})
-                ED.dispatch({type: "put schedules ok", msg: "排期修改成功"})    
-            })
-            .catch(err => {
-                ED.dispatch({type: "alert", msg: "网络错误"})
-            })
+            .then(res => ED.dispatch({type: "put schedules ok", msg: "排期修改成功"}))
+
     }
 
 }

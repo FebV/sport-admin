@@ -52,5 +52,6 @@ const API = {
     getAllNews: `${base}news/list/all`,
     postNews: `${base}news/content`,
     getNewsDetail: id => `${base}news/content/id/${id}`,
+    acceptNews: id => `${base}news/id/${id}`,
 }
 export default API;

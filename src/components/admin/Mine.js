@@ -52,15 +52,16 @@ export default class Profile extends React.Component {
             tel: '',
             switch: [true, true, true, true, true]
         }
+        addEventListener('info put ok', () => this.getInfo.bind(this));
     }
 
     componentDidMount() {
         if(Auth.isLogin())
             this.getInfo();
-        addEventListener('login', () => {
+        addEventListener('login ok', () => {
             this.getInfo();
         });
-        addEventListener('logout', () => {
+        addEventListener('logout ok', () => {
             this.setState({
                 schoolnum: '',
                 realname: '',
@@ -88,7 +89,6 @@ export default class Profile extends React.Component {
 
     putInfo() {
         User.putInfo(this.state);
-        addEventListener('info put ok', () => setTimeout(() => {this.getInfo(), 0}));
     }
 
     switchModify(index) {

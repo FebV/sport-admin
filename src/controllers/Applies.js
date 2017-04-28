@@ -11,8 +11,6 @@ export default class Applies {
                 campus, gym, time, classtime, major, content, pnumber, charger, tel, cost, remark
             }
         })
-            .then(res => res.json())
-            .then(res => console.log(res))
     }
 
     static postOuterApply({campus, gym, time, classtime, department, content, charger, tel}) {
@@ -22,8 +20,6 @@ export default class Applies {
                 campus, gym, time, classtime, department, content, charger, tel,
             }
         })
-            .then(res => res.json())
-            .then(res => console.log(res))
     }
 
     static getInnerApply({campus, gym, start, end}) {
@@ -35,12 +31,7 @@ export default class Applies {
                 end,
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                if(res.code != 1)
-                    return [];
-                return res.data;
-            })
+            .then(res => res ? res : [])
     }
 
     static getOuterApply({campus, gym, start, end}) {
@@ -52,12 +43,8 @@ export default class Applies {
                 end,
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                if(res.code != 1)
-                    return [];
-                return res.data;
-            })
+            .then(res => res ? res : [])
+
     }
 
     static putInnerApply({applyId, state}) {
@@ -65,10 +52,7 @@ export default class Applies {
             url: API.putInnerApply(applyId),
             data: {api_token: Auth.getToken(), state}
         })
-            .then(res => res.json())
-            .then(res => {
-                ED.dispatch({type: "put innerApply ok"});
-            });
+            .then(res => ED.dispatch({type: "put innerApply ok"}))
     }
 
     static putOuterApply({applyId, state}) {
@@ -76,10 +60,7 @@ export default class Applies {
             url: API.putOuterApply(applyId),
             data: {api_token: Auth.getToken(), state}
         })
-            .then(res => res.json())
-            .then(res => {
-                ED.dispatch({type: "put outerApply ok"});
-            });
+            .then(res => ED.dispatch({type: "put outerApply ok"}))
     }
 
     static deleteInnerApply({applyId}) {
@@ -89,10 +70,7 @@ export default class Applies {
                 api_token: Auth.getToken()
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                ED.dispatch({type: "delete innerApply ok"});
-            });
+            .then(res => ED.dispatch({type: "delete innerApply ok"}))
     }
 
     static deleteOuterApply({applyId}) {
@@ -102,9 +80,6 @@ export default class Applies {
                 api_token: Auth.getToken()
             }
         })
-            .then(res => res.json())
-            .then(res => {
-                ED.dispatch({type: "delete outerApply ok"});
-            });
+            .then(res => ED.dispatch({type: "delete outerApply ok"}))
     }
 }
