@@ -12,10 +12,10 @@ export default class Home extends React.Component {
     render() {
         return (
             <div>
-                <div style={{display:"inline-block",width:'100%',height:"500px",position:'relative',overflow:'hidden',minWidth:'1000px'}}>
+                <div style={{display:"inline-block",width:'100%',height:"400px",position:'relative',overflow:'hidden',minWidth:'1000px'}}>
                     <PictureComponent />
                 </div>
-                <div style={{minWidth:'1000px'}}>
+                <div style={{minWidth:'1000px',marginTop:20}}>
                     <div style={{display:"inline-block",width:'45%',minWidth:'400px'}}>
                         <NewsLetterComponent />
                     </div>
