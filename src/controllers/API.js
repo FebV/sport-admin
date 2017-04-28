@@ -49,11 +49,19 @@ const API = {
 
     //新闻相关
     getNews: `${base}news/list`,
+    getAllNews: `${base}news/list/all`,
+    postNews: `${base}news/content`,
+    getNewsDetail: id => `${base}news/content/id/${id}`,
 
-    //财务相关
+//财务相关
     getFinance:`${base}api/finances`,
     deleteFinance: (id)=>`${base}api/finances/id/${id}`,
     postFinance:`${base}api/finances`,
     potFinance: (id)=>`${base}api/finances/id/${id}`,
+
+
+
+
+
 }
 export default API;

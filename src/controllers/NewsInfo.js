@@ -4,7 +4,7 @@ import API from './API';
 import Auth from './Auth';
 
 export default class News {
-    static getNews(page) {
+    static getPublishedNews(page) {
         return Request.get({
             url: API.getNews,
             data:{
@@ -12,28 +12,41 @@ export default class News {
             }
         })
             .then(res => res.json())
+            .then(res => res.data)
     }
 
-    static postInnerComment({title, content, name, tel, email}) {
-        return Request.post({
-            url: API.postInnerComment,
+    static getAllNews(page) {
+        return Request.get({
+            url: API.getAllNews,
             data:{
-                type: 1,
-                title, content, name, tel, email
+                api_token: Auth.getToken(),
+                page, rows: 10,
             }
         })
             .then(res => res.json())
             .then(res => {
-                ED.dispatch({type: "post comment ok", msg: "评论发布成功"})
-            });
+                if(res.code != 1)
+                    return [];
+                return res.data;
+            })
+
     }
 
-    static deleteInnerComment({id}) {
-        return Request.delete({
-            url: API.deleteInnerComment(id),
-            data: {api_token: Auth.getToken()}
+    static getNewsDetail(id) {
+        return Request.get({
+            url: API.getNewsDetail(id),
         })
             .then(res => res.json())
-            .then(res => ED.dispatch({type: 'delete comment ok', msg: "删除成功"}))
+            .then(res => res.data);
+    }
+
+
+    static postNews({title, time, article, writer}) {
+        Request.post({
+            url: API.postNews,
+            data: {api_token: Auth.getToken(), title, time, article, writer}
+        })
+            .then(res => res.json())
+            .then(res => console.log(res));
     }
 }

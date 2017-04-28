@@ -11,7 +11,7 @@ export default class News extends React.Component {
     }
 
     componentDidMount() {
-        NewsModel.getNews(1)
+        NewsModel.getPublishedNews(1)
             .then(res => console.log(res));//this.setState({newslist: res}))
     }
 
