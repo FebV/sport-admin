@@ -20,7 +20,7 @@ export default class Auth {
     static login({schoolnum, password}) {
         Request.post({url: API.login, data: {schoolnum, password}})
             .then(res => {
-                localStorage.setItem('token', json.data);
+                localStorage.setItem('token', res);
                 ED.dispatch({type: 'login ok', msg: '登录成功'})
             })
     }

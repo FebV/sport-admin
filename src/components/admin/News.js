@@ -13,8 +13,9 @@ import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import Divider from 'material-ui/Divider';
 
-export default class Announce extends React.Component {
+export default class News extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -27,23 +28,48 @@ export default class Announce extends React.Component {
             title: '',
             writer: '',
             article: '',
-            time: '',
+            time: '选择日期',
+            hasMore: true,
         }
+
+        this.page = 0;
+        this.loading = false;
+        this.hasMore = true;
 
         addEventListener('put news ok', () => this.componentDidMount());
         addEventListener('post news ok', () => this.componentDidMount());
         addEventListener('accept news ok', () => this.componentDidMount());
         addEventListener('decline news ok', () => this.componentDidMount());
+        window.onscroll = e => {
+            if(this.Loading)
+                return;
+            if(!this.state.hasMore)
+                return;
+            //let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if((document.body.scrollTop + innerHeight) == document.body.scrollHeight) {
+                this.page++;
+                this.componentDidMount();
+            }
+        }
+    }
+
+    resetState() {
+        this.setState({title: '', writer: '', article: '', time: '选择日期'});
     }
 
     componentDidMount() {
-        NewsInfoModel.getAllNews(0)
+        this.loading = true;
+        NewsInfoModel.getAllNews(this.page)
             .then(res => {
-                this.setState({newsList: res});
+                this.page++;
+                if(res.length < 20)     //每次查询记录数
+                    this.setState({hasMore: false});
+                this.setState({newsList: [...this.state.newsList, ...res]});
             });
     }
 
     queryDetail(id) {
+        this.resetState();
         NewsInfoModel.getNewsDetail(id)
             .then(res => {
                 console.log(res);
@@ -51,13 +77,29 @@ export default class Announce extends React.Component {
             });
     }
 
+    deleteNews() {
+        this.setState({articleDetailModalOpen: false});
+        NewsInfoModel.deleteNews({newsId: this.state.articleDetailId});
+    }
+
     postNews() {
-        NewsInfoModel.postNews({
-            title: this.state.title,
-            writer: this.state.writer,
-            time: this.fitDate(this.state.time),
-            article: this.state.content,
+        this.resetState();
+        this.setState({postNewsModalOpen: false})
+        if(this.state.mode == 'post') {
+            NewsInfoModel.postNews({
+                title: this.state.title,
+                writer: this.state.writer,
+                time: this.state.time,
+                article: this.state.content,
+            })
+        }
+        else if(this.state.mode == 'edit') {
+            NewsInfoModel.putNews({
+                newsId: this.state.articleDetailId,
+                title: this.state.title,
+                content: this.state.article
         })
+        }
     }
 
     fitDate(date) {
@@ -134,15 +176,17 @@ export default class Announce extends React.Component {
                 })}
             </TableBody>
             </Table>
+            <Divider />
+            {this.state.hasMore ? "滚到底部加载更多" : "没有更多记录"}
             </Paper>
             </MuiThemeProvider>
                 <MuiThemeProvider>
-                <FloatingActionButton onClick={() => this.setState({postNewsModalOpen: true})} style={{position: 'absolute', right: "30px", bottom: "30px"}}>
+                <FloatingActionButton onClick={() => this.setState({postNewsModalOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                     <i className="fa fa-plus fa-lg"></i>
                 </FloatingActionButton>
                 </MuiThemeProvider>
             <PostNewsModal open={this.state.postNewsModalOpen} close={() => this.setState({postNewsModalOpen: false})} mode={this.state.mode} news={this.state.newsDetail} newsId={this.state.articleDetailId} props={this} detail={this.state.newsDetail} />
-            <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} newsId={this.state.articleDetailId} detail={this.state.newsDetail} />
+            <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} newsId={this.state.articleDetailId} props={this} deleteNews={this.deleteNews.bind(this)} />
             </div>
         )
     }
@@ -203,7 +247,7 @@ class PostNewsModal extends React.Component {
                     cancelLabel="取消"
                     okLabel="确定"
                     onChange={(e, v) => {
-                        props.setState({time: v});
+                        props.setState({time: props.fitDate(v)});
                         }}
                 />
                 </MuiThemeProvider>
@@ -252,9 +296,10 @@ class ArticleDetail extends React.Component {
 
 
     render() {
-        setTimeout(() => dispatchEvent(new Event('resize')), 500);
-        if(!this.props.detail || this.props.mode == 'edit')
+        setTimeout(() => dispatchEvent(new Event('resize')), 0);
+        if(this.props.mode == 'edit')
             return null;
+        const {title, writer, time, article} = this.props.props.state;
         return (
             <MuiThemeProvider>
             <Dialog
@@ -269,6 +314,8 @@ class ArticleDetail extends React.Component {
                     <span style={{width: '50%', textAlign: "right"}}>
                         <MuiThemeProvider>
                             <RaisedButton label="取消" onClick={() => this.props.close()} />
+                        </MuiThemeProvider><MuiThemeProvider>
+                            <RaisedButton style={{marginLeft: "20px"}} label="删除新闻" onClick={() => this.props.deleteNews()} />
                         </MuiThemeProvider>
                         <MuiThemeProvider>
                             <RaisedButton style={{marginLeft: "20px"}} label="不通过" onClick={this.decline.bind(this)} />
@@ -281,10 +328,10 @@ class ArticleDetail extends React.Component {
                 }
                 children={
                     <div>
-                        标题：{this.props.detail.title}<br />
-                        作者：{this.props.detail.writer}<br />
-                        时间：{this.props.detail.time}<br />
-                        <div dangerouslySetInnerHTML={{__html: this.props.detail.article}}></div>
+                        标题：{title}<br />
+                        作者：{writer}<br />
+                        时间：{time}<br />
+                        <div dangerouslySetInnerHTML={{__html: article}}></div>
                     </div>
                 }
             />

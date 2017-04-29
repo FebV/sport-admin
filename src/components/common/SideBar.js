@@ -107,8 +107,8 @@ export default class SideBar extends React.Component {
                         iconFamily: "fa fa-cogs"
                     },
                     {
-                        content: "新闻公告管理",
-                        link: "/admin/announce",
+                        content: "新闻管理",
+                        link: "/admin/news",
                         iconFamily: "fa fa-cogs"
                     },
                     {

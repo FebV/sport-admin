@@ -19,7 +19,7 @@ export default class News {
             url: API.getAllNews,
             data:{
                 api_token: Auth.getToken(),
-                page, rows: 10,
+                page, rows: 20,
             }
         })
             .then(res => res ? res : [])
@@ -56,5 +56,26 @@ export default class News {
             data: {api_token: Auth.getToken(), state: 2}
         })
             .then(res => ED.dispatch({type: 'decline news ok'}));
+    }
+    static putNews({newsId, title, content}) {
+        Request.put({
+            url: API.putNews(newsId),
+            data: {
+                api_token: Auth.getToken(),
+                title,
+                content,
+            }
+        })
+            .then(res => ED.dispatch({type: 'put news ok'}));
+    }
+
+    static deleteNews({newsId}) {
+        Request.delete({
+            url: API.deleteNews(newsId),
+            data: {
+                api_token: Auth.getToken(),
+            }
+        })
+            .then(res => ED.dispatch({type: 'delete news ok'}));
     }
 }
