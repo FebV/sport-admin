@@ -228,7 +228,7 @@ export default class PictureComponent extends React.Component{
     render(){
         return(
 
-                <div style={{display:"block",margin:"0 auto",width:"90%",height:"400px",position:"relative",}}>
+                <div style={{display:"block",margin:"0 auto",width:"90%",height:"400px",position:"relative",maxWidth:1000,minWidth:1000,overflow:"hidden"}}>
 
 
                         <img src={this.state.picList[0]} style={this.style1} ref="first" onClick={()=>this.handlePre()}/>

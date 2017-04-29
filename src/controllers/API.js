@@ -57,10 +57,10 @@ const API = {
     deleteNews: id => `${base}news/id/${id}`,
 
 //财务相关
-    getFinance:`${base}api/finances`,
-    deleteFinance: (id)=>`${base}api/finances/id/${id}`,
-    postFinance:`${base}api/finances`,
-    potFinance: (id)=>`${base}api/finances/id/${id}`,
+    getFinance:`${base}finances`,
+    deleteFinance: (id)=>`${base}finances/id/${id}`,
+    postFinance:`${base}finances`,
+    putFinance: (id)=>`${base}finances/id/${id}`,
 
     //文件相关
     getFile: `${base}documents`,

@@ -10,11 +10,45 @@ export default class Finances extends React.Component{
             financeArr:[]
         };
         this.page = 1;
+        this.isLoading = false;
+        window.onscroll =  e => {
+            if(this.isLoading)
+                return;
+            //let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+            if((document.body.scrollTop + innerHeight) == document.body.scrollHeight) {
+                this.page++;
+                this.query();
+            }
+        }
+
+        addEventListener('post finance ok', () => {
+            this.componentDidMount();
+        })
+        addEventListener('delete finance ok', () => {
+            this.componentDidMount();
+        })
+        addEventListener('put finance ok', () => {
+            this.componentDidMount();
+        })
+
 
     }
-    componentWillMount(){
+
+    componentDidMount(){
+        this.isLoading = true;
         FinanceModel.getFinance(this.page)
+        console.log(1)
+            // .then(
+            //     res=>{
+            //         this.isLoading =false;
+            //         console.log(res);
+            //         // this.setState({
+            //         //     financeArr:[...this.state.financeArr,...res.data]
+            //         // })
+            //     }
+            // )
     }
+
     render(){
         return(
             <MuiThemeProvider>

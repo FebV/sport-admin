@@ -155,7 +155,7 @@ export default class SideBar extends React.Component {
     
 
     addEventListener('log status change', () => {
-//        this.setState({login: Auth.isLogin()});
+//        this.setState({logfin: Auth.isLogin()});
         this.setState({isLogin: Auth.isLogin()});
      } );
   }
