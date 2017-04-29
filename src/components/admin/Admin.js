@@ -2,8 +2,9 @@ import React from 'react';
 
 import { Tabs, Tab } from 'material-ui/Tabs';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-
+import {Redirect} from 'react-router-dom'
 import Privilege from './Privilege';
+import Auth from '../../controllers/Auth'
 
 export default class Admin extends React.Component{
     constructor(props) {
@@ -41,8 +42,14 @@ export default class Admin extends React.Component{
     }
 
     render() {
+        if(!Auth.isLogin()) {
+            alert('请先登录')
+            return (
+                <Redirect to="/" push />
+            )
+        }
         return (
-            <div>admin</div>
+            <div></div>
         )
     }
 }

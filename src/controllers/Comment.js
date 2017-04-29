@@ -11,7 +11,7 @@ export default class Comment {
                 page, rows: 10,
             }
         })
-            .then(res => res ? res : [])
+            .then(res => res ? res : null)
     }
 
     static postInnerComment({title, content, name, tel, email}) {

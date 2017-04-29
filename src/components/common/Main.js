@@ -22,6 +22,7 @@ import AdminApply from '../admin/Apply';
 import AdminEquip from '../admin/Equipment';
 //import DownLoad from '../DownLoad/DownLoad';
 import Finances from '../admin/Finances';
+import File from '../admin/File';
 
 
 export default class Main extends React.Component {
@@ -51,17 +52,17 @@ export default class Main extends React.Component {
         <div>
             {location.pathname.indexOf('admin') == -1 ?
             <div>
-            <HeaderBar leftIcon={!this.state.isLandscape} handleDrawer={this.handleDrawer.bind(this)} />
+            <HeaderBar />
             <NavBar />
             </div>
             :
             <div>
-            <HeaderBar leftIcon={!this.state.isLandscape} handleDrawer={this.handleDrawer.bind(this)} />                
+            <HeaderBar />                
             <SideBar drawerDocked={this.state.drawerDocked} open={this.state.drawerState} handleDrawer={this.handleDrawer.bind(this)}/>
             {/*<div style={{marginLeft: this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 64px)"}}></div>*/}
             </div>}
 
-            <div style={{marginLeft: this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 10vh)"}}>
+            <div style={{marginLeft: location.pathname.indexOf('admin') > -1 && this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 10vh)"}}>
                 <div style={{height: "100%"}}>
                 <Route exact path="/" component={ Home } />
                 <Route exact path="/news" component={ News } />
@@ -81,7 +82,7 @@ export default class Main extends React.Component {
                     <Route path="/intro/Zx" />
 
 
-                <Route exact path="/admin" component={ Admin } />
+                <Route path="/admin" component={ Admin } />
                 <Route path="/admin/mine" component={ Mine } />
                 <Route path="/admin/news" component={ AdminNews } />
                 <Route path="/admin/account" component={ Account } />
@@ -89,6 +90,7 @@ export default class Main extends React.Component {
                 <Route path="/admin/apply" component={ AdminApply } />
                 <Route path="/admin/equipment" component={ AdminEquip } />
                 <Route path="/admin/finance" component={ Finances } />
+                <Route path="/admin/file" component={ File } />
                 </div>
             </div>
             <AlertBar />

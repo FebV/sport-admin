@@ -121,11 +121,11 @@ export default class SideBar extends React.Component {
                         iconFamily: "fa fa-cogs",
                         link: "/admin/account",
                     },
-                    {
-                        content: "管理员留言",
-                        link: "/admin/comment",
-                        iconFamily: "fa fa-cogs"                        
-                    },
+                    // {
+                    //     content: "管理员留言",
+                    //     link: "/admin/comment",
+                    //     iconFamily: "fa fa-cogs"                        
+                    // },
                     {
                         content: "申请管理",
                         link: "/admin/apply",

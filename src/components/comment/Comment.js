@@ -24,7 +24,7 @@ export default class Comment extends React.Component {
             loading: true,
             deleteDialogOpen: false,
             deleteCommentId: null,
-
+            isLogin: Auth.isLogin(),
         }
         
     }
@@ -48,6 +48,12 @@ export default class Comment extends React.Component {
         addEventListener('delete comment ok', () => {
             this.componentDidMount();
         })
+        addEventListener('login ok', () => {
+            this.setState({isLogin: true});
+        })
+        addEventListener('logout ok', () => {
+            this.setState({isLogin: false});
+        })
 
         this.page = 1;
         this.state.comments = [];
@@ -59,10 +65,10 @@ export default class Comment extends React.Component {
         this.isLoading = true;
         CommentModel.getInnerComment(this.page)
             .then(res => {
+                console.log(res);
                 this.isLoading = false;
                 this.setState({loading: false});
-                console.log(res);
-                if(res) {
+                if(res && res.data.length > 0) {
                     this.setState({comments: [...this.state.comments, ...res.data]});
                 }
             });
@@ -88,7 +94,7 @@ export default class Comment extends React.Component {
                     {ele.content}
                     </CardText>
                     <CardActions style={{textAlign: 'right'}}>
-                    { Auth.isLogin()
+                    { this.state.isLogin
                     ?
                     <div>
                     <FlatButton label="查看联系方式" onClick={() => {

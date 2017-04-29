@@ -68,6 +68,8 @@ export default class Account extends React.Component {
     }
 
     componentDidMount() {
+        if(!Auth.isLogin())
+            return;
         this.getPeople();
         User.getLevel()
             .then(res => this.setState({level: res}));

@@ -62,7 +62,11 @@ const API = {
     postFinance:`${base}api/finances`,
     potFinance: (id)=>`${base}api/finances/id/${id}`,
 
-
+    //文件相关
+    getFile: `${base}documents`,
+    deleteFile: id => `${base}documents/id/${id}`,
+    uploadFile: `${base}documents`,
+    downloadFile: id => `${base}documents/id/${id}`,
 
 }
 export default API;

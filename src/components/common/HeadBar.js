@@ -21,10 +21,16 @@ export default class headBar extends React.Component {
             isLogin: Auth.isLogin(),
             dialogOpen: false
         };
-        addEventListener('log status change',(e) => {
+
+    }
+
+    componentDidMount() {
+        addEventListener('login ok',(e) => {
             this.setState({isLogin: Auth.isLogin()});
         })
-
+        addEventListener('logout ok',(e) => {
+            this.setState({isLogin: Auth.isLogin()});
+        })
     }
 
     openDialog() {
@@ -42,10 +48,11 @@ export default class headBar extends React.Component {
             <AppBar
                 style={{zIndex: 1500, position: 'absolute', height: "10vh", backgroundColor: location.pathname.indexOf('admin') > -1 ? "rgb(0, 188, 212)" : '#900f13', fontWeight: "900", display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center", fontSize: "5vh"}}
                 title="山东大学体育场馆申请平台"
-                iconElementLeft={this.props.leftIcon ? null : <i></i>}
-                onLeftIconButtonTouchTap={this.props.handleDrawer}
-                iconElementRight={location.pathname.indexOf('admin') == -1 ? <Link to="admin">管理页面</Link> : this.state.isLogin ? <UserBio></UserBio> : <LoginButton openDialog={this.openDialog.bind(this)} />}
+                titleStyle={{fontSize: "3vh"}}
+                //onLeftIconButtonTouchTap={this.props.handleDrawer}
+                iconElementRight={this.state.isLogin ? <UserBio></UserBio> : <LoginButton openDialog={this.openDialog.bind(this)} />}
             />
+            
             <div style={{height: "10vh"}}></div>
             {/*{location.pathname.indexOf('admin') > -1 ? null : <div style={{height: "30vh", backgroundColor: "black"}}></div>}*/}
             <LoginDialog closeDialog={this.closeDialog.bind(this)} open={this.state.dialogOpen} />
@@ -62,7 +69,7 @@ class LoginButton extends React.Component {
 
     render() {
         return (
-            <RaisedButton onClick={this.props.openDialog} label="管理员登陆" style={{marginTop: '5px'}} />
+            <RaisedButton onClick={this.props.openDialog} label="管理员登陆" style={{marginRight: '3vw'}} />
         )
     }
 }
@@ -147,7 +154,7 @@ class UserBio extends React.Component {
                 >
                 <Menu>
                     {<Link to="/admin/mine">
-                        <MenuItem primaryText="个人中心" />
+                        <MenuItem primaryText="管理员视图" />
                     </Link>}
                     <MenuItem onClick={Auth.logout} primaryText="退出登陆" />
                 </Menu>
