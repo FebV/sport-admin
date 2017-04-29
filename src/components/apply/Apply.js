@@ -114,10 +114,11 @@ export default class Apply extends React.Component {
     render() {
         return (
             <MuiThemeProvider>
-            <Tabs>
-                <Tab label="校内申请">
+            <div style={{width:"100%", display: "flex", justifyContent: "center"}}>
+            <Tabs style={{width: "40%"}}>
+                <Tab label="校内申请" style={{backgroundColor: "#DD2C00"}}>
                 <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <Paper style={{width: "60%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
+                <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
                 校区
             <MuiThemeProvider>
             <DropDownMenu
@@ -288,6 +289,7 @@ export default class Apply extends React.Component {
                 </div>
                 </Tab>
             </Tabs>
+            </div>
             </MuiThemeProvider>
         )
     }

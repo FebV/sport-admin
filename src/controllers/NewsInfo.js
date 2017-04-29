@@ -4,17 +4,17 @@ import API from './API';
 import Auth from './Auth';
 
 export default class News {
-    static getPublishedNews(page) {
+    static getPublishedNews(page, rows = 10) {
         return Request.get({
             url: API.getNews,
             data:{
-                page, rows: 10,
+                page, rows,
             }
         })
             .then(res => res ? res : [])
     }
 
-    static getAllNews(page) {
+    static getAllNews(page, rows = 20) {
         return Request.get({
             url: API.getAllNews,
             data:{

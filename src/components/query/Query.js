@@ -142,8 +142,8 @@ export default class Query extends React.Component {
             >
                 <TableRow>
                 <TableHeaderColumn>#</TableHeaderColumn>
-                <TableHeaderColumn style={{width: "50px"}}>日期</TableHeaderColumn>
-                <TableHeaderColumn style={{width: "50px"}}>星期</TableHeaderColumn>
+                <TableHeaderColumn>日期</TableHeaderColumn>
+                <TableHeaderColumn>星期</TableHeaderColumn>
                 {[...Array(11).keys()].map((ele, idx) => <TableHeaderColumn key={idx}>{1*idx+1}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
@@ -154,8 +154,8 @@ export default class Query extends React.Component {
                     return (
                         <TableRow key={idx}>
                         <TableHeaderColumn>{1 + 1*idx}</TableHeaderColumn>                            
-                        <TableHeaderColumn style={{width: "50px"}}>{ele.date}</TableHeaderColumn>
-                        <TableHeaderColumn style={{width: "50px"}}>{ele.week}</TableHeaderColumn>
+                        <TableHeaderColumn>{ele.date}</TableHeaderColumn>
+                        <TableHeaderColumn>{ele.week}</TableHeaderColumn>
                         {['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'].map(
                             (d, idx) => <TableHeaderColumn key={idx} style={{backgroundColor: this.showStatus(ele[d]), border: "2px solid"}}></TableHeaderColumn>
                         )}

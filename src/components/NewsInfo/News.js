@@ -14,8 +14,9 @@ import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
 import Paper from 'material-ui/Paper';
-
+import Carousel from 'react-bootstrap/lib/Carousel';
 import Auth from '../../controllers/Auth';
+import { Link } from 'react-router-dom';
 
 export default class Comment extends React.Component {
     constructor(props) {
@@ -29,10 +30,12 @@ export default class Comment extends React.Component {
             loading: true,
             deleteDialogOpen: false,
             deleteCommentId: null,
-
+            hasMore: true,
         }
         window.onscroll =  e => {
             if(this.isLoading)
+                return;
+            if(!this.state.hasMore)
                 return;
             //let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
             if((document.body.scrollTop + innerHeight) == document.body.scrollHeight) {
@@ -55,36 +58,73 @@ export default class Comment extends React.Component {
     }
 
     query() {
+        if(!this.state.hasMore)
+            return;
         this.setState({loading: true});
         this.isLoading = true;
-        NewsModel.getPublishedNews(this.page)
+        NewsModel.getPublishedNews(this.page, 20)
             .then(res => {
                 this.isLoading = false;
                 this.setState({loading: false});
-                if(res) {
+                if(res.length > 0) {
                     this.setState({comments: [...this.state.comments, ...res]});
+                }
+                if(res.length < 20){
+                    this.setState({hasMore: false})
                 }
             });
     }
     
     render() {
         return (
+            <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
+            <div style={{width: "900px"}}>
+            <Carousel>
+                <Carousel.Item>
+                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
+                <Carousel.Caption>
+                    <h3>First slide label</h3>
+                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
+                <Carousel.Caption>
+                    <h3>Second slide label</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                </Carousel.Caption>
+                </Carousel.Item>
+                <Carousel.Item>
+                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
+                <Carousel.Caption>
+                    <h3>Third slide label</h3>
+                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
+                </Carousel.Caption>
+                </Carousel.Item>
+            </Carousel>
+            </div>
+
             <MuiThemeProvider>
             <div style={{width: "calc(100% - 40px)", display: "flex", justifyContent: "center", padding: "20px"}}>
-            <Paper style={{width: "90%"}}>
+            <Paper style={{width: "60%"}}>
             <List>
                 {this.state.comments.map( (ele, idx) => {
                     return (
-                        <div key={idx}>
-                        { idx != 0 ? <Divider /> : null}
-                        <ListItem primaryText={ele.title} secondaryText={ele.time}/>
-                        </div>
+                        <Link to={`/news/${ele.id}`} key={idx}>
+                            <div key={idx} style={{padding: "5px 25px"}}>
+                            { idx != 0 ? <Divider /> : null}
+                            <img src="/static/img/NewsIcon.gif" style={{margin: "0px 10px"}} />
+                            <span>{ele.title}</span>
+                            <span style={{float: 'right'}}>{ele.time}</span>
+                            </div>
+                        </Link>
                     )
                 })}
             </List>
             </Paper>
             </div>
             </MuiThemeProvider>
+            </div>
         );
         return (
             <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>

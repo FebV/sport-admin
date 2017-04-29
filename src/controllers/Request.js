@@ -5,10 +5,16 @@ export default class Request {
 
     static get({url, data}) {
         return fetch(`${url}?${Request.parseData({data})}`)
-                .then(res => res.json())
-                .then(res => res.code == 1 ? res.data : ED.dispatch({type: 'alert', msg: res.status}))
                 .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
-    }
+                .then(res => res.json())
+                .then(res => {
+                    if(res.code != 1) {
+                        ED.dispatch({type: "alert", msg: res.status})
+                        throw new Error(res.status);
+                    }
+                    return res.data
+                })
+        }
 
 
     static post({url, data}) {
@@ -19,9 +25,15 @@ export default class Request {
                     },
                     body: Request.parseData({data})
                 })
-                    .then(res => res.json())
-                    .then(res => res.code == 1 ? res.data : ED.dispatch({type: 'alert', msg: res.status}))
                     .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
+                    .then(res => res.json())
+                    .then(res => {
+                        if(res.code != 1) {
+                            ED.dispatch({type: "alert", msg: res.status})
+                            throw new Error(res.status);
+                        }
+                        return res.data
+                    })
     }
 
     static put({url, data}) {
@@ -32,9 +44,15 @@ export default class Request {
                     },
                     body: Request.parseData({data})
                 })
-                    .then(res => res.json())
-                    .then(res => res.code == 1 ? res.data : ED.dispatch({type: 'alert', msg: res.status}))
                     .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
+                    .then(res => res.json())
+                    .then(res => {
+                        if(res.code != 1) {
+                            ED.dispatch({type: "alert", msg: res.status})
+                            throw new Error(res.status);
+                        }
+                        return res.data
+                    })
     }
 
     static delete({url, data}) {
@@ -45,9 +63,15 @@ export default class Request {
                     },
                     body: Request.parseData({data})
                 })
-                    .then(res => res.json())
-                    .then(res => res.code == 1 ? res.data : ED.dispatch({type: 'alert', msg: res.status}))
                     .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
+                    .then(res => res.json())
+                    .then(res => {
+                        if(res.code != 1) {
+                            ED.dispatch({type: "alert", msg: res.status})
+                            throw new Error(res.status);
+                        }
+                        return res.data
+                    })
     }
 
     static parseData({data}) {

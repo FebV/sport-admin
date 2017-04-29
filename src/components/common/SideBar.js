@@ -20,52 +20,52 @@ export default class SideBar extends React.Component {
                 content: "主页",
                 link: "/",
             },
-            {
-                iconFamily: "fa fa-home",
-                content: "新闻",
-                link: "/news",
-            },
-            {
-                iconFamily: "fa fa-tachometer",
-                content: "场馆介绍",
-                subItems: [
-                    {
-                        content: "综合体育馆",
-                        link: "/intro/zh",
-                        iconFamily: "fa fa-location-arrow"
-                    },
-                    {
-                        content: "中心校区",
-                        link: "/intro/zx",
-                        iconFamily: "fa fa-location-arrow"                        
-                    },
-                    {
-                        content: "洪家楼校区",
-                        link: "/intro/hjl",
-                        iconFamily: "fa fa-location-arrow"                        
-                    },
-                    {
-                        content: "千佛山校区",
-                        link: "/intro/qfs",
-                        iconFamily: "fa fa-location-arrow"                        
-                    },
-                    {
-                        content: "趵突泉校区",
-                        link: "/intro/btq",
-                        iconFamily: "fa fa-location-arrow"                        
-                    },
-                    {
-                        content: "兴隆山校区",
-                        link: "/intro/xls",
-                        iconFamily: "fa fa-location-arrow"                        
-                    },
-                    {
-                        content: "软件园校区",
-                        link: "/intro/rjy",
-                        iconFamily: "fa fa-location-arrow"                        
-                    },
-                ]
-            },
+            // {
+            //     iconFamily: "fa fa-home",
+            //     content: "新闻",
+            //     link: "/news",
+            // },
+            // {
+            //     iconFamily: "fa fa-tachometer",
+            //     content: "场馆介绍",
+            //     subItems: [
+            //         {
+            //             content: "综合体育馆",
+            //             link: "/intro/zh",
+            //             iconFamily: "fa fa-location-arrow"
+            //         },
+            //         {
+            //             content: "中心校区",
+            //             link: "/intro/zx",
+            //             iconFamily: "fa fa-location-arrow"                        
+            //         },
+            //         {
+            //             content: "洪家楼校区",
+            //             link: "/intro/hjl",
+            //             iconFamily: "fa fa-location-arrow"                        
+            //         },
+            //         {
+            //             content: "千佛山校区",
+            //             link: "/intro/qfs",
+            //             iconFamily: "fa fa-location-arrow"                        
+            //         },
+            //         {
+            //             content: "趵突泉校区",
+            //             link: "/intro/btq",
+            //             iconFamily: "fa fa-location-arrow"                        
+            //         },
+            //         {
+            //             content: "兴隆山校区",
+            //             link: "/intro/xls",
+            //             iconFamily: "fa fa-location-arrow"                        
+            //         },
+            //         {
+            //             content: "软件园校区",
+            //             link: "/intro/rjy",
+            //             iconFamily: "fa fa-location-arrow"                        
+            //         },
+            //     ]
+            // },
             // {
             //     iconFamily: "fa fa-trophy",
             //     content: "体育活动专栏",
@@ -76,31 +76,31 @@ export default class SideBar extends React.Component {
             //     content: "大型活动专栏",
             //     link: "/activity",
             // },
-            {
-                iconFamily: "fa fa-search",
-                content: "场馆查询",
-                link: "/query",
-            },
-            {
-                iconFamily: "fa fa-pencil-square-o",
-                content: "场馆申请",
-                link: "/apply",
-            },
-            {
-                iconFamily: "fa fa-cloud-download",
-                content: "文件下载",
-                link: "/download",
-            },
-            {
-                iconFamily: "fa fa-comment-o",
-                content: "留言板",
-                link: "/comment",
-            },
-            {
-                iconFamily: "fa fa-user",
-                content: "管理员",
-                option: true,
-                subItems: [
+            // {
+            //     iconFamily: "fa fa-search",
+            //     content: "场馆查询",
+            //     link: "/query",
+            // },
+            // {
+            //     iconFamily: "fa fa-pencil-square-o",
+            //     content: "场馆申请",
+            //     link: "/apply",
+            // },
+            // {
+            //     iconFamily: "fa fa-cloud-download",
+            //     content: "文件下载",
+            //     link: "/download",
+            // },
+            // {
+            //     iconFamily: "fa fa-comment-o",
+            //     content: "留言板",
+            //     link: "/comment",
+            // },
+            // {
+            //     iconFamily: "fa fa-user",
+            //     content: "管理员",
+            //     option: true,
+            //     subItems: [
                     {
                         content: "个人中心",
                         link: "/admin/mine",
@@ -146,8 +146,8 @@ export default class SideBar extends React.Component {
                         link: "/admin/finance",
                         iconFamily: "fa fa-cogs"                        
                     }
-                ]
-            }
+                // ]
+            // }
         ];
     this.state = {
         isLogin: Auth.isLogin()
@@ -191,7 +191,7 @@ export default class SideBar extends React.Component {
             width={256}
             onRequestChange={this.props.handleDrawer}
             >
-            <List style={{padding: "80px 0px"}}>
+            <List style={{padding: "12vh 0px"}}>
             {this.sideBarItems.map( (e, idx) => {
                 let subItems = [];
                 if(e.subItems) {

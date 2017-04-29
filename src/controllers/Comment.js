@@ -22,7 +22,7 @@ export default class Comment {
                 title, content, name, tel, email
             }
         })
-            .then(res => ED.dispatch({type: "post comment ok", msg: "评论发布成功"}))
+            .then(res => res ? res : ED.dispatch({type: "post comment ok", msg: "评论发布成功"}))
     }
 
     static deleteInnerComment({id}) {

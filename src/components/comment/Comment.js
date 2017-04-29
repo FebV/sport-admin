@@ -26,7 +26,13 @@ export default class Comment extends React.Component {
             deleteCommentId: null,
 
         }
+        
+    }
+
+    componentDidMount() {
         window.onscroll =  e => {
+            if(location.pathname != '/comment')
+                return;
             if(this.isLoading)
                 return;
             //let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -35,15 +41,14 @@ export default class Comment extends React.Component {
                 this.query();
             }
         }
+
         addEventListener('post comment ok', () => {
             this.componentDidMount();
         })
         addEventListener('delete comment ok', () => {
             this.componentDidMount();
         })
-    }
 
-    componentDidMount() {
         this.page = 1;
         this.state.comments = [];
         this.query();
@@ -56,7 +61,8 @@ export default class Comment extends React.Component {
             .then(res => {
                 this.isLoading = false;
                 this.setState({loading: false});
-                if(res.data) {
+                console.log(res);
+                if(res) {
                     this.setState({comments: [...this.state.comments, ...res.data]});
                 }
             });

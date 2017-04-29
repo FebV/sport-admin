@@ -4,10 +4,11 @@ import { Route, Link }from 'react-router-dom';
 import HeaderBar from './HeadBar';
 import SideBar from './SideBar';
 import AlertBar from './AlertBar';
+import NavBar from './NavBar';
 
 import Home from '../home/Home';
 import News from '../NewsInfo/News';
-// import NewsDetail from '../NewsInfo/NewsDetail';
+import NewsDetail from '../NewsInfo/NewsDetail.js';
 import Intro from '../intro/Intro';
 import Apply from '../apply/Apply';
 import Comment from '../comment/Comment';
@@ -48,13 +49,23 @@ export default class Main extends React.Component {
     render() {
         return (
         <div>
+            {location.pathname.indexOf('admin') == -1 ?
+            <div>
             <HeaderBar leftIcon={!this.state.isLandscape} handleDrawer={this.handleDrawer.bind(this)} />
+            <NavBar />
+            </div>
+            :
+            <div>
+            <HeaderBar leftIcon={!this.state.isLandscape} handleDrawer={this.handleDrawer.bind(this)} />                
             <SideBar drawerDocked={this.state.drawerDocked} open={this.state.drawerState} handleDrawer={this.handleDrawer.bind(this)}/>
-            <div style={{marginLeft: this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 64px)"}}>
+            {/*<div style={{marginLeft: this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 64px)"}}></div>*/}
+            </div>}
+
+            <div style={{marginLeft: this.state.isLandscape ? '256px' : '0px', height: "calc(100% - 10vh)"}}>
                 <div style={{height: "100%"}}>
                 <Route exact path="/" component={ Home } />
                 <Route exact path="/news" component={ News } />
-                {/*<Route path="/news/:id" component={ NewsDetail } />*/}
+                <Route path="/news/:id" component={ NewsDetail } />
                 <Route path="/intro" component={ Intro } />
                 <Route path="/apply" component={ Apply } />
                 <Route path="/comment" component={ Comment } />
