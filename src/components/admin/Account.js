@@ -33,6 +33,7 @@ export default class Account extends React.Component {
             padding: "2px",
             border: "2px solid black",
             borderRadius: "20%",
+            transform: "scale(1.2)",            
             transition: "all 0.2s",
         }
         this.deleteHoverStyle = 
@@ -149,7 +150,6 @@ export default class Account extends React.Component {
                             title={"设置权限"}
                             style={ this.state.authIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
                             onMouseOver={() => this.setState({authIndex: idx})}
-                            onMouseLeave={() => this.setState({authIndex: null})}
                             onClick={ () => {
                                 this.setState({authIndex: idx});
                                 this.setState({authAdminId: e.u_id, permission: e.permission % 2 + 1});
@@ -172,7 +172,7 @@ export default class Account extends React.Component {
             </MuiThemeProvider>
             <AddAdmin handleClose={this.handleCloseAddAdminDialog.bind(this)} handleOpen={this.handleOpenAddAdminDialog.bind(this)} open={this.state.addAdminDialogOpen} />
             <DeleteAdmin deleteAdmin={this.deleteAdmin.bind(this)} toggle={this.handleDeleteDialogOpen.bind(this)} open={this.state.deleteAdminDialogOpen} />
-            <AuthAdmin props={this.state} authIndex={this.state.authIndex} authAdmin={this.authAdmin.bind(this)} toggle={this.handleAuthDialogOpen.bind(this)} open={this.state.authAdminDialogOpen} />
+            <AuthAdmin props={this} toggle={this.handleAuthDialogOpen.bind(this)} open={this.state.authAdminDialogOpen} />
             </div>
         )
     }
@@ -313,15 +313,31 @@ class DeleteAdmin extends React.Component {
 class AuthAdmin extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            campus: 'zx',
+        }
+    }
+
+    postAuth() {
+        const state = this.props.props.state;
+        const account = state.accounts[state.authIndex];
+        const permisson = Object.assign({}, this.state);
+        permisson.u_id = account.u_id;
+        delete permisson['campus'];
+        User.authPeople(account.u_id, permisson);
     }
 
     render() {
         // if(!this.props.authIndex)
         //     return null;
-        const account = this.props.props.accounts[this.props.authIndex];
+        const state = this.props.props.state;
+        const account = state.accounts[state.authIndex];//[this.props.props.state.authIndex];
         if(!account)
             return null;
         let {campus} = account;
+        console.log(account);
+        console.log(this.state.campus);
+        console.log(account[this.state.campus]);
         return (
             <MuiThemeProvider>
             <Dialog
@@ -335,7 +351,7 @@ class AuthAdmin extends React.Component {
                         style={{marginLeft: "20px"}}
                         label="确定"
                         onClick={() => {
-                            this.props.authAdmin();
+                            this.postAuth();
                             this.props.toggle();
                         }}
                     />
@@ -345,8 +361,10 @@ class AuthAdmin extends React.Component {
                 onRequestClose={this.props.toggle}
                 >
                 <DropDownMenu
-                    value={campus}
-                    //onChange={(e, k, v) => this.setState({campus: v})}
+                    value={this.state.campus}
+                    onChange={(e, k, v) => {
+                        this.setState({campus: v})
+                    }}
                 >
                     <MenuItem value={"mu"} primaryText="综合体育馆" />
                     <MenuItem value={"zx"} primaryText="中心校区" />
@@ -356,17 +374,19 @@ class AuthAdmin extends React.Component {
                     <MenuItem value={"xl"} primaryText="兴隆山校区" />
                     <MenuItem value={"rj"} primaryText="软件园校区" />
                 </DropDownMenu>
-                <RadioButtonGroup name="shipSpee" value={account[campus]}>
+                <RadioButtonGroup onChange={(e, v) => {
+                        this.setState({[this.state.campus]: v}, () => console.log(this.state))
+                    }} name="shipSpee" valueSelected={this.state[this.state.campus] || account[this.state.campus]}>
                     <RadioButton
-                        value={0}
+                        value={'0'}
                         label="无权限"
                     />
                     <RadioButton
-                        value={1}
+                        value={'1'}
                         label="场地管理"
                     />
                     <RadioButton
-                        value={2}
+                        value={'2'}
                         label="井老师"
                     />
                     <RadioButton
@@ -374,9 +394,9 @@ class AuthAdmin extends React.Component {
                         label="院长"
                     />
                     </RadioButtonGroup>
-                <Checkbox label="财务管理" />
-                <Checkbox label="新闻管理" />
-                <Checkbox label="器材管理" />
+                <Checkbox label="财务管理" onCheck={(e, v) => this.setState({finance: v})} checked={this.state.finance || account.finance == '1'} />
+                <Checkbox label="新闻管理" onCheck={(e, v) => this.setState({news: v})} checked={this.state.news || account.news == '1'} />
+                <Checkbox label="器材管理" onCheck={(e, v) => this.setState({equipment: v})} checked={this.state.equipment || account.equipment == '1'} />
             </Dialog>
             </MuiThemeProvider>
         )

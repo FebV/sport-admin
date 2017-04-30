@@ -64,10 +64,8 @@ export default class User {
     }
 
     static authPeople(id, permission) {
-        Request.put({url: API.authPeople(id), data: {
-            api_token: Auth.getToken(),
-            permission,
-        }})
+        permission.api_token = Auth.getToken();
+        Request.put({url: API.authPeople(id), data: permission})
             .then(res => ED.dispatch({type: 'user auth ok', msg: '权限修改成功'}))
     }
 }
