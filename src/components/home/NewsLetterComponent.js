@@ -7,7 +7,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
+import { Link } from 'react-router-dom';
 
+import NewsModel from '../../controllers/NewsInfo';
 
 export default class NewsLetterComponent extends React.Component{
     constructor(props){
@@ -32,7 +34,6 @@ export default class NewsLetterComponent extends React.Component{
     constructor(props){
         super(props);
         this.style = {
-
             width: '90%',
             margin: "10 20",
             textAlign: 'center',
@@ -56,20 +57,28 @@ export default class NewsLetterComponent extends React.Component{
 class NewsListComponent extends React.Component{
     constructor(props){
         super(props);
-
+        this.state = {
+            newsList: [],
+        }
     }
+
+    componentDidMount() {
+        NewsModel.getPublishedNews(1, 5)
+            .then(res => this.setState({newsList: res}));
+    }
+    
     render(){
         return(
-            <div  style={{textAlign:"left"}}>
-                <Subheader>Selectable Contacts</Subheader>
+            <div style={{textAlign:"left"}}>
+                <Subheader>近期新闻</Subheader>
                 <Divider />
                 <List>
-                    <ListItem primaryText="News" secondaryText="hhhh"/>
-                    <ListItem primaryText="News" secondaryText="hhhh"/>
-                    <ListItem primaryText="News" secondaryText="hhhh"/>
-                    <ListItem primaryText="News"/>
-                    <ListItem primaryText="News"/>
-
+                    {this.state.newsList.map( (e, idx) => {
+                        console.log(e);
+                        return (
+                            <Link key={idx} to={`/news/${e.id}`}><ListItem primaryText={e.title} secondaryText={e.time} /></Link>
+                        )
+                    })}
 
                 </List>
 

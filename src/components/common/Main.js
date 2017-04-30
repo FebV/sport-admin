@@ -8,6 +8,7 @@ import NavBar from './NavBar';
 
 import Home from '../home/Home';
 import News from '../NewsInfo/News';
+import Notice from '../Notice/Notice';
 import NewsDetail from '../NewsInfo/NewsDetail.js';
 import Intro from '../intro/Intro';
 import File from '../File/file';
@@ -68,6 +69,7 @@ export default class Main extends React.Component {
                 <Route exact path="/" component={ Home } />
                 <Route exact path="/news" component={ News } />
                 <Route path="/news/:id" component={ NewsDetail } />
+                <Route exact path="/notice" component={ Notice } />                
                 <Route path="/intro" component={ Intro } />
                 <Route path="/apply" component={ Apply } />
                 <Route path="/comment" component={ Comment } />

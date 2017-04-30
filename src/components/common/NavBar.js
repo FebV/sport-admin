@@ -28,6 +28,11 @@ export default class NavBar extends React.Component {
                 link: "/news",
             },
             {
+                iconFamily: "fa fa-home",
+                content: "通知",
+                link: "/notice",
+            },
+            {
                 iconFamily: "fa fa-tachometer",
                 content: "场馆介绍",
                 subItems: [

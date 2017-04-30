@@ -18,7 +18,7 @@ import Carousel from 'react-bootstrap/lib/Carousel';
 import Auth from '../../controllers/Auth';
 import { Link } from 'react-router-dom';
 
-export default class News extends React.Component {
+export default class Notice extends React.Component {
     constructor(props) {
         super(props);
         //shit.state
@@ -78,37 +78,10 @@ export default class News extends React.Component {
     render() {
         return (
             <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
-            <div style={{width: "900px"}}>
-            <Carousel>
-                <Carousel.Item>
-                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
-                <Carousel.Caption>
-                    <h3>First slide label</h3>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
-                <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
-                <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-            </Carousel>
-            </div>
 
             <MuiThemeProvider>
             <div style={{width: "calc(100% - 40px)", display: "flex", justifyContent: "center", padding: "20px"}}>
-            <div style={{width: "80%", padding: "20px", border: "1px solid rgb(144, 15, 19)", borderRadius: "20px"}}>
-                <h4>体育活动</h4>
-                <hr style={{borderTop: "1px solid black", border: "asda"}} />
+            <Paper style={{width: "60%"}}>
             <List>
                 {this.state.comments.map( (ele, idx) => {
                     return (
@@ -123,7 +96,7 @@ export default class News extends React.Component {
                     )
                 })}
             </List>
-            </div>
+            </Paper>
             </div>
             </MuiThemeProvider>
             </div>

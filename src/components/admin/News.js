@@ -214,7 +214,10 @@ export default class News extends React.Component {
             </Paper>
             </MuiThemeProvider>
                 <MuiThemeProvider>
-                <FloatingActionButton onClick={() => this.setState({postNewsModalOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
+                <FloatingActionButton onClick={() => {
+                    this.setState({postNewsModalOpen: true});
+                    this.setState({title: '', writer: '', article: '', time: '选择日期'});
+                    }} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                     <i className="fa fa-plus fa-lg"></i>
                 </FloatingActionButton>
                 </MuiThemeProvider>
