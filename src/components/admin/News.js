@@ -32,14 +32,11 @@ export default class News extends React.Component {
             hasMore: true,
         }
 
-        this.page = 0;
+        this.page = 1;
         this.loading = false;
         this.hasMore = true;
 
-        addEventListener('put news ok', () => this.componentDidMount());
-        addEventListener('post news ok', () => this.componentDidMount());
-        addEventListener('accept news ok', () => this.componentDidMount());
-        addEventListener('decline news ok', () => this.componentDidMount());
+
         window.onscroll = e => {
             if(this.Loading)
                 return;
@@ -54,10 +51,44 @@ export default class News extends React.Component {
     }
 
     resetState() {
-        this.setState({title: '', writer: '', article: '', time: '选择日期'});
+        this.setState({title: '', writer: '', article: '', time: '选择日期', newsList: []});
+        this.page = 1;
+        this.loading = false;
+        this.hasMore = true;
     }
 
     componentDidMount() {
+        addEventListener('put news ok', () => {
+            this.resetState();
+            this.query();
+        });
+        addEventListener('post news ok', () => {
+            this.resetState();
+            this.query();
+        });
+        addEventListener('accept news ok', () => {
+            this.resetState();
+            this.query();
+        });
+        addEventListener('decline news ok', () => {
+            this.resetState();
+            this.query();
+        });
+        addEventListener('delete news ok', () => {
+            this.resetState();
+            this.query();
+        });
+        this.loading = true;
+        NewsInfoModel.getAllNews(this.page)
+            .then(res => {
+                this.page++;
+                if(res.length < 20)     //每次查询记录数
+                    this.setState({hasMore: false});
+                this.setState({newsList: [...this.state.newsList, ...res]});
+            });
+    }
+
+    query() {
         this.loading = true;
         NewsInfoModel.getAllNews(this.page)
             .then(res => {
@@ -69,11 +100,10 @@ export default class News extends React.Component {
     }
 
     queryDetail(id) {
-        this.resetState();
         NewsInfoModel.getNewsDetail(id)
             .then(res => {
                 console.log(res);
-                this.setState(res)//, () => this.forceUpdate())
+                this.setState(res)
             });
     }
 
@@ -90,14 +120,17 @@ export default class News extends React.Component {
                 title: this.state.title,
                 writer: this.state.writer,
                 time: this.state.time,
-                article: this.state.content,
+                article: this.state.article,
             })
         }
         else if(this.state.mode == 'edit') {
+            console.log(this.state);
             NewsInfoModel.putNews({
                 newsId: this.state.articleDetailId,
                 title: this.state.title,
-                content: this.state.article
+                article: this.state.article,
+                writer: this.state.writer,
+                time: this.state.time,
         })
         }
     }

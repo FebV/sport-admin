@@ -57,13 +57,15 @@ export default class News {
         })
             .then(res => ED.dispatch({type: 'decline news ok'}));
     }
-    static putNews({newsId, title, content}) {
+    static putNews({newsId, title, article, time, writer}) {
         Request.put({
             url: API.putNews(newsId),
             data: {
                 api_token: Auth.getToken(),
                 title,
-                content,
+                time,
+                writer,
+                article,
             }
         })
             .then(res => ED.dispatch({type: 'put news ok'}));
