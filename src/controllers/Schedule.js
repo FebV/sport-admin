@@ -18,8 +18,7 @@ export default class Schedule {
             url: API.getSchedules({campus, gym}),
             data: {start: day, end: day},
         })
-            .then(res => res.json())
-            .then(res => res ? res[0] : {})
+            .then(res => res ? res[0] : null)
     } 
 
     static postSchedules({campus, gym, file}) {

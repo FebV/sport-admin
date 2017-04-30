@@ -91,7 +91,7 @@ export default class NavBar extends React.Component {
             {
                 iconFamily: "fa fa-cloud-download",
                 content: "文件下载",
-                link: "/download",
+                link: "/file",
             },
             {
                 iconFamily: "fa fa-comment-o",

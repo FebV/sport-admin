@@ -1,6 +1,7 @@
 const base = 'http://115.28.201.92:8000/api/';
 // const base = '/mock/';
 const API = {
+    base,
     login: `${base}users/i/auth`,
     logout: `${base}users/i/auth`,
     

@@ -13,22 +13,80 @@ import Popover from 'material-ui/Popover';
 import TextField from 'material-ui/TextField';
 
 import FileModel from '../../controllers/File';
+import API from '../../controllers/API';
 
 export default class File extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            fileList: [],
+        }
+        this.page = 1;
+        this.hasMore = true;
+        this.isLoading = false;
+    }
+
+    componentDidMount() {
+        window.onscroll =  e => {
+            if(location.pathname != '/admin/file')
+                return;
+            if(this.isLoading)
+                return;
+            if((document.body.scrollTop + innerHeight) == document.body.scrollHeight) {
+                this.page++;
+                this.query();
+            }
+        }
+        addEventListener('delete file ok', () => {
+            this.page = 1;
+            this.query();
+        });
+        addEventListener('post file ok', () => {
+            this.page = 1;
+            this.query()
+        });
+        this.query();
+    }
+
+    query() {
+        if(!this.hasMore)
+            return;
+        FileModel.getFile({page: this.page})
+            .then(res => {
+                if(!res)
+                    return this.hasMore = false;
+                this.setState({fileList: res.data})
+            })
+
+    }
+
+    deleteFile(id) {
+        const re = confirm('确定删除文件吗')
+        if(re)
+            FileModel.deleteFile(id);
     }
 
     render() {
         return (
             <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px"}}>
                 <MuiThemeProvider>
-                <div>
-                <div style={{width: "60%", padding: "20px"}}>
+                <div style={{width: "100%", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
+                <div style={{width: "80%", padding: "20px"}}>
                 <UploadFile />
+                <hr />
                 </div>
-                <div>
-                    sada
+                <div style={{width: "60%"}}>
+                    {this.state.fileList.map((e, idx) => {
+                        console.log(e);
+                        return (
+                            <div key={e.id}>
+                                <a download={e.title} href={`${API.base}documents/id/${e.id}`}><span>{e.title}</span></a>
+                                <RaisedButton label="删除" onClick={() => this.deleteFile(e.id)} style={{position: "relative", float: "right", marginLeft: "20px", bottom: "8px"}} />
+                                <span style={{float: "right"}}>{e.created_at}</span>
+                                <hr />
+                            </div>
+                        )
+                    })}
                 </div>
                 </div>
                 </MuiThemeProvider>
@@ -85,7 +143,7 @@ class UploadFile extends React.Component {
     upload() {
         FileModel.uploadFile({
             file: this.state.file,
-            document_name: this.fileName,
+            document_name: this.state.fileName,
         })
         //Schedule.postSchedules({campus: this.state.campus, gym: this.state.gym, file: this.state.file});
     }

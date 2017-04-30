@@ -10,6 +10,7 @@ import Home from '../home/Home';
 import News from '../NewsInfo/News';
 import NewsDetail from '../NewsInfo/NewsDetail.js';
 import Intro from '../intro/Intro';
+import File from '../File/file';
 import Apply from '../apply/Apply';
 import Comment from '../comment/Comment';
 import Query from '../query/Query';
@@ -22,7 +23,7 @@ import AdminApply from '../admin/Apply';
 import AdminEquip from '../admin/Equipment';
 //import DownLoad from '../DownLoad/DownLoad';
 import Finances from '../admin/Finances';
-import File from '../admin/File';
+import FileAdmin from '../admin/File';
 
 
 export default class Main extends React.Component {
@@ -71,6 +72,7 @@ export default class Main extends React.Component {
                 <Route path="/apply" component={ Apply } />
                 <Route path="/comment" component={ Comment } />
                 <Route path="/query" component={ Query } />
+                <Route path="/file" component={ File } />
                 {/*<Route path="/download" component={ DownLoad } />*/}
 
                     <Route exact path="/intro" component={ Admin } />
@@ -90,7 +92,7 @@ export default class Main extends React.Component {
                 <Route path="/admin/apply" component={ AdminApply } />
                 <Route path="/admin/equipment" component={ AdminEquip } />
                 <Route path="/admin/finance" component={ Finances } />
-                <Route path="/admin/file" component={ File } />
+                <Route path="/admin/file" component={ FileAdmin } />
                 </div>
             </div>
             <AlertBar />
