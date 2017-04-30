@@ -32,10 +32,6 @@ export default class Profile extends React.Component {
                     name: 'campus',
                 },
                 {
-                    floatHint: '管理员级别',
-                    name: 'level',
-                },
-                {
                     floatHint: '姓名',
                     name: 'realname',
                 },

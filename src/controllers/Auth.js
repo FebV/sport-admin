@@ -28,6 +28,7 @@ export default class Auth {
     static logout() {
         let token = Auth.getToken();
         localStorage.clear();
+        location.href = "/";
         Request.delete({url: API.logout, data: {"api_token": token}})
             .then(json => {
                 ED.dispatch({type: 'logout ok', msg: '登出成功'});

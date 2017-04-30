@@ -9,6 +9,8 @@ import TextField from 'material-ui/TextField';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 import RaisedButton from 'material-ui/RaisedButton';
+import Checkbox from 'material-ui/Checkbox';
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 import Auth from '../../controllers/Auth';
 import User from '../../controllers/User';
@@ -144,15 +146,16 @@ export default class Account extends React.Component {
                             className="fa fa-times">
                             </i>
                             <i 
-                            title={e.permission == 1 ? "设为财务管理员" : "取消财务管理员"}
+                            title={"设置权限"}
                             style={ this.state.authIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
                             onMouseOver={() => this.setState({authIndex: idx})}
                             onMouseLeave={() => this.setState({authIndex: null})}
                             onClick={ () => {
-                                this.handleAuthDialogOpen();
+                                this.setState({authIndex: idx});
                                 this.setState({authAdminId: e.u_id, permission: e.permission % 2 + 1});
+                                this.handleAuthDialogOpen();
                             }}
-                            className={e.permission == 1 ? "fa fa-check-square-o" : "fa fa-reply"}>
+                            className={"fa fa-check-square-o"}>
                             </i>
                         </TableRowColumn>
                     </TableRow>
@@ -169,7 +172,7 @@ export default class Account extends React.Component {
             </MuiThemeProvider>
             <AddAdmin handleClose={this.handleCloseAddAdminDialog.bind(this)} handleOpen={this.handleOpenAddAdminDialog.bind(this)} open={this.state.addAdminDialogOpen} />
             <DeleteAdmin deleteAdmin={this.deleteAdmin.bind(this)} toggle={this.handleDeleteDialogOpen.bind(this)} open={this.state.deleteAdminDialogOpen} />
-            <AuthAdmin permission={this.state.permission} authAdmin={this.authAdmin.bind(this)} toggle={this.handleAuthDialogOpen.bind(this)} open={this.state.authAdminDialogOpen} />
+            <AuthAdmin props={this.state} authIndex={this.state.authIndex} authAdmin={this.authAdmin.bind(this)} toggle={this.handleAuthDialogOpen.bind(this)} open={this.state.authAdminDialogOpen} />
             </div>
         )
     }
@@ -313,6 +316,12 @@ class AuthAdmin extends React.Component {
     }
 
     render() {
+        // if(!this.props.authIndex)
+        //     return null;
+        const account = this.props.props.accounts[this.props.authIndex];
+        if(!account)
+            return null;
+        let {campus} = account;
         return (
             <MuiThemeProvider>
             <Dialog
@@ -335,7 +344,39 @@ class AuthAdmin extends React.Component {
                 open={this.props.open}
                 onRequestClose={this.props.toggle}
                 >
-                { this.props.permission == 2 ? "确定将其设为财务管理员？" : "确定撤销其财务管理权限？" }
+                <DropDownMenu
+                    value={campus}
+                    //onChange={(e, k, v) => this.setState({campus: v})}
+                >
+                    <MenuItem value={"mu"} primaryText="综合体育馆" />
+                    <MenuItem value={"zx"} primaryText="中心校区" />
+                    <MenuItem value={"hj"} primaryText="洪家楼校区" />
+                    <MenuItem value={"qf"} primaryText="千佛山校区" />
+                    <MenuItem value={"bt"} primaryText="趵突泉校区" />
+                    <MenuItem value={"xl"} primaryText="兴隆山校区" />
+                    <MenuItem value={"rj"} primaryText="软件园校区" />
+                </DropDownMenu>
+                <RadioButtonGroup name="shipSpee" value={account[campus]}>
+                    <RadioButton
+                        value={0}
+                        label="无权限"
+                    />
+                    <RadioButton
+                        value={1}
+                        label="场地管理"
+                    />
+                    <RadioButton
+                        value={2}
+                        label="井老师"
+                    />
+                    <RadioButton
+                        value="ludicrous"
+                        label="院长"
+                    />
+                    </RadioButtonGroup>
+                <Checkbox label="财务管理" />
+                <Checkbox label="新闻管理" />
+                <Checkbox label="器材管理" />
             </Dialog>
             </MuiThemeProvider>
         )
