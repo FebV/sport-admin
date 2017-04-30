@@ -218,6 +218,7 @@ a {
     margin-top: 20px;
     margin-bottom: 20px;
     width: 80%;
+    max-width: 800px;
 }
 .centerText{
     text-align: center;
