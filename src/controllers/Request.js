@@ -7,6 +7,10 @@ export default class Request {
         return fetch(`${url}?${Request.parseData({data})}`)
                 .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
                 .then(res => res.json())
+                .catch(res => {
+                    ED.dispatch({type: "alert", msg: `解析时出错`})
+                    throw new Error(`解析时出错`)
+                })
                 .then(res => {
                     if(res.code != 1) {
                         ED.dispatch({type: "alert", msg: res.status})
@@ -27,6 +31,10 @@ export default class Request {
                 })
                     .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
                     .then(res => res.json())
+                    .catch(res => {
+                        ED.dispatch({type: "alert", msg: `解析时出错`})
+                        throw new Error(`解析时出错`)
+                    })
                     .then(res => {
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})
@@ -46,6 +54,10 @@ export default class Request {
                 })
                     .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
                     .then(res => res.json())
+                    .catch(res => {
+                        ED.dispatch({type: "alert", msg: `解析时出错`})
+                        throw new Error(`解析时出错`)
+                    })
                     .then(res => {
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})
@@ -65,6 +77,10 @@ export default class Request {
                 })
                     .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
                     .then(res => res.json())
+                    .catch(res => {
+                        ED.dispatch({type: "alert", msg: `解析时出错`})
+                        throw new Error(`解析时出错`)
+                    })
                     .then(res => {
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})

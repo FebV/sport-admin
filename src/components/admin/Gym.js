@@ -65,11 +65,11 @@ export default class Gym extends React.Component {
     showStatus(status) {
         let backgroundColor = null;
         if(status == '有课')
-            backgroundColor = '#F44336';
+            backgroundColor = 'red';
         if(status == '空闲')
-            backgroundColor = '#FAFAFA';
+            backgroundColor = 'green';
         if(status == '安排')
-            backgroundColor = '#006064';
+            backgroundColor = 'white';
         return backgroundColor;
     }
 
@@ -176,7 +176,15 @@ export default class Gym extends React.Component {
             </div>
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
             <MuiThemeProvider>
-            <Paper style={{width: "90%"}}>
+            <Paper style={{width: "90%", textAlign: "center"}}>
+                <div style={{width: "40%", display:"flex", justifyContent: "space-around"}}>
+                    <div style={{lineHeight: "52px"}}>有课</div>
+                <div style={{backgroundColor: "red", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                    <div style={{lineHeight: "52px"}}>已部分安排</div>
+                <div style={{backgroundColor: "green", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                    <div style={{lineHeight: "52px"}}>空闲</div>
+                <div style={{backgroundColor: "white", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                </div>
             <Table
                 onCellClick={(r, c, p, e) => {
                     this.modify(r, c, p,e);

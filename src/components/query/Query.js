@@ -134,8 +134,16 @@ export default class Query extends React.Component {
             </div>
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
             <MuiThemeProvider>
-            <Paper style={{width: "80%"}}>
-            <Table style={{padding: "20px"}}>
+            <Paper style={{width: "90%", textAlign: "center"}}>
+                <div style={{width: "40%", display:"flex", justifyContent: "space-around"}}>
+                    <div style={{lineHeight: "52px"}}>有课</div>
+                <div style={{backgroundColor: "red", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                    <div style={{lineHeight: "52px"}}>已部分安排</div>
+                <div style={{backgroundColor: "green", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                    <div style={{lineHeight: "52px"}}>空闲</div>
+                <div style={{backgroundColor: "white", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                </div>
+            <Table selectable={false} style={{padding: "20px"}}>
             <TableHeader
                 displaySelectAll={false}
                 adjustForCheckbox={false}

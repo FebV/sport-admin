@@ -141,6 +141,7 @@ class UploadFile extends React.Component {
     }
 
     upload() {
+        this.setState({file: null, fileName: ''})
         FileModel.uploadFile({
             file: this.state.file,
             document_name: this.state.fileName,
@@ -180,7 +181,7 @@ class UploadFile extends React.Component {
                 {this.state.file == null ? "" : "文件大小： " + Number(this.state.file.size / 1024).toFixed(2)  + "k"}
             </div>
             <TextField
-                floatingLabelText="文件描述"
+                floatingLabelText="文件描述（必填）"
                 value={this.state.fileName}
                 onChange={(e, v) => this.setState({fileName: v})}    
             />

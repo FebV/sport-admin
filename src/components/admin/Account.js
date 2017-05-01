@@ -336,7 +336,7 @@ class AuthAdmin extends React.Component {
             return null;
         let {campus} = account;
         console.log(account);
-        console.log(this.state.campus);
+        console.log(this.state);
         console.log(account[this.state.campus]);
         return (
             <MuiThemeProvider>
@@ -390,13 +390,13 @@ class AuthAdmin extends React.Component {
                         label="井老师"
                     />
                     <RadioButton
-                        value="ludicrous"
+                        value={'3'}
                         label="院长"
                     />
                     </RadioButtonGroup>
-                <Checkbox label="财务管理" onCheck={(e, v) => this.setState({finance: v})} checked={this.state.finance || account.finance == '1'} />
-                <Checkbox label="新闻管理" onCheck={(e, v) => this.setState({news: v})} checked={this.state.news || account.news == '1'} />
-                <Checkbox label="器材管理" onCheck={(e, v) => this.setState({equipment: v})} checked={this.state.equipment || account.equipment == '1'} />
+                <Checkbox label="财务管理" onCheck={(e, v) => this.setState({finance: v ? '1' : '0'})} checked={this.state.finance !== undefined ? this.state.finance == '1' : account.finance == '1'} />
+                <Checkbox label="新闻管理" onCheck={(e, v) => this.setState({news: v ? '1' : '0'})} checked={this.state.news !==undefined ? this.state.news == '1' : account.news == '1'} />
+                <Checkbox label="器材管理" onCheck={(e, v) => this.setState({equipment: v ? '1' : '0'})} checked={this.state.equipment !== undefined ? this.state.equipment == '1' : account.equipment == '1'} />
             </Dialog>
             </MuiThemeProvider>
         )

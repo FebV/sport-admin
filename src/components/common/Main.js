@@ -30,18 +30,19 @@ import FileAdmin from '../admin/File';
 export default class Main extends React.Component {
     constructor(props) {
         super(props);
-        const isLandscape = matchMedia('(orientation: landscape)').matches == true;
+        //const isLandscape = matchMedia('(orientation: landscape)').matches == true;
+        const isLandscape = true;
         this.state = {
             isLandscape,
             drawerState: isLandscape,
             drawerDocked: isLandscape,
             alertBarState: false
         }
-        onresize = () => {
-            if (matchMedia('(orientation: landscape)').matches != this.state.isLandscape) {
-                this.setState({isLandscape: !this.state.isLandscape, drawerState: !this.state.isLandscape, drawerDocked: !this.state.isLandscape});
-            }
-        }
+        // onresize = () => {
+        //     if (matchMedia('(orientation: landscape)').matches != this.state.isLandscape) {
+        //         this.setState({isLandscape: !this.state.isLandscape, drawerState: !this.state.isLandscape, drawerDocked: !this.state.isLandscape});
+        //     }
+        // }
 
     }
 

@@ -193,6 +193,7 @@ export default class News extends React.Component {
                                     this.setState({mode: 'post'});
                                     this.setState({articleIdx: idx});
                                     this.queryDetail(1*(ele.id));
+                                    this.setState({title: '', writer: '', article: '<h1>加载新闻中</h1>', time: ''});
                                 }} label="查看详情" />
                         </TableRowColumn>
                         <TableRowColumn>
@@ -202,6 +203,7 @@ export default class News extends React.Component {
                                     this.setState({articleIdx: idx});
                                     this.setState({mode: 'edit'});
                                     this.queryDetail(1*(ele.id));
+                                    this.setState({title: '', writer: '', article: '<h1>加载新闻中</h1>', time: ''});                                    
                                 }} label="编辑新闻" />
                         </TableRowColumn>
                     </TableRow>
