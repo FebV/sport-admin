@@ -9,6 +9,8 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
+import NewsModel from '../../controllers/NewsInfo';
+import { Link } from 'react-router-dom';
 
 export default class InforComponent extends React.Component{
     constructor(props){
@@ -37,19 +39,27 @@ export default class InforComponent extends React.Component{
 class InforListComponent extends React.Component{
     constructor(props){
         super(props);
-
+        this.state = {
+            newsList: [],
+        }
+    }
+    componentDidMount() {
+        NewsModel.getPublishedNews(1, 5)
+            .then(res => this.setState({newsList: res}));
     }
     render(){
         return(
             <div  style={{textAlign:"left"}}>
-                <Subheader>Selectable Contacts</Subheader>
+                <Subheader>通知</Subheader>
                 <Divider />
                 <List>
-                    <ListItem primaryText="News" secondaryText="hhhh"/>
-                    <ListItem primaryText="News" secondaryText="hhhh"/>
-                    <ListItem primaryText="News" secondaryText="hhhh"/>
-                    <ListItem primaryText="News"/>
-                    <ListItem primaryText="News"/>
+                    {this.state.newsList.map( (e, idx) => {
+                        console.log(e);
+                        return (
+                            <Link key={idx} to={`/news/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<p style={{float:"right"}}>{e.time}</p>} /></Link>
+                        )
+                    })}
+
 
 
                 </List>

@@ -76,7 +76,7 @@ class NewsListComponent extends React.Component{
                     {this.state.newsList.map( (e, idx) => {
                         console.log(e);
                         return (
-                            <Link key={idx} to={`/news/${e.id}`}><ListItem primaryText={e.title} secondaryText={e.time} /></Link>
+                            <Link key={idx} to={`/news/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<p style={{float:"right"}}>{e.time}</p>} /></Link>
                         )
                     })}
 
