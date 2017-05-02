@@ -29,6 +29,8 @@ export default class Apply extends React.Component {
             pnumber: '',
             charger: '',
             tel: '',
+            teacher: '',
+            teacher_tel: '',
             cost: '',
             remark: '',
             department: '',
@@ -52,7 +54,7 @@ export default class Apply extends React.Component {
                 if(res != null) {
                     let disTable = [];
                     this.serial.map(ele => {
-                        disTable.push(res[ele] == '空闲' ? true : false);
+                        disTable.push(res[ele] != '体育教学' ? true : false);
                     })
                     this.setState({classtimeDisTable: disTable});
                 }
@@ -77,7 +79,7 @@ export default class Apply extends React.Component {
                 ClsTime.push(this.serial[idx]);
         });
         ClsTime = ClsTime.join(',');
-        Applies.postApply({
+        Applies.postInnerApply({
             campus: this.state.campus,
             gym: this.state.gym,
             time: this.state.time,
@@ -89,6 +91,8 @@ export default class Apply extends React.Component {
             tel: this.state.tel,
             cost: this.state.cost,
             remark: this.state.remark,
+            teacher: this.state.teacher,
+            teacher_tel: this.state.teacher_tel,
         })
     }
 
@@ -191,7 +195,15 @@ export default class Apply extends React.Component {
                 /><br />
                 <TextField
                     onChange={(e, v) => this.setState({tel: v})}                
-                    floatingLabelText="联系方式"
+                    floatingLabelText="联系方式（手机）"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({teacher: v})}                
+                    floatingLabelText="学院老师姓名"
+                /><br />
+                <TextField
+                    onChange={(e, v) => this.setState({teacher_tel: v})}                
+                    floatingLabelText="学院老师电话（手机）"
                 /><br />
                 <TextField
                     onChange={(e, v) => this.setState({cost: v})}                

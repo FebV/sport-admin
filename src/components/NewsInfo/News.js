@@ -66,10 +66,11 @@ export default class News extends React.Component {
             .then(res => {
                 this.isLoading = false;
                 this.setState({loading: false});
-                if(res.length > 0) {
-                    this.setState({comments: [...this.state.comments, ...res]});
+                console.log(res);
+                if(res.data.length > 0) {
+                    this.setState({comments: [...this.state.comments, ...res.data]});
                 }
-                if(res.length < 20){
+                if(res.data.length < 20){
                     this.setState({hasMore: false})
                 }
             });

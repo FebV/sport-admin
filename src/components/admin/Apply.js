@@ -11,6 +11,7 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Menu from 'material-ui/Menu';
 import Popover from 'material-ui/Popover';
 import {Tabs, Tab} from 'material-ui/Tabs';
+import TextField from 'material-ui/TextField';
 
 import ApplyModel from '../../controllers/Applies';
 import camGym from '../../config/cam-gym';
@@ -34,6 +35,7 @@ export default class Apply extends React.Component {
             end: '',
             campus: 'zx',
             gym: 'basketball',
+            remark: '',
             innerRecords: [],
             outerRecords: [],
             innerDetailDialogOpen: false,
@@ -190,11 +192,19 @@ export default class Apply extends React.Component {
                 }
                 let state = null;
                 if(ele.state == 3)
-                    state = '通过';
+                    state = '已通过';
                 if(ele.state == 2)
-                    state = '未通过'
+                    state = '正在由院长审批'
                 if(ele.state == 1)
-                    state = '待审核'
+                    state = '正在由井老师审批'
+                if(ele.state == 0)
+                    state = '正在由场馆管理员审批'
+                if(ele.state == -1)
+                    state = '场馆管理员已回绝'
+                if(ele.state == -2)
+                    state = '井老师已回绝'
+                if(ele.state == -3)
+                    state = '院长已回绝'
                 let targetClsTime = ele.classtime;
                 for(let i in this.serial) {
                     targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
@@ -224,9 +234,11 @@ export default class Apply extends React.Component {
             </Paper>
             </MuiThemeProvider>
             <InnerDetail
+                handleRemark={(r) => this.setState({remark: r})}
+                remark={this.state.remark}
                 applyId={this.state.applyId}
                 open={this.state.innerDetailDialogOpen}
-                onRequestClose={() => this.setState({innerDetailDialogOpen: false})}
+                onRequestClose={() => this.setState({innerDetailDialogOpen: false, remark: ''})}
                 record={this.state.innerRecords[this.state.innerDetailIdx]}
             />
             </div>
@@ -387,10 +399,11 @@ class InnerDetail extends React.Component {
             'xl': '兴隆山校区',
             'rj': '软件园校区',
         }
+
     }
 
     putApplyState(state) {
-        ApplyModel.putInnerApply({applyId: this.props.applyId, state});
+        ApplyModel.putInnerApply({applyId: this.props.applyId, state, remark: this.props.remark});
     }
 
     deleteApplyState() {
@@ -413,15 +426,23 @@ class InnerDetail extends React.Component {
         }
         let state = null;
             if(this.props.record.state == 3)
-                state = '通过';
+                state = '已通过';
             if(this.props.record.state == 2)
-                state = '未通过'
+                state = '正在由院长审批'
             if(this.props.record.state == 1)
-                state = '待审核'
+                state = '正在由井老师审批'
+            if(this.props.record.state == 0)
+                state = '正在由场馆管理员审批'
+            if(this.props.record.state == -1)
+                state = '场馆管理员已回绝'
+            if(this.props.record.state == -2)
+                state = '井老师已回绝'
+            if(this.props.record.state == -3)
+                state = '院长已回绝'
         return (
             <MuiThemeProvider>
             <Dialog
-                style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
+                style={{userSelect: "none", width: "1000px", marginLeft: "calc(50% - 400px)"}}
                 title="申请详情"
                 modal={false}
                 open={this.props.open}
@@ -440,27 +461,30 @@ class InnerDetail extends React.Component {
                     <span>活动费用：</span><span>{this.props.record.cost}</span><br />
                     <span>审核状态：</span><span>{state}</span><br />
                     <span>申请备注：</span><span>{this.props.record.remark}</span><br />
+                    <span>上轮审批备注：</span><span>{this.props.record.teacher_remark}</span><br />
                 </div>
                 <div style={{float: "right"}}>
+                <TextField floatingLabelText="原因备注" value={this.props.remark} onChange={(e, v) => this.props.handleRemark(v)} />
                 <RaisedButton
+                    style={{marginLeft: "10px"}}
                     onClick={() => {
+                        this.putApplyState(1);
                         this.props.onRequestClose();
-                        this.putApplyState(3);
                     }}
                     label="同意申请"
                 />
                 <RaisedButton
                     onClick={() => {
+                        this.putApplyState(-1);
                         this.props.onRequestClose();
-                        this.putApplyState(2);
                     }}
                     style={{marginLeft: "20px"}}
                     label="回绝申请"
                 />
                 <RaisedButton
                     onClick={() => {
-                        this.props.onRequestClose();
                         this.deleteApplyState();
+                        this.props.onRequestClose();
                     }}
                     style={{marginLeft: "20px"}}
                     label="删除申请"

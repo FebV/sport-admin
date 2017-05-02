@@ -35,11 +35,11 @@ export default class User {
                 .then(res => res ? res : ED.dispatch({type: 'alert', msg: '管理员列表请求失败'}))
     }
 
-    static getLevel() {
-        if(User.level)
+    static getLevel(force) {
+        if(User.level && !force)
             return User.level;
         return User.level = Request.get({url: API.getLevel, data: {api_token: Auth.getToken()}})
-                        .then(res => res ? res.grade : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
+                        .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
     }
 
     static postPeople({schoolnum, password, grade, campus, realname}) {

@@ -72,7 +72,6 @@ export default class File extends React.Component {
                 </div>
                 <div style={{width: "60%"}}>
                     {this.state.fileList.map((e, idx) => {
-                        console.log(e);
                         return (
                             <div key={e.id}>
                                 <a download={e.title} href={`${API.base}documents/id/${e.id}`}><span>{e.title}</span></a>

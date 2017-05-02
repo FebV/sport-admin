@@ -15,6 +15,9 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Divider from 'material-ui/Divider';
 
+import API from '../../controllers/API'
+import Auth from '../../controllers/Auth'
+
 export default class News extends React.Component {
     constructor(props) {
         super(props);
@@ -82,9 +85,9 @@ export default class News extends React.Component {
         NewsInfoModel.getAllNews(this.page)
             .then(res => {
                 this.page++;
-                if(res.length < 20)     //每次查询记录数
+                if(res.data.length < 20)     //每次查询记录数
                     this.setState({hasMore: false});
-                this.setState({newsList: [...this.state.newsList, ...res]});
+                this.setState({newsList: [...this.state.newsList, ...res.data]});
             });
     }
 
@@ -93,9 +96,9 @@ export default class News extends React.Component {
         NewsInfoModel.getAllNews(this.page)
             .then(res => {
                 this.page++;
-                if(res.length < 20)     //每次查询记录数
+                if(res.data.length < 20)     //每次查询记录数
                     this.setState({hasMore: false});
-                this.setState({newsList: [...this.state.newsList, ...res]});
+                this.setState({newsList: [...this.state.newsList, ...res.data]});
             });
     }
 
@@ -112,7 +115,7 @@ export default class News extends React.Component {
         NewsInfoModel.deleteNews({newsId: this.state.articleDetailId});
     }
 
-    postNews() {
+    postNews(picUrl) {
         this.resetState();
         this.setState({postNewsModalOpen: false})
         if(this.state.mode == 'post') {
@@ -121,16 +124,17 @@ export default class News extends React.Component {
                 writer: this.state.writer,
                 time: this.state.time,
                 article: this.state.article,
+                picture: picUrl,
             })
         }
         else if(this.state.mode == 'edit') {
-            console.log(this.state);
             NewsInfoModel.putNews({
                 newsId: this.state.articleDetailId,
                 title: this.state.title,
                 article: this.state.article,
                 writer: this.state.writer,
                 time: this.state.time,
+                picture: picUrl,
         })
         }
     }
@@ -242,6 +246,9 @@ class PostNewsModal extends React.Component {
             ['clean']
             ],
         }
+        this.state = {
+            picUrl: null,
+        }
     }
 
 
@@ -260,8 +267,6 @@ class PostNewsModal extends React.Component {
         const {title, content, writer, time} = this.state;
 
     }
-
-
 
     render() {
         let {props} = this.props;
@@ -295,6 +300,18 @@ class PostNewsModal extends React.Component {
                 <MuiThemeProvider>                
                     <TextField floatingLabelText="作者" value={props.state.writer} onChange={(e, v) => props.setState({writer: v})} fullWidth={true} />
                 </MuiThemeProvider>
+                <div style={{width:'100%'}}>
+                    <span>选择封面图片</span>
+                    <input type="file" onChange={(e) => {
+                        NewsInfoModel.postCover(e.target.files[0])
+                            .catch(err => e.target.value = '')
+                            .then(res => {
+                                if(res.code != 1)
+                                    return e.target.value = '';
+                                this.setState({picUrl: res.data});
+                            })
+                    }} />
+                </div>
                 </div>
                 <div style={{marginTop: "50px", height: "30%"}}>
                 <ReactQuill modules={this.modules} theme="snow" onChange={(s) => props.setState({article: s})} value={props.state.article} style={{height: "60%"}} />
@@ -304,7 +321,7 @@ class PostNewsModal extends React.Component {
                     <RaisedButton label="取消" onClick={() => this.props.close()} />
                 </MuiThemeProvider>
                 <MuiThemeProvider>
-                    <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={props.postNews.bind(props)} />
+                    <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={() => props.postNews(this.state.picUrl)} />
                 </MuiThemeProvider>
                 </div>
 
@@ -375,5 +392,17 @@ class ArticleDetail extends React.Component {
             />
             </MuiThemeProvider>
         )
+    }
+}
+
+class NewsBanner extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        return (
+            null
+        );
     }
 }

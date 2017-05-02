@@ -36,7 +36,7 @@ const API = {
     //留言板
     getInnerComment: `${base}messages/type/1`, //1内部留言
     postInnerComment: `${base}messages`,
-    deleteInnerComment: id => `${base}messages/${id}`,
+    deleteInnerComment: id => `${base}messages/id/${id}`,
 
     //器材管理
     getEquipment: (campus) => `${base}equipments/campus/${campus}`,
@@ -56,6 +56,8 @@ const API = {
     acceptNews: id => `${base}news/id/${id}`,
     putNews: id => `${base}news/content/id/${id}`,
     deleteNews: id => `${base}news/id/${id}`,
+    //新闻题图
+    postCover: `${base}news/picture`,
 
 //财务相关
     getFinance:`${base}finances`,

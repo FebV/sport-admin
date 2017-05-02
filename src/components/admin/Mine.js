@@ -4,6 +4,7 @@ import Paper from 'material-ui/Paper';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 
 import User from '../../controllers/User';
 import Auth from '../../controllers/Auth';
@@ -63,7 +64,7 @@ export default class Profile extends React.Component {
                 realname: '',
                 campus: '',
                 tel: '',
-                level: '',
+                level: null,
                 switch: [true, true, true, true, true]
             })
         });
@@ -77,10 +78,11 @@ export default class Profile extends React.Component {
                 campus: this.schoolNameMap[res.campus],
                 tel: res.tel
             }));
-        User.getLevel()
-            .then(res => this.setState({
-                level: res,
-            }));
+        User.getLevel(true)
+            .then(res => {
+                //console.log(res);
+                this.setState({level: res})
+            });
     }
 
     putInfo() {
@@ -105,7 +107,7 @@ export default class Profile extends React.Component {
 
     render() {
         return (
-            <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
+            <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <MuiThemeProvider>
             <Paper style={{padding: "50px"}}>
             <div>个人资料</div>
@@ -125,6 +127,58 @@ export default class Profile extends React.Component {
             })}
             </Paper>
             </MuiThemeProvider>
+            {
+                this.state.level
+                    ?
+            <MuiThemeProvider>
+            <Paper style={{width: "80%", textAlign: "center", marginTop: "20px"}}>
+                <h2 style={{margin: "10px"}}>个人权限表</h2>
+            <Table selectable={false} >
+            <TableHeader
+                displaySelectAll={false}
+                adjustForCheckbox={false}
+            >
+                <TableRow>
+                {Object.keys(this.state.level).map( (e, idx) =>{
+                    if(this.schoolNameMap[e])
+                        return <TableHeaderColumn key={idx} >{this.schoolNameMap[e]}</TableHeaderColumn>
+                    else
+                        return null;
+                })}
+                {['财务管理', '新闻审核', '器材管理'].map( (e, idx) => {
+                    return <TableHeaderColumn key={10+idx} >{e}</TableHeaderColumn>
+                })}
+                </TableRow>
+            </TableHeader>
+            {<TableBody
+                displayRowCheckbox={false}
+            >
+            {<TableRow>
+                {Object.keys(this.state.level).map( (e, idx) =>{
+                    const CampusLevelMap = [
+                        '没有权限',
+                        '场馆管理员',
+                        '井老师',
+                        '院长',
+                    ];
+                    if(this.schoolNameMap[e])
+                        return <TableHeaderColumn key={idx} >{CampusLevelMap[this.state.level[e]]}</TableHeaderColumn>
+                    else
+                        return null;
+                })}
+                {['finance', 'news', 'equipment'].map( (e, idx) => {
+                    const OperationMap = ['没有权限', '拥有权限']
+                    return <TableHeaderColumn key={10+idx} >{OperationMap[this.state.level[e]]}</TableHeaderColumn>
+                })}
+                </TableRow>
+            })}
+            </TableBody>}
+            </Table>
+            </Paper>
+            </MuiThemeProvider>
+                :
+                null
+            }
             </div>
         )
     }

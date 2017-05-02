@@ -53,6 +53,7 @@ export default class Equipment extends React.Component {
             trans: [],
             addEquipmentDialogOpen: false,
             transEquipmentDialogOpen: false,
+            editEquipmentDialogOpen: false,
         }
         addEventListener('post equipment ok', () => this.queryEquipment())
         addEventListener('delete equipment ok', () => this.queryEquipment())
@@ -151,6 +152,18 @@ export default class Equipment extends React.Component {
                             className="fa fa-times">
                             </i>
                             <i 
+                            title={"修改"}
+                            style={ this.state.editIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
+                            onMouseOver={() => this.setState({editIndex: idx})}
+                            onMouseLeave={() => this.setState({editIndex: null})}
+                            onClick={ () => {
+                                this.setState({editEquipmentDialogOpen: true});
+                                this.setState({editEquipmentId: e.id});
+                                this.setState({editEquipName: e.equipment_name});
+                            }}
+                            className={"fa fa-pencil-square-o"}>
+                            </i>
+                            <i 
                             title={"变动"}
                             style={ this.state.authIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
                             onMouseOver={() => this.setState({authIndex: idx})}
@@ -178,6 +191,7 @@ export default class Equipment extends React.Component {
             
             <AddEquipment handleClose={() => this.setState({addEquipmentDialogOpen: false})} open={this.state.addEquipmentDialogOpen} />
             <TransEquipment equipment_name={this.state.transEquipName} id={this.state.transEquipmentId} open={this.state.transEquipmentDialogOpen} close={() => this.setState({transEquipmentDialogOpen: false})} />
+            <EditEquipment props={this.state} equipment_name={this.state.editEquipName} id={this.state.editEquipmentId} open={this.state.editEquipmentDialogOpen} close={() => this.setState({editEquipmentDialogOpen: false})} />
             </div>
             </Tab>
             <Tab label="变动记录">
@@ -307,8 +321,8 @@ class AddEquipment extends React.Component {
             equipment_name: this.state.equipment_name,
             buy_date: this.fitDate(this.state.buy_date),
             buy_number: this.state.buy_number,
-            in_number: this.state.in_number,
-            no_number: this.state.no_number,
+            //in_number: this.state.in_number,
+            //no_number: this.state.no_number,
             use_campus: this.state.campus,
             use_number: this.state.use_number,
             price: this.state.price,
@@ -400,7 +414,7 @@ class AddEquipment extends React.Component {
                     value={this.state.buy_number}
                     onChange={(e, v) => this.setState({buy_number: v})}
                 /><br />
-                <TextField
+                {/*<TextField
                     floatingLabelText="在用数量"
                     value={this.state.in_number}
                     onChange={(e, v) => this.setState({in_number: v})}
@@ -409,7 +423,7 @@ class AddEquipment extends React.Component {
                     floatingLabelText="报废数量"
                     value={this.state.no_number}
                     onChange={(e, v) => this.setState({no_number: v})}
-                /><br />
+                /><br />*/}
                 <TextField
                     floatingLabelText="采购价格"
                     value={this.state.price}
@@ -555,5 +569,85 @@ class TransEquipment extends React.Component {
             </Dialog>
             </MuiThemeProvider>
         )
+    }
+}
+
+class EditEquipment extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {}
+    }
+
+    editEquipment() {
+        console.log(`equip`);
+    }
+
+    render() {
+        if(!this.props.id)
+            return null;
+        const equip = this.props.props.equipments.find(e => e.id == this.props.id);
+        console.log(equip);
+        return (
+            <MuiThemeProvider>
+            <Dialog
+                style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
+                title="修改器材"
+                actions={[
+                    <RaisedButton
+                        label="取消"
+                        onClick={this.props.close}
+                    />,
+                    <RaisedButton
+                        style={{marginLeft: "20px"}}
+                        label="确定"
+                        onClick={this.editEquipment.bind(this)}
+                    />
+                    ]}
+                modal={false}
+                open={this.props.open}
+                onRequestClose={this.props.close}
+                autoScrollBodyContent={true}
+            >
+            <div style={{width: "100%", textAlign: "center"}}>
+            
+            <TextField
+                floatingLabelText="体育场馆"
+                value={ equip.gym}
+                disabled={true}
+            /><br />
+            <TextField
+                floatingLabelText="器材名称"
+                value={ equip.equipment_name}
+                disabled={true}
+            /><br />
+            <TextField
+                floatingLabelText="购置日期"
+                value={ equip.buy_date}
+                disabled={true}
+            /><br />
+            <TextField
+                floatingLabelText="购置数量"
+                value={this.state.buy_number || equip.buy_number}           //buy_number or number
+                onChange={(e, v) => this.setState({buy_number: v})}
+            /><br />
+            <TextField
+                floatingLabelText="弃置数量"
+                value={this.state.no_number || equip.no_number}
+                onChange={(e, v) => this.setState({no_number: v})}
+            /><br />
+            <TextField
+                floatingLabelText="在用数量（购置减去弃置）"
+                value={(this.state.buy_number || equip.buy_number) - (this.state.no_number || equip.no_number)}
+                disabled={true}
+            /><br />
+            <TextField
+                floatingLabelText="采购价格"
+                value={equip.price}
+                onChange={(e, v) => this.setState({remark: v})}
+            /><br />
+            </div>
+            </Dialog>
+            </MuiThemeProvider>
+        );
     }
 }
