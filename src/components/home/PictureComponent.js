@@ -75,10 +75,13 @@ export default class PictureComponent extends React.Component{
                 };
 
         this.state.picList=[
-            "../images/cardbg1.png",
-            "../images/cardbg2.jpg",
-            "../images/cardbg1.png",
-            "../images/cardbg2.jpg"
+            "../images/zx1.png",
+            "../images/zh1.png",
+            "../images/hjl5.png",
+            "../images/qfs8.png",
+            "../images/btq3.png",
+            "../images/xls8.png",
+            "../images/xls9.png",
         ]
 
         window.picInterval=setInterval(()=>this.handleNext(),3000);
