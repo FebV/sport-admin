@@ -31,7 +31,7 @@ export default class Apply extends React.Component {
             'rj': '软件园校区',
         },
         this.state = {
-            tel: '',
+            tel: '1',
             start: '',
             end: '',
             campus: 'zx',
@@ -91,7 +91,7 @@ export default class Apply extends React.Component {
             </MuiThemeProvider>
             <div style={{width: "100%", textAlign: "center"}}>
             <MuiThemeProvider>
-                <TextField value={this.state.tel} floatingLabelText="手机号" onChange={(e, v) => this.setState({tel: v})} />
+                <TextField value={this.state.tel} floatingLabelText="手机号（必填）" onChange={(e, v) => this.setState({tel: v})} />
             </MuiThemeProvider>
             <MuiThemeProvider>
             <RaisedButton
@@ -133,20 +133,7 @@ export default class Apply extends React.Component {
                     }
                 }
                 let state = null;
-                if(ele.state == 3)
-                    state = '已通过';
-                if(ele.state == 2)
-                    state = '正在由院长审批'
-                if(ele.state == 1)
-                    state = '正在由井老师审批'
-                if(ele.state == 0)
-                    state = '正在由场馆管理员审批'
-                if(ele.state == -1)
-                    state = '场馆管理员已回绝'
-                if(ele.state == -2)
-                    state = '井老师已回绝'
-                if(ele.state == -3)
-                    state = '院长已回绝'
+                state = ele.state == 3 ? '通过' : ele.record  == -3 ? '未通过' : '正在审核';
                 let targetClsTime = ele.classtime;
                 for(let i in this.serial) {
                     targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
@@ -193,7 +180,7 @@ export default class Apply extends React.Component {
             </MuiThemeProvider>
             <div style={{width: "100%", textAlign: "center"}}>
             <MuiThemeProvider>
-                <TextField floatingLabelText="手机号" onChange={(e, v) => this.setState({tel: v})} />
+                <TextField floatingLabelText="手机号（必填）" onChange={(e, v) => this.setState({tel: v})} />
             </MuiThemeProvider>
             <MuiThemeProvider>
             <RaisedButton
@@ -318,20 +305,7 @@ class InnerDetail extends React.Component {
             targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
         }
         let state = null;
-            if(this.props.record.state == 3)
-                state = '已通过';
-            if(this.props.record.state == 2)
-                state = '正在由院长审批'
-            if(this.props.record.state == 1)
-                state = '正在由井老师审批'
-            if(this.props.record.state == 0)
-                state = '正在由场馆管理员审批'
-            if(this.props.record.state == -1)
-                state = '场馆管理员已回绝'
-            if(this.props.record.state == -2)
-                state = '井老师已回绝'
-            if(this.props.record.state == -3)
-                state = '院长已回绝'
+        state = this.props.record.state == 3 ? '通过' : this.props.record  == -3 ? '未通过' : '正在审核';
         return (
             <MuiThemeProvider>
             <Dialog
@@ -354,34 +328,7 @@ class InnerDetail extends React.Component {
                     <span>活动费用：</span><span>{this.props.record.cost}</span><br />
                     <span>审核状态：</span><span>{state}</span><br />
                     <span>申请备注：</span><span>{this.props.record.remark}</span><br />
-                    <span>上轮审批备注：</span><span>{this.props.record.teacher_remark}</span><br />
-                </div>
-                <div style={{float: "right"}}>
-                <TextField floatingLabelText="原因备注" value={this.props.remark} onChange={(e, v) => this.props.handleRemark(v)} />
-                <RaisedButton
-                    style={{marginLeft: "10px"}}
-                    onClick={() => {
-                        this.putApplyState(1);
-                        this.props.onRequestClose();
-                    }}
-                    label="同意申请"
-                />
-                <RaisedButton
-                    onClick={() => {
-                        this.putApplyState(-1);
-                        this.props.onRequestClose();
-                    }}
-                    style={{marginLeft: "20px"}}
-                    label="回绝申请"
-                />
-                <RaisedButton
-                    onClick={() => {
-                        this.deleteApplyState();
-                        this.props.onRequestClose();
-                    }}
-                    style={{marginLeft: "20px"}}
-                    label="删除申请"
-                />
+                    {/*<span>上轮审批备注：</span><span>{this.props.record.teacher_remark}</span><br />*/}
                 </div>
             </Dialog>
             </MuiThemeProvider>
@@ -433,15 +380,9 @@ class OuterDetail extends React.Component {
                 state = '未通过'
             if(this.props.record.state == 1)
                 state = '待审核'
-        return (
-            <MuiThemeProvider>
-            <Dialog
-                style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
-                title="申请详情"
-                modal={false}
-                open={this.props.open}
-                onRequestClose={this.props.onRequestClose}
-            >
+
+        let oldContent = 
+            <div>
                 <div>
                     <span>校区：</span><span>{this.schoolNameMap[this.props.record.campus]}</span><br />
                     <span>场馆：</span><span>{targetName}</span><br />
@@ -478,6 +419,21 @@ class OuterDetail extends React.Component {
                     label="删除申请"
                 />
                 </div>
+            </div>
+        return (
+            <MuiThemeProvider>
+            <Dialog
+                style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
+                title="申请详情"
+                modal={false}
+                open={this.props.open}
+                onRequestClose={this.props.onRequestClose}
+            >
+            <MuiThemeProvider>
+            <Table>
+
+            </Table>
+            </MuiThemeProvider>
             </Dialog>
             </MuiThemeProvider>
         )

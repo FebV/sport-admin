@@ -9,6 +9,7 @@ import Subheader from 'material-ui/Subheader';
 
 
 import Auth from '../../controllers/Auth';
+import User from '../../controllers/User';
 
 export default class SideBar extends React.Component {
 
@@ -150,7 +151,7 @@ export default class SideBar extends React.Component {
                     {
                         content: "财务管理",
                         link: "/admin/finance",
-                        iconFamily: "fa fa-jpy"                        
+                        iconFamily: "fa fa-jpy"
                     }
                 // ]
             // }
@@ -158,10 +159,28 @@ export default class SideBar extends React.Component {
         isLogin: Auth.isLogin()
     };
     
-
     // addEventListener('login ok', () => {
     //     this.setState({isLogin: Auth.isLogin()});
     //  });
+  }
+
+  componentDidMount() {
+      User.canAuthAccount()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '账户管理')})
+        })
+    User.canAuthEquip()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '器材管理')})
+        })
+    User.canAuthFinance()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '财务管理')})
+        })
+        
   }
 
   handleToggle() {

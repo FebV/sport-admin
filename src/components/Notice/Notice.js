@@ -81,11 +81,13 @@ export default class Notice extends React.Component {
 
             <MuiThemeProvider>
             <div style={{width: "calc(100% - 40px)", display: "flex", justifyContent: "center", padding: "20px"}}>
-            <Paper style={{width: "60%"}}>
+            <div style={{width: "80%", padding: "20px", border: "1px solid rgb(144, 15, 19)", borderRadius: "20px"}}>
+                <h4>最新通知</h4>
+                <hr style={{borderTop: "1px solid black", border: "asda"}} />
             <List>
                 {this.state.comments.map( (ele, idx) => {
                     return (
-                        <Link to={`/notice/${ele.id}`} key={idx}>
+                        <Link to={`/news/${ele.id}`} key={idx}>
                             <div key={idx} style={{padding: "5px 25px"}}>
                             { idx != 0 ? <Divider /> : null}
                             <img src="/static/img/NewsIcon.gif" style={{margin: "0px 10px"}} />
@@ -96,7 +98,7 @@ export default class Notice extends React.Component {
                     )
                 })}
             </List>
-            </Paper>
+            </div>
             </div>
             </MuiThemeProvider>
             </div>
