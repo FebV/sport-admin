@@ -17,12 +17,12 @@ export default class Home extends React.Component {
                         <PictureComponent />
 
                 </div>
-                <div style={{minWidth:'1000px',marginTop:20}}>
+                <div style={{minWidth:'1000px',marginTop:20,display:"flex",flexDirection:"row"}}>
                     <div style={{display:"inline-block",width:'45%',minWidth:'400px'}}>
                         <NewsLetterComponent />
                     </div>
 
-                    <div style={{display:"inline-block",width:'50%',minWidth:'400px'}}><InforComponent/></div>
+                    <div style={{display:"inline-block",width:'50%',minWidth:'400px',marginTop:0}}><InforComponent/></div>
                 </div>
             </div>
         )
