@@ -31,6 +31,15 @@ export default class Finances extends React.Component{
             putFinanceRemark: '',
 
         };
+        this.schoolNameMap = {
+            'mu': '综合体育馆',
+            'zx': '中心校区',
+            'hj': '洪家楼校区',
+            'qf': '千佛山校区',
+            'bt': '趵突泉校区',
+            'xl': '兴隆山校区',
+            'rj': '软件园校区',
+        };
         this.deleteInitStyle =
         {
             marginLeft: "5px",
@@ -62,13 +71,19 @@ export default class Finances extends React.Component{
         }
 
         addEventListener('post finance ok', () => {
-            location.reload()
+            this.page = 1;
+            this.setState({financeArr: []})
+            this.query();
         })
         addEventListener('delete finance ok', () => {
-            this.componentDidMount();
+            this.page = 1;
+            this.setState({financeArr: []})            
+            this.query();
         })
         addEventListener('put finance ok', () => {
-            location.reload()
+            this.page = 1;
+            this.setState({financeArr: []})            
+            this.query();
         })
 
 
@@ -150,7 +165,7 @@ export default class Finances extends React.Component{
                                 return(<TableRow key={idx}>
 
                                         <TableRowColumn title={item.department}>{item.department}</TableRowColumn>
-                                        <TableRowColumn title={item.campus}>{item.campus}</TableRowColumn>
+                                        <TableRowColumn title={this.schoolNameMap[item.campus]}>{this.schoolNameMap[item.campus]}</TableRowColumn>
                                         <TableRowColumn title={item.content}>{item.content}</TableRowColumn>
                                         <TableRowColumn title={item.money}>{item.money}</TableRowColumn>
                                         <TableRowColumn title={item.billing_time}>{item.billing_time}</TableRowColumn>
@@ -368,7 +383,7 @@ class ChangeFinance extends React.Component {
         super(props);
         this.state = {
             department: null,
-            campus: null,
+            campus: 'zx',
             content: null,
             money: null,
             billing_time:null,
@@ -405,6 +420,7 @@ class ChangeFinance extends React.Component {
     }
 
     render() {
+        console.log(this.props);
         return (
             <MuiThemeProvider>
                 <Dialog
@@ -429,7 +445,6 @@ class ChangeFinance extends React.Component {
                     <TextField
                         floatingLabelText="记账单位"
                         defaultValue={this.props.putFinanceDepartment}
-
                         onChange={(e, v) => this.setState({department: v})}
                     /><br />
                     <div style={{width: "100%", textAlign: "center"}}>
@@ -460,12 +475,11 @@ class ChangeFinance extends React.Component {
                     <TextField
                         floatingLabelText="记账费用"
                         defaultValue={this.props.putFinanceMoney}
-
                         onChange={(e, v) => this.setState({money: v})}
                     /><br />
                     <DatePicker
                         style={{display: "inline-block", position: "relative", top: "10px"}}
-                        hintText="更新时间"
+                        hintText= { this.props.putFinanceBilling_time || "更新时间" }
                         DateTimeFormat={Intl.DateTimeFormat}
                         locale="zh-CN"
                         cancelLabel="取消"

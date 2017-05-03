@@ -102,6 +102,7 @@ export default class Main extends React.Component {
                     <Route path="/admin/equipment" component={ AdminEquip } />
                     <Route path="/admin/comment" component={ AdminComment } />
                     <Route path="/admin/file" component={ FileAdmin } />
+                    <Route path="/admin/finance" component={ Finances } />
                 </div>
             </div>
             <AlertBar />

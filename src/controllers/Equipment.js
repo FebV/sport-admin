@@ -15,6 +15,16 @@ export default class User {
             .then(res => res ? res : [])
     }
 
+    static searchByName({name}) {
+        return Request.get({
+            url: API.searchEquipByName(name),
+            data: {
+                api_token: Auth.getToken()
+            }
+        })
+            .then(res => res ? res : [])
+    }
+
     static postEquipment({campus, gym, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark}) {
         Request.post({
             url: API.postEquipment,

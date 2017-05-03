@@ -54,6 +54,7 @@ export default class Equipment extends React.Component {
             addEquipmentDialogOpen: false,
             transEquipmentDialogOpen: false,
             editEquipmentDialogOpen: false,
+            searchWord: '',
         }
         addEventListener('post equipment ok', () => this.queryEquipment())
         addEventListener('delete equipment ok', () => this.queryEquipment())
@@ -68,6 +69,13 @@ export default class Equipment extends React.Component {
     queryTrans() {
         EquipmentModel.getTrans(this.state.campus)
             .then(res => this.setState({trans: res}));
+    }
+
+    search() {
+        EquipmentModel.searchByName({name: this.state.searchWord})
+            .then(res => {
+                this.setState({equipments: res});
+            })
     }
 
     handleDeleteEquipment(id) {
@@ -101,7 +109,11 @@ export default class Equipment extends React.Component {
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
             </MuiThemeProvider>
-            <RaisedButton label="查询" onClick={() => this.queryEquipment()}></RaisedButton>
+            <RaisedButton label="查询" onClick={() => this.queryEquipment()}></RaisedButton><br />
+            </div>
+            或
+            <div>
+                <TextField floatingLabelText="根据名称搜索" value={this.state.searchWord} onChange={(e, v) => this.setState({searchWord: v})} /><i style={{cursor: "pointer"}} className="fa fa-search" onClick={this.search.bind(this)} />
             </div>
             <MuiThemeProvider>
             <Paper style={{width: "90%"}}>
@@ -112,7 +124,9 @@ export default class Equipment extends React.Component {
             >
                 <TableRow>
                 <TableHeaderColumn>体育馆</TableHeaderColumn>
-                <TableHeaderColumn>器材名称</TableHeaderColumn>
+                <TableHeaderColumn><span onClick={() => {
+                    this.setState({equipments: this.state.equipments.sort((a, b) => a.equipment_name > b.equipment_name)})  
+                }}>器材名称</span></TableHeaderColumn>
                 <TableHeaderColumn>购置日期</TableHeaderColumn>
                 <TableHeaderColumn>购置数量</TableHeaderColumn>
                 <TableHeaderColumn>弃置数量</TableHeaderColumn>

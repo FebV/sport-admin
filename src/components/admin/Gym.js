@@ -180,9 +180,9 @@ export default class Gym extends React.Component {
                 <div style={{width: "40%", display:"flex"}}>
                     <div style={{lineHeight: "52px", marginLeft: "1vw"}}>体育教学</div>
                 <div style={{backgroundColor: "red", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
-                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>占用</div>
+                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>开放</div>
                 <div style={{backgroundColor: "green", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
-                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>空闲</div>
+                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>占用</div>
                 <div style={{backgroundColor: "gray", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
                 </div>
             <Table
@@ -391,20 +391,20 @@ class ArrangeModifier extends React.Component {
                 >
                 <Menu>
                     <MenuItem onClick={() => {
-                        this.props.postModify('有课')
+                        this.props.postModify('体育教学')
                         this.props.close();
                         }}
-                        primaryText="调为有课" />
+                        primaryText="调为体育教学" />
                     <MenuItem onClick={() => {
-                        this.props.postModify('空闲')
+                        this.props.postModify('占用')
                         this.props.close();
                         }}
-                        primaryText="调为空闲" />
+                        primaryText="调为占用" />
                     <MenuItem onClick={() => {
-                        this.props.postModify('安排')
+                        this.props.postModify('开放')
                         this.props.close();
                         }}
-                        primaryText="调为安排" />
+                        primaryText="调为开放" />
                 </Menu>
             </Popover>
             </MuiThemeProvider>

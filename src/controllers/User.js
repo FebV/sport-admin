@@ -27,6 +27,17 @@ export default class User {
             .then(res => ED.dispatch({type: 'info put ok', msg: "修改成功"}))
     }
 
+    static putPass({old_password, new_password, new_password_re}) {
+        Request.put({
+            url: API.putPass,
+            data: {
+                api_token: Auth.getToken(),
+                old_password, new_password, new_password_re,
+            }
+        })
+            .then(res => ED.dispatch({type: 'info put ok', msg: "修改成功"}))            
+    }
+
     static getPeople() {
         if(!Auth.isLogin()) {
             return;
@@ -59,7 +70,7 @@ export default class User {
 
     static canAuthFinance() {
         return User.getLevel()
-                .then(res => res.finance);
+                .then(res => res.finance == '1');
     }
 
     static postPeople({schoolnum, password, grade, campus, realname}) {

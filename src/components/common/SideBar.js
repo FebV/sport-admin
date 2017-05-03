@@ -175,6 +175,11 @@ export default class SideBar extends React.Component {
             if(!res)
                 this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '器材管理')})
         })
+    User.canAuthNews()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '新闻管理')})
+        })
     User.canAuthFinance()
         .then(res => {
             if(!res)

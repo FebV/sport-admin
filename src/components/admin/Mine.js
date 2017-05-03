@@ -5,6 +5,8 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import Dialog from 'material-ui/Dialog';
+
 
 import User from '../../controllers/User';
 import Auth from '../../controllers/Auth';
@@ -47,7 +49,8 @@ export default class Profile extends React.Component {
             level: '',
             campus: '',
             tel: '',
-            switch: [true, true, true, true, true]
+            switch: [true, true, true, true, true],
+            changePassDialogOpen: false,
         }
         addEventListener('info put ok', () => this.getInfo.bind(this));
     }
@@ -107,9 +110,9 @@ export default class Profile extends React.Component {
 
     render() {
         return (
-            <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <MuiThemeProvider>
-            <Paper style={{padding: "50px"}}>
+            <Paper style={{padding: "50px", margin: '20px'}}>
             <div>个人资料</div>
             {this.tfs.map( (e, idx) => {
                 const val = e.name == 'campus' ? this.schoolNameMap[this.state[e.name]] : this.state[e.name];
@@ -125,6 +128,7 @@ export default class Profile extends React.Component {
                     </div>
                 );
             })}
+            <RaisedButton style={{float: "right", marginTop: "20px"}} label="修改密码" onClick={() => this.setState({changePassDialogOpen: true})} />
             </Paper>
             </MuiThemeProvider>
             {
@@ -179,7 +183,50 @@ export default class Profile extends React.Component {
                 :
                 null
             }
+            <ChangePassDialog open={this.state.changePassDialogOpen} close={() => this.setState({changePassDialogOpen: false})} />
             </div>
+        )
+    }
+}
+
+class ChangePassDialog extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            oldPass: '',
+            newPass: '',
+            newPassRepeat: '',
+        }
+    }
+
+    render() {
+        return (
+            <MuiThemeProvider>
+            <div>
+            <Dialog
+                contentStyle={{width: "500px"}}
+                title="修改密码"
+                modal={false}
+                open={this.props.open}
+                onRequestClose={this.props.close}
+            >
+            <TextField type="password" floatingLabelText="原密码" value={this.state.oldPass} onChange={(e, v) => this.setState({oldPass: v})} /><br />
+            <TextField type="password" floatingLabelText="新密码" value={this.state.newPass} onChange={(e, v) => this.setState({newPass: v})} /><br />
+            <TextField floatingLabelText="新密码" value={this.state.newPassRepeat} onChange={(e, v) => this.setState({newPassRepeat: v})} errorText={this.state.newPass == this.state.newPassRepeat ? "" : "两次输入不一致"} /><br />
+            <div style={{marginTop: '20px'}}>
+                <RaisedButton label="确认修改" onClick={() => {
+                        this.props.close();
+                        User.putPass({
+                            old_password: this.state.oldPass,
+                            new_password: this.state.newPass,
+                            new_password_re: this.state.newPassRepeat,
+                        })
+                    }} />
+                <RaisedButton style={{marginLeft: '20px'}} label="取消" />
+            </div>
+            </Dialog>
+            </div>
+            </MuiThemeProvider>
         )
     }
 }

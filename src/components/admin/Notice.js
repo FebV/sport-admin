@@ -208,7 +208,7 @@ export default class Notice extends React.Component {
                                     this.setState({mode: 'edit'});
                                     this.queryDetail(1*(ele.id));
                                     this.setState({title: '', writer: '', article: '<h1>加载新闻中</h1>', time: ''});                                    
-                                }} label="编辑新闻" />
+                                }} label="编辑通知" />
                         </TableRowColumn>
                     </TableRow>
                     );

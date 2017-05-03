@@ -10,6 +10,8 @@ const API = {
     putInfo: `${base}users/i/info`,
     getLevel: `${base}users/i/gp`,
     // getInfo: `${base}info.json`,
+    //修改密码
+    putPass: `${base}users/i/pass`,
 
     //People  下属相关
     getPeople: `${base}users/info`,
@@ -52,6 +54,8 @@ const API = {
     transEquipment: `${base}equipments/adjust`,
     getTrans:  (campus) => `${base}equipments/adjust/campus/${campus}`,
     deleteTrans:  (id) => `${base}equipments/adjust/id/${id}`,
+
+    searchEquipByName: name => `${base}equipments/name/${name}`,
 
 
     //新闻相关
