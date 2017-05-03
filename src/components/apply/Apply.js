@@ -31,7 +31,6 @@ export default class Apply extends React.Component {
             tel: '',
             teacher: '',
             teacher_tel: '',
-            cost: '',
             remark: '',
             department: '',
             classtimeDisTable: Array(11).fill(false)
@@ -89,7 +88,6 @@ export default class Apply extends React.Component {
             pnumber: this.state.pnumber,
             charger: this.state.charger,
             tel: this.state.tel,
-            cost: this.state.cost,
             remark: this.state.remark,
             teacher: this.state.teacher,
             teacher_tel: this.state.teacher_tel,
@@ -204,10 +202,6 @@ export default class Apply extends React.Component {
                 <TextField
                     onChange={(e, v) => this.setState({teacher_tel: v})}                
                     floatingLabelText="学院老师电话（手机）"
-                /><br />
-                <TextField
-                    onChange={(e, v) => this.setState({cost: v})}                
-                    floatingLabelText="花费"
                 /><br />
                 <TextField
                     onChange={(e, v) => this.setState({remark: v})}

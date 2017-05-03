@@ -32,11 +32,17 @@ const API = {
     putOuterApply: id => `${base}apply/train/${id}`,
     deleteInnerApply: id => `${base}apply/${id}`,
     deleteOuterApply: id => `${base}apply/train/${id}`,
+    queryInnerApplyByTel: tel => `${base}apply/tel/${tel}`,
+    queryOuterApplyByTel: tel => `${base}apply/train/tel/${tel}`,
+
 
     //留言板
     getInnerComment: `${base}messages/type/1`, //1内部留言
+    getAllInnerComment: `${base}messages/all/type/1`, //1内部留言
     postInnerComment: `${base}messages`,
     deleteInnerComment: id => `${base}messages/id/${id}`,
+
+    acceptInnerComment: id => `${base}messages/id/${id}`,
 
     //器材管理
     getEquipment: (campus) => `${base}equipments/campus/${campus}`,
@@ -58,6 +64,15 @@ const API = {
     deleteNews: id => `${base}news/id/${id}`,
     //新闻题图
     postCover: `${base}news/picture`,
+
+    //通知相关
+    getNotice: `${base}notices/list`,
+    getAllNotice: `${base}notices/list/all`,
+    postNotice: `${base}notices/content`,
+    getNoticeDetail: id => `${base}notices/content/id/${id}`,
+    acceptNotice: id => `${base}notices/id/${id}`,
+    putNotice: id => `${base}notices/content/id/${id}`,
+    deleteNotice: id => `${base}notices/id/${id}`,
 
 //财务相关
     getFinance:`${base}finances`,

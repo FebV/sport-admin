@@ -4,11 +4,11 @@ import Auth from './Auth';
 import ED from './EventDispatcher';
 
 export default class Applies {
-    static postInnerApply({campus, gym, time, classtime, major, content, pnumber, charger, tel, cost, remark, teacher, teacher_tel}) {
+    static postInnerApply({campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel}) {
         Request.post({
             url: API.postApply,
             data: {
-                campus, gym, time, classtime, major, content, pnumber, charger, tel, cost, remark, teacher, teacher_tel
+                campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel
             }
         })
             .then(res => ED.dispatch({type: 'alert', msg: '提交申请成功'}))
@@ -82,5 +82,21 @@ export default class Applies {
             }
         })
             .then(res => ED.dispatch({type: "delete outerApply ok"}))
+    }
+
+    static queryInnerApplyByTel({tel}) {
+        return Request.get({
+            url: API.queryInnerApplyByTel(tel),
+            data: {}
+        })
+            .then(res => res ? res : null)
+    }
+
+    static queryOuterApplyByTel({tel}) {
+        return Request.get({
+            url: API.queryOuterApplyByTel(tel),
+            data: {}
+        })
+            .then(res => res ? res : null)
     }
 }

@@ -42,6 +42,26 @@ export default class User {
                         .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
     }
 
+    static canAuthAccount() {
+        return User.getInfo()
+                .then(res => res.schoolnum == 'root');
+    }
+
+    static canAuthNews() {
+        return User.getLevel()
+                .then(res => res.news == '1');
+    }
+
+    static canAuthEquip() {
+        return User.getLevel()
+                .then(res => res.equipment == '1')
+    }
+
+    static canAuthFinance() {
+        return User.getLevel()
+                .then(res => res.finance);
+    }
+
     static postPeople({schoolnum, password, grade, campus, realname}) {
         return Request.post({url: API.postPeople,
             data:{

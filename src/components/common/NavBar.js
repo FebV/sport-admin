@@ -91,7 +91,18 @@ export default class NavBar extends React.Component {
             {
                 iconFamily: "fa fa-pencil-square-o",
                 content: "场馆申请",
-                link: "/apply",
+                subItems: [
+                    {
+                        content: "申请场馆",
+                        link: "/apply",
+                        iconFamily: "fa fa-location-arrow"                        
+                    },
+                    {
+                        content: "申请结果",
+                        link: "/result",
+                        iconFamily: "fa fa-location-arrow"                        
+                    },
+                ],
             },
             {
                 iconFamily: "fa fa-cloud-download",

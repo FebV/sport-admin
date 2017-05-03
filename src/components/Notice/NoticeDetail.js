@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NewsInfoModel from '../../controllers/NewsInfo';
+import NoticeInfoModel from '../../controllers/Notice';
 
 export default class NoticeDetail extends React.Component {
     constructor(props){
@@ -14,7 +14,8 @@ export default class NoticeDetail extends React.Component {
     }
     
     componentDidMount() {
-        NewsInfoModel.getNewsDetail(this.props.match.params.id)
+        console.log(`notice`);
+        NoticeInfoModel.getNoticeDetail(this.props.match.params.id)
             .then(res => {
                 this.setState(res);
             })

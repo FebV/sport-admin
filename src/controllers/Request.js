@@ -5,7 +5,11 @@ export default class Request {
 
     static get({url, data}) {
         return fetch(`${url}?${Request.parseData({data})}`)
-                .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
+                .catch(err => {
+                    ED.dispatch({type: "alert", msg: "网络错误"})
+                    throw new Error(`网络错误`)
+
+                })
                 .then(res => res.json())
                 .catch(res => {
                     ED.dispatch({type: "alert", msg: `解析时出错`})
@@ -29,8 +33,11 @@ export default class Request {
                     },
                     body: Request.parseData({data})
                 })
-                    .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
-                    .then(res => res.json())
+                .catch(err => {
+                    ED.dispatch({type: "alert", msg: "网络错误"})
+                    throw new Error(`网络错误`)
+
+                })                    .then(res => res.json())
                     .catch(res => {
                         ED.dispatch({type: "alert", msg: `解析时出错`})
                         throw new Error(`解析时出错`)
@@ -52,7 +59,11 @@ export default class Request {
                     },
                     body: Request.parseData({data})
                 })
-                    .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
+                    .catch(err => {
+                        ED.dispatch({type: "alert", msg: "网络错误"})
+                        throw new Error(`网络错误`)
+
+                    })     
                     .then(res => res.json())
                     .catch(res => {
                         ED.dispatch({type: "alert", msg: `解析时出错`})
@@ -75,7 +86,11 @@ export default class Request {
                     },
                     body: Request.parseData({data})
                 })
-                    .catch(err => ED.dispatch({type: "alert", msg: "网络错误"}))
+                    .catch(err => {
+                        ED.dispatch({type: "alert", msg: "网络错误"})
+                        throw new Error(`网络错误`)
+
+                    })     
                     .then(res => res.json())
                     .catch(res => {
                         ED.dispatch({type: "alert", msg: `解析时出错`})
