@@ -64,7 +64,7 @@ class NewsListComponent extends React.Component{
 
     componentDidMount() {
         NewsModel.getPublishedNews(1, 5)
-            .then(res => this.setState({newsList: res}));
+            .then(res => this.setState({newsList: res.data}));
     }
     
     render(){

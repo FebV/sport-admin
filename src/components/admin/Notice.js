@@ -8,7 +8,7 @@ import ReactQuill from 'react-quill';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
-import NewsInfoModel from '../../controllers/NewsInfo';
+import NoticeInfoModel from '../../controllers/Notice';
 import Dialog from 'material-ui/Dialog';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
@@ -18,15 +18,15 @@ import Divider from 'material-ui/Divider';
 import API from '../../controllers/API'
 import Auth from '../../controllers/Auth'
 
-export default class News extends React.Component {
+export default class Notice extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            newsList: [],
-            postNewsModalOpen: false,
+            noticeList: [],
+            postNoticeModalOpen: false,
             articleDetailModalOpen: false,
             articleDetailId: null,
-            newsDetail: null,
+            noticeDetail: null,
             mode: 'post', //or edit
             title: '',
             writer: '',
@@ -54,72 +54,72 @@ export default class News extends React.Component {
     }
 
     resetState() {
-        this.setState({title: '', writer: '', article: '', time: '选择日期', newsList: []});
+        this.setState({title: '', writer: '', article: '', time: '选择日期', noticeList: []});
         this.page = 1;
         this.loading = false;
         this.hasMore = true;
     }
 
     componentDidMount() {
-        addEventListener('put news ok', () => {
+        addEventListener('put notice ok', () => {
             this.resetState();
             this.query();
         });
-        addEventListener('post news ok', () => {
+        addEventListener('post notice ok', () => {
             this.resetState();
             this.query();
         });
-        addEventListener('accept news ok', () => {
+        addEventListener('accept notice ok', () => {
             this.resetState();
             this.query();
         });
-        addEventListener('decline news ok', () => {
+        addEventListener('decline notice ok', () => {
             this.resetState();
             this.query();
         });
-        addEventListener('delete news ok', () => {
+        addEventListener('delete notice ok', () => {
             this.resetState();
             this.query();
         });
         this.loading = true;
-        NewsInfoModel.getAllNews(this.page)
+        NoticeInfoModel.getAllNotice(this.page)
             .then(res => {
                 this.page++;
                 if(res.data.length < 20)     //每次查询记录数
                     this.setState({hasMore: false});
-                this.setState({newsList: [...this.state.newsList, ...res.data]});
+                this.setState({noticeList: [...this.state.noticeList, ...res.data]});
             });
     }
 
     query() {
         this.loading = true;
-        NewsInfoModel.getAllNews(this.page)
+        NoticeInfoModel.getAllNotice(this.page)
             .then(res => {
                 this.page++;
                 if(res.data.length < 20)     //每次查询记录数
                     this.setState({hasMore: false});
-                this.setState({newsList: [...this.state.newsList, ...res.data]});
+                this.setState({noticeList: [...this.state.noticeList, ...res.data]});
             });
     }
 
     queryDetail(id) {
-        NewsInfoModel.getNewsDetail(id)
+        NoticeInfoModel.getNoticeDetail(id)
             .then(res => {
                 console.log(res);
                 this.setState(res)
             });
     }
 
-    deleteNews() {
+    deleteNotice() {
         this.setState({articleDetailModalOpen: false});
-        NewsInfoModel.deleteNews({newsId: this.state.articleDetailId});
+        NoticeInfoModel.deleteNotice({noticeId: this.state.articleDetailId});
     }
 
-    postNews(picUrl='') {
+    postNotice(picUrl='') {
         this.resetState();
-        this.setState({postNewsModalOpen: false})
+        this.setState({postNoticeModalOpen: false})
         if(this.state.mode == 'post') {
-            NewsInfoModel.postNews({
+            NoticeInfoModel.postNotice({
                 title: this.state.title,
                 writer: this.state.writer,
                 time: this.state.time,
@@ -128,8 +128,8 @@ export default class News extends React.Component {
             })
         }
         else if(this.state.mode == 'edit') {
-            NewsInfoModel.putNews({
-                newsId: this.state.articleDetailId,
+            NoticeInfoModel.putNotice({
+                noticeId: this.state.articleDetailId,
                 title: this.state.title,
                 article: this.state.article,
                 writer: this.state.writer,
@@ -152,7 +152,7 @@ export default class News extends React.Component {
 
 
     render() {
-        // console.log(this.state.newsDetail);
+        // console.log(this.state.noticeDetail);
         return (
             <div style={{padding: "20px", width: "calc(100% - 40px)", height: "clac(100% - 20px)", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             <MuiThemeProvider>
@@ -176,7 +176,7 @@ export default class News extends React.Component {
             <TableBody
                 displayRowCheckbox={false}
             >
-                {this.state.newsList.map((ele, idx) => {
+                {this.state.noticeList.map((ele, idx) => {
                     let state = '未知';
                     if(ele.state == 1)
                         state = '未审核';
@@ -203,7 +203,7 @@ export default class News extends React.Component {
                         <TableRowColumn>
                             <RaisedButton onClick={() => {
                                     this.setState({articleDetailId: 1*(ele.id)});
-                                    this.setState({postNewsModalOpen: true});
+                                    this.setState({postNoticeModalOpen: true});
                                     this.setState({articleIdx: idx});
                                     this.setState({mode: 'edit'});
                                     this.queryDetail(1*(ele.id));
@@ -221,20 +221,20 @@ export default class News extends React.Component {
             </MuiThemeProvider>
                 <MuiThemeProvider>
                 <FloatingActionButton onClick={() => {
-                    this.setState({postNewsModalOpen: true});
+                    this.setState({postNoticeModalOpen: true});
                     this.setState({title: '', writer: '', article: '', time: '选择日期'});
                     }} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                     <i className="fa fa-plus fa-lg"></i>
                 </FloatingActionButton>
                 </MuiThemeProvider>
-            <PostNewsModal open={this.state.postNewsModalOpen} close={() => this.setState({postNewsModalOpen: false})} mode={this.state.mode} news={this.state.newsDetail} newsId={this.state.articleDetailId} props={this} detail={this.state.newsDetail} />
-            <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} newsId={this.state.articleDetailId} props={this} deleteNews={this.deleteNews.bind(this)} />
+            <PostNoticeModal open={this.state.postNoticeModalOpen} close={() => this.setState({postNoticeModalOpen: false})} mode={this.state.mode} notice={this.state.noticeDetail} noticeId={this.state.articleDetailId} props={this} detail={this.state.noticeDetail} />
+            <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} noticeId={this.state.articleDetailId} props={this} deleteNotice={this.deleteNotice.bind(this)} />
             </div>
         )
     }
 }
 
-class PostNewsModal extends React.Component {
+class PostNoticeModal extends React.Component {
     constructor(props) {
         super(props);
         this.modules =  {
@@ -275,7 +275,7 @@ class PostNewsModal extends React.Component {
             <Dialog
                 autoScrollBodyContent={true}
                 style={{userSelect: "none", width: "60%", marginLeft: "20%"}}
-                title="发布新闻"
+                title="发布通知"
                 modal={true}
                 open={this.props.open}
                 onRequestClose={this.props.close}
@@ -300,18 +300,6 @@ class PostNewsModal extends React.Component {
                 <MuiThemeProvider>                
                     <TextField floatingLabelText="作者" value={props.state.writer} onChange={(e, v) => props.setState({writer: v})} fullWidth={true} />
                 </MuiThemeProvider>
-                <div style={{width:'100%'}}>
-                    <span>选择封面图片</span>
-                    <input type="file" onChange={(e) => {
-                        NewsInfoModel.postCover(e.target.files[0])
-                            .catch(err => e.target.value = '')
-                            .then(res => {
-                                if(res.code != 1)
-                                    return e.target.value = '';
-                                this.setState({picUrl: res.data});
-                            })
-                    }} />
-                </div>
                 </div>
                 <div style={{marginTop: "50px", height: "30%"}}>
                 <ReactQuill modules={this.modules} theme="snow" onChange={(s) => props.setState({article: s})} value={props.state.article} style={{height: "60%"}} />
@@ -321,7 +309,7 @@ class PostNewsModal extends React.Component {
                     <RaisedButton label="取消" onClick={() => this.props.close()} />
                 </MuiThemeProvider>
                 <MuiThemeProvider>
-                    <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={() => props.postNews(this.state.picUrl)} />
+                    <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={() => props.postNotice(this.state.picUrl)} />
                 </MuiThemeProvider>
                 </div>
 
@@ -340,12 +328,12 @@ class ArticleDetail extends React.Component {
     }
 
     accept() {
-        NewsInfoModel.acceptNews({newsId: this.props.newsId});
+        NoticeInfoModel.acceptNotice({noticeId: this.props.noticeId});
         this.props.close();
     }
 
     decline() {
-        NewsInfoModel.declineNews({newsId: this.props.newsId});
+        NoticeInfoModel.declineNotice({noticeId: this.props.noticeId});
         this.props.close();        
     }
 
@@ -370,7 +358,7 @@ class ArticleDetail extends React.Component {
                         <MuiThemeProvider>
                             <RaisedButton label="取消" onClick={() => this.props.close()} />
                         </MuiThemeProvider><MuiThemeProvider>
-                            <RaisedButton style={{marginLeft: "20px"}} label="删除新闻" onClick={() => this.props.deleteNews()} />
+                            <RaisedButton style={{marginLeft: "20px"}} label="删除新闻" onClick={() => this.props.deleteNotice()} />
                         </MuiThemeProvider>
                         <MuiThemeProvider>
                             <RaisedButton style={{marginLeft: "20px"}} label="不通过" onClick={this.decline.bind(this)} />
@@ -395,7 +383,7 @@ class ArticleDetail extends React.Component {
     }
 }
 
-class NewsBanner extends React.Component {
+class NoticeBanner extends React.Component {
     constructor(props) {
         super(props);
     }

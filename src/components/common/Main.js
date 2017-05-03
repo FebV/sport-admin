@@ -1,5 +1,5 @@
 import React from 'react';
-import { Route, Link }from 'react-router-dom';
+import { BrowserRouter as Router, Route, Link }from 'react-router-dom';
 
 import HeaderBar from './HeadBar';
 import SideBar from './SideBar';
@@ -10,22 +10,26 @@ import Home from '../home/Home';
 import News from '../NewsInfo/News';
 import Notice from '../Notice/Notice';
 import NewsDetail from '../NewsInfo/NewsDetail.js';
+import NoticeDetail from '../Notice/NoticeDetail';
 import Intro from '../intro/Intro';
 import File from '../File/file';
 import Apply from '../apply/Apply';
+import ApplyResult from '../apply/ApplyResult';
 import Comment from '../comment/Comment';
 import Query from '../query/Query';
 import Admin from '../admin/Admin';
 import Mine from '../admin/Mine';
 import AdminNews from '../admin/News';
+import AdminNotice from '../admin/Notice';
 import Account from '../admin/Account';
 import Gym from '../admin/Gym';
 import AdminApply from '../admin/Apply';
 import AdminEquip from '../admin/Equipment';
+import AdminComment from '../admin/Comment';
 //import DownLoad from '../DownLoad/DownLoad';
 import Finances from '../admin/Finances';
 import FileAdmin from '../admin/File';
-
+import ReactCSSTransitionGroup from 'react-addons-transition-group';
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -71,14 +75,15 @@ export default class Main extends React.Component {
                 <Route exact path="/news" component={ News } />
                 <Route path="/news/:id" component={ NewsDetail } />
                 <Route exact path="/notice" component={ Notice } />                
+                <Route path="/notice/:id" component={ NoticeDetail } />
                 <Route path="/intro" component={ Intro } />
                 <Route path="/apply" component={ Apply } />
+                <Route path="/result" component={ ApplyResult } />
                 <Route path="/comment" component={ Comment } />
                 <Route path="/query" component={ Query } />
                 <Route path="/file" component={ File } />
-                {/*<Route path="/download" component={ DownLoad } />*/}
 
-                    <Route exact path="/intro" component={ Admin } />
+                <Route exact path="/intro" component={ Admin } />
                     <Route path="/intro/Btq"  />
                     <Route path="/intro/Hjl"  />
                     <Route path="/intro/Qfs" />
@@ -88,14 +93,15 @@ export default class Main extends React.Component {
 
 
                 <Route path="/admin" component={ Admin } />
-                <Route path="/admin/mine" component={ Mine } />
-                <Route path="/admin/news" component={ AdminNews } />
-                <Route path="/admin/account" component={ Account } />
-                <Route path="/admin/gym" component={ Gym } />
-                <Route path="/admin/apply" component={ AdminApply } />
-                <Route path="/admin/equipment" component={ AdminEquip } />
-                <Route path="/admin/finance" component={ Finances } />
-                <Route path="/admin/file" component={ FileAdmin } />
+                    <Route path="/admin/mine" component={ Mine } />
+                    <Route path="/admin/news" component={ AdminNews } />
+                    <Route path="/admin/notice" component={ AdminNotice } />
+                    <Route path="/admin/account" component={ Account } />
+                    <Route path="/admin/gym" component={ Gym } />
+                    <Route path="/admin/apply" component={ AdminApply } />
+                    <Route path="/admin/equipment" component={ AdminEquip } />
+                    <Route path="/admin/comment" component={ AdminComment } />
+                    <Route path="/admin/file" component={ FileAdmin } />
                 </div>
             </div>
             <AlertBar />

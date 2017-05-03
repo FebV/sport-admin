@@ -9,7 +9,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {List, ListItem} from 'material-ui/List';
 import Subheader from 'material-ui/Subheader';
 import Divider from 'material-ui/Divider';
-import NewsModel from '../../controllers/NewsInfo';
+import NoticeModel from '../../controllers/Notice';
 import { Link } from 'react-router-dom';
 
 export default class InforComponent extends React.Component{
@@ -40,12 +40,12 @@ class InforListComponent extends React.Component{
     constructor(props){
         super(props);
         this.state = {
-            newsList: [],
+            noticeList: [],
         }
     }
     componentDidMount() {
-        NewsModel.getPublishedNews(1, 5)
-            .then(res => this.setState({newsList: res}));
+        NoticeModel.getPublishedNotice(1, 5)
+            .then(res => this.setState({noticeList: res.data}));
     }
     render(){
         return(
@@ -53,10 +53,10 @@ class InforListComponent extends React.Component{
                 <Subheader>通知</Subheader>
                 <Divider />
                 <List>
-                    {this.state.newsList.map( (e, idx) => {
+                    {this.state.noticeList.map( (e, idx) => {
                         console.log(e);
                         return (
-                            <Link key={idx} to={`/news/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<p style={{float:"right"}}>{e.time}</p>} /></Link>
+                            <Link key={idx} to={`/notice/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<p style={{float:"right"}}>{e.time}</p>} /></Link>
                         )
                     })}
 

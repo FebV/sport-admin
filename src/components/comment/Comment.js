@@ -63,7 +63,7 @@ export default class Comment extends React.Component {
     query() {
         this.setState({loading: true});
         this.isLoading = true;
-        CommentModel.getInnerComment(this.page)
+        CommentModel.getPublishedComment(this.page)
             .then(res => {
                 console.log(res);
                 this.isLoading = false;
@@ -162,7 +162,7 @@ class PostCommentDialog extends React.Component{
     }
 
     postComment() {
-        CommentModel.postInnerComment({
+        CommentModel.postComment({
             title: this.state.title,
             content: this.state.content,
             name: this.state.name,
@@ -229,7 +229,7 @@ class DeleteDialog extends React.Component {
     }
 
     deleteComment() {
-        CommentModel.deleteInnerComment({id: this.props.deleteCommentId});
+        CommentModel.deleteComment({id: this.props.deleteCommentId});
         this.props.close();
     }
 

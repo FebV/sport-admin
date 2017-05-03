@@ -64,12 +64,12 @@ export default class Gym extends React.Component {
 
     showStatus(status) {
         let backgroundColor = null;
-        if(status == '有课')
+        if(status == '体育教学')
             backgroundColor = 'red';
-        if(status == '空闲')
+        if(status == '开放')
             backgroundColor = 'green';
-        if(status == '安排')
-            backgroundColor = 'white';
+        if(status == '占用')
+            backgroundColor = 'gray';
         return backgroundColor;
     }
 
@@ -177,13 +177,13 @@ export default class Gym extends React.Component {
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
             <MuiThemeProvider>
             <Paper style={{width: "90%", textAlign: "center"}}>
-                <div style={{width: "40%", display:"flex", justifyContent: "space-around"}}>
-                    <div style={{lineHeight: "52px"}}>有课</div>
-                <div style={{backgroundColor: "red", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
-                    <div style={{lineHeight: "52px"}}>已部分安排</div>
-                <div style={{backgroundColor: "green", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
-                    <div style={{lineHeight: "52px"}}>空闲</div>
-                <div style={{backgroundColor: "white", width: "5vw", height: "52px", border: "2px solid gray", display: "inline-block"}}></div>
+                <div style={{width: "40%", display:"flex"}}>
+                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>体育教学</div>
+                <div style={{backgroundColor: "red", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
+                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>占用</div>
+                <div style={{backgroundColor: "green", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
+                    <div style={{lineHeight: "52px", marginLeft: "1vw"}}>空闲</div>
+                <div style={{backgroundColor: "gray", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
                 </div>
             <Table
                 onCellClick={(r, c, p, e) => {

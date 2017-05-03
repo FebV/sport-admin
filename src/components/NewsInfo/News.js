@@ -18,6 +18,8 @@ import Carousel from 'react-bootstrap/lib/Carousel';
 import Auth from '../../controllers/Auth';
 import { Link } from 'react-router-dom';
 
+import API from '../../controllers/API'
+
 export default class News extends React.Component {
     constructor(props) {
         super(props);
@@ -66,10 +68,11 @@ export default class News extends React.Component {
             .then(res => {
                 this.isLoading = false;
                 this.setState({loading: false});
-                if(res.length > 0) {
-                    this.setState({comments: [...this.state.comments, ...res]});
+                console.log(res);
+                if(res.data.length > 0) {
+                    this.setState({comments: [...this.state.comments, ...res.data]});
                 }
-                if(res.length < 20){
+                if(res.data.length < 20){
                     this.setState({hasMore: false})
                 }
             });
@@ -80,27 +83,21 @@ export default class News extends React.Component {
             <div style={{width: "100%", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center"}}>
             <div style={{width: "900px"}}>
             <Carousel>
-                <Carousel.Item>
-                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
-                <Carousel.Caption>
-                    <h3>First slide label</h3>
-                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
-                <Carousel.Caption>
-                    <h3>Second slide label</h3>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
-                <Carousel.Item>
-                <img width={900} height={500} alt="900x500" src="/static/img/carousel.png"/>
-                <Carousel.Caption>
-                    <h3>Third slide label</h3>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur.</p>
-                </Carousel.Caption>
-                </Carousel.Item>
+                {this.state.comments.map( (ele, idx) => {
+                    if(ele.picture)
+                        return (
+                            <Carousel.Item key={idx}>
+                            <Link to={`/news/${ele.id}`}>
+                            <img width={900} height={500} alt="900x500" src={`${API.base}news/picture/path/${ele.picture}`} />
+                            <Carousel.Caption>
+                                <h3>{ele.title}</h3>
+                            </Carousel.Caption>
+                            </Link>
+                            </Carousel.Item>
+                        )
+                    else
+                        return null;
+                })}
             </Carousel>
             </div>
 

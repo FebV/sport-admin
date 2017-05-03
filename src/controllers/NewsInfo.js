@@ -34,10 +34,10 @@ export default class News {
     }
 
 
-    static postNews({title, time, article, writer}) {
+    static postNews({title, time, article, writer, picture=''}) {
         Request.post({
             url: API.postNews,
-            data: {api_token: Auth.getToken(), title, time, article, writer}
+            data: {api_token: Auth.getToken(), title, time, article, writer, picture}
         })
             .then(res => ED.dispatch({type: 'post news ok'}));
     }
@@ -57,15 +57,17 @@ export default class News {
         })
             .then(res => ED.dispatch({type: 'decline news ok'}));
     }
-    static putNews({newsId, title, article, time, writer}) {
+    static putNews({newsId, title, article, time, writer, picture=''}) {
         Request.put({
             url: API.putNews(newsId),
             data: {
                 api_token: Auth.getToken(),
+                newsId: newsId,
                 title,
                 time,
                 writer,
                 article,
+                picture,
             }
         })
             .then(res => ED.dispatch({type: 'put news ok'}));
@@ -79,5 +81,31 @@ export default class News {
             }
         })
             .then(res => ED.dispatch({type: 'delete news ok'}));
+    }
+
+    static postCover(file) {
+        const fd = new FormData();
+        fd.append('newspicture', file);
+        fd.append('api_token', Auth.getToken())
+        return fetch(API.postCover, {
+            method: "POST",
+            body: fd
+        })
+            .catch(err => {
+                ED.dispatch({type: 'alert', msg: '网络错误'});
+                throw new Error(err);
+            })
+            .then(res => res.json())
+            .catch(err => {
+                ED.dispatch({type: 'alert', msg: '解析错误'})
+                throw new Error(err);
+            })
+            .then(res => {
+                if(res.code == 1)
+                    ED.dispatch({type: 'alert', msg: '选择封面成功'})
+                else
+                    ED.dispatch({type: 'alert', msg: '选择封面失败'})
+                return res;
+            })
     }
 }

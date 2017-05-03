@@ -9,12 +9,14 @@ import Subheader from 'material-ui/Subheader';
 
 
 import Auth from '../../controllers/Auth';
+import User from '../../controllers/User';
 
 export default class SideBar extends React.Component {
 
   constructor(props) {
     super(props);
-    this.sideBarItems = [
+    this.state = 
+    {       sideBarItems: [
             {
                 iconFamily: "fa fa-home",
                 content: "主页",
@@ -104,82 +106,86 @@ export default class SideBar extends React.Component {
                     {
                         content: "个人中心",
                         link: "/admin/mine",
-                        iconFamily: "fa fa-cogs"
+                        iconFamily: "fa fa-user-circle-o"
+                    },
+                    {
+                        content: "账户管理",
+                        iconFamily: "fa fa-user-plus",
+                        link: "/admin/account",
                     },
                     {
                         content: "新闻管理",
                         link: "/admin/news",
-                        iconFamily: "fa fa-cogs"
+                        iconFamily: "fa fa-newspaper-o"
+                    },
+                    {
+                        content: "通知管理",
+                        link: "/admin/notice",
+                        iconFamily: "fa fa-paper-plane"
+                    },
+                    {
+                        content: "留言管理",
+                        link: "/admin/comment",
+                        iconFamily: "fa fa-envelope"
                     },
                     {
                         content: "场馆管理",
                         link: "/admin/gym",
-                        iconFamily: "fa fa-cogs"                        
+                        iconFamily: "fa fa-university"                        
                     },
-                    {
-                        content: "账户管理",
-                        iconFamily: "fa fa-cogs",
-                        link: "/admin/account",
-                    },
-                    // {
-                    //     content: "管理员留言",
-                    //     link: "/admin/comment",
-                    //     iconFamily: "fa fa-cogs"                        
-                    // },
                     {
                         content: "申请管理",
                         link: "/admin/apply",
-                        iconFamily: "fa fa-cogs"                        
+                        iconFamily: "fa fa-pencil-square-o"                        
                     },
                     {
                         content: "器材管理",
                         link: "/admin/equipment",
-                        iconFamily: "fa fa-cogs"                        
+                        iconFamily: "fa fa-futbol-o"                        
                     },
                     {
                         content: "文件管理",
                         link: "/admin/file",
-                        iconFamily: "fa fa-cogs"                        
+                        iconFamily: "fa fa-file-archive-o"                        
                     },
                     {
                         content: "财务管理",
                         link: "/admin/finance",
-                        iconFamily: "fa fa-cogs"                        
+                        iconFamily: "fa fa-jpy"
                     }
                 // ]
             // }
-        ];
-    this.state = {
+        ],
         isLogin: Auth.isLogin()
-    }
+    };
     
+    // addEventListener('login ok', () => {
+    //     this.setState({isLogin: Auth.isLogin()});
+    //  });
+  }
 
-    addEventListener('log status change', () => {
-//        this.setState({logfin: Auth.isLogin()});
-        this.setState({isLogin: Auth.isLogin()});
-     } );
+  componentDidMount() {
+      User.canAuthAccount()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '账户管理')})
+        })
+    User.canAuthEquip()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '器材管理')})
+        })
+    User.canAuthFinance()
+        .then(res => {
+            if(!res)
+                this.setState({sideBarItems: this.state.sideBarItems.filter(ele => ele.content != '财务管理')})
+        })
+        
   }
 
   handleToggle() {
       this.setState({open: !this.state.open});
   }
-  /*
-  {this.sideBarItems.map(
-                (e, idx) => {
-                    if(e.option && !this.state.isLogin)
-                        return null;
-                    let isCurrent = "white";
-                    if(e.link == location.pathname)
-                        isCurrent = "lightgray"
-                    return (
-                    <Link key={idx} to={e.link}>
-                        <MenuItem style={{height: "8vh", lineHeight: "8vh", backgroundColor: isCurrent, fontSize: "15px"}}>
-                            <i style={{width:"5vh"}} className={e.iconFamily}></i>
-                            {e.content}
-                        </MenuItem>
-                    </Link>
-                )
-                })}*/
 
   render() {
     return (
@@ -192,7 +198,7 @@ export default class SideBar extends React.Component {
             onRequestChange={this.props.handleDrawer}
             >
             <List style={{padding: "12vh 0px"}}>
-            {this.sideBarItems.map( (e, idx) => {
+            {this.state.sideBarItems.map( (e, idx) => {
                 let subItems = [];
                 if(e.subItems) {
                     subItems = e.subItems.map( (se, sidx) => {
@@ -215,6 +221,7 @@ export default class SideBar extends React.Component {
                         leftIcon={<i className={e.iconFamily} style={{marginTop: "17px"}}></i>}
                         nestedItems={subItems}
                         primaryTogglesNestedList={true}
+                        style={{backgroundColor: location.pathname == e.link ? 'lightgray' : 'white'}}
                     />
                 )
             })}

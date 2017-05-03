@@ -18,11 +18,11 @@ module.exports = {
     },
     devServer: {
         host: "0.0.0.0",
-        hot: true,
+        // hot: true,
         contentBase: './src',
         historyApiFallback: true
     },
     plugins: [
-        new webpack.HotModuleReplacementPlugin()
+        //new webpack.HotModuleReplacementPlugin()
     ]
 }

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import NewsModel from '../../controllers/NewsInfo'
+import NoticeModel from '../../controllers/Notice'
 import TextField from 'material-ui/TextField';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {Card, CardActions, CardHeader, CardText} from 'material-ui/Card';
@@ -62,14 +62,14 @@ export default class Notice extends React.Component {
             return;
         this.setState({loading: true});
         this.isLoading = true;
-        NewsModel.getPublishedNews(this.page, 20)
+        NoticeModel.getPublishedNotice(this.page, 20)
             .then(res => {
                 this.isLoading = false;
                 this.setState({loading: false});
-                if(res.length > 0) {
-                    this.setState({comments: [...this.state.comments, ...res]});
+                if(res.data.length > 0) {
+                    this.setState({comments: [...this.state.comments, ...res.data]});
                 }
-                if(res.length < 20){
+                if(res.data.length < 20){
                     this.setState({hasMore: false})
                 }
             });
@@ -81,7 +81,9 @@ export default class Notice extends React.Component {
 
             <MuiThemeProvider>
             <div style={{width: "calc(100% - 40px)", display: "flex", justifyContent: "center", padding: "20px"}}>
-            <Paper style={{width: "60%"}}>
+            <div style={{width: "80%", padding: "20px", border: "1px solid rgb(144, 15, 19)", borderRadius: "20px"}}>
+                <h4>最新通知</h4>
+                <hr style={{borderTop: "1px solid black", border: "asda"}} />
             <List>
                 {this.state.comments.map( (ele, idx) => {
                     return (
@@ -96,7 +98,7 @@ export default class Notice extends React.Component {
                     )
                 })}
             </List>
-            </Paper>
+            </div>
             </div>
             </MuiThemeProvider>
             </div>
@@ -173,11 +175,11 @@ export default class Notice extends React.Component {
                 close={() => this.setState({deleteDialogOpen: false})}
                 deleteCommentId={this.state.deleteCommentId}
             />*/}
-// class News extends React.Component {
+// class Notice extends React.Component {
 //     constructor(props) {
 //         super(props);
 //         this.state = {
-//             newslist: [],
+//             noticelist: [],
 //         }
 //     }
 
@@ -185,7 +187,7 @@ export default class Notice extends React.Component {
 
 //     render() {
 //         return (
-//             <div>news</div>
+//             <div>notice</div>
 //         )
 //     }
 // }

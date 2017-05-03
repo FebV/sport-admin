@@ -15,7 +15,7 @@ export default class User {
             .then(res => res ? res : [])
     }
 
-    static postEquipment({campus, gym, equipment_name, buy_date, buy_number, in_number, no_number, use_campus, use_number, price, remark}) {
+    static postEquipment({campus, gym, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark}) {
         Request.post({
             url: API.postEquipment,
             data: {

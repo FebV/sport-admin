@@ -4,13 +4,14 @@ import Auth from './Auth';
 import ED from './EventDispatcher';
 
 export default class Applies {
-    static postApply({campus, gym, time, classtime, major, content, pnumber, charger, tel, cost, remark}) {
+    static postInnerApply({campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel}) {
         Request.post({
             url: API.postApply,
             data: {
-                campus, gym, time, classtime, major, content, pnumber, charger, tel, cost, remark
+                campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel
             }
         })
+            .then(res => ED.dispatch({type: 'alert', msg: '提交申请成功'}))
     }
 
     static postOuterApply({campus, gym, time, classtime, department, content, charger, tel}) {
@@ -47,10 +48,10 @@ export default class Applies {
 
     }
 
-    static putInnerApply({applyId, state}) {
+    static putInnerApply({applyId, state, remark}) {
         return Request.put({
             url: API.putInnerApply(applyId),
-            data: {api_token: Auth.getToken(), state}
+            data: {api_token: Auth.getToken(), state, teacher_remark: remark}
         })
             .then(res => ED.dispatch({type: "put innerApply ok"}))
     }
@@ -81,5 +82,21 @@ export default class Applies {
             }
         })
             .then(res => ED.dispatch({type: "delete outerApply ok"}))
+    }
+
+    static queryInnerApplyByTel({tel}) {
+        return Request.get({
+            url: API.queryInnerApplyByTel(tel),
+            data: {}
+        })
+            .then(res => res ? res : null)
+    }
+
+    static queryOuterApplyByTel({tel}) {
+        return Request.get({
+            url: API.queryOuterApplyByTel(tel),
+            data: {}
+        })
+            .then(res => res ? res : null)
     }
 }
