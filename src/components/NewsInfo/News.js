@@ -112,9 +112,9 @@ export default class News extends React.Component {
                         <Link to={`/news/${ele.id}`} key={idx}>
                             <div key={idx} style={{padding: "5px 25px"}}>
                             { idx != 0 ? <Divider /> : null}
-                            <img src="/static/img/NewsIcon.gif" style={{margin: "0px 10px"}} />
-                            <span>{ele.title}</span>
-                            <span style={{float: 'right'}}>{ele.time}</span>
+                            <img src="/static/img/NewsIcon.gif" style={{margin: "0px 10px", position: "relative", top: "5px"}} />
+                            <span style={{lineHeight: "20px", position: "relative", top: '5px'}}>{ele.title}</span>
+                            <span style={{float: 'right', position: "relative", top: '5px'}}>{ele.time}</span>
                             </div>
                         </Link>
                     )

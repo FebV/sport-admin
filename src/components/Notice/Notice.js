@@ -87,12 +87,12 @@ export default class Notice extends React.Component {
             <List>
                 {this.state.comments.map( (ele, idx) => {
                     return (
-                        <Link to={`/news/${ele.id}`} key={idx}>
+                        <Link to={`/notice/${ele.id}`} key={idx}>
                             <div key={idx} style={{padding: "5px 25px"}}>
                             { idx != 0 ? <Divider /> : null}
-                            <img src="/static/img/NewsIcon.gif" style={{margin: "0px 10px"}} />
-                            <span>{ele.title}</span>
-                            <span style={{float: 'right'}}>{ele.time}</span>
+                            <img src="/static/img/NewsIcon.gif" style={{margin: "0px 10px", position: "relative", top: "5px"}} />
+                            <span style={{lineHeight: "20px", position: "relative", top: '5px'}}>{ele.title}</span>
+                            <span style={{float: 'right', position: "relative", top: '5px'}}>{ele.time}</span>
                             </div>
                         </Link>
                     )

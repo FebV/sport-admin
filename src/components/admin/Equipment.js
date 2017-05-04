@@ -72,6 +72,8 @@ export default class Equipment extends React.Component {
     }
 
     search() {
+        if(this.state.searchWord == '')
+            return alert('器材名称必填')
         EquipmentModel.searchByName({name: this.state.searchWord})
             .then(res => {
                 this.setState({equipments: res});
@@ -92,7 +94,7 @@ export default class Equipment extends React.Component {
             <Tabs>
             <Tab label="器材总览">
             <div style={{width: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
-            <div style={{width: "100%", textAlign: "center", height: "20%"}}>
+            <div style={{width: "100%", textAlign: "center"}}>
                 校区
             <MuiThemeProvider>
             <DropDownMenu
@@ -110,9 +112,7 @@ export default class Equipment extends React.Component {
             </DropDownMenu>
             </MuiThemeProvider>
             <RaisedButton label="查询" onClick={() => this.queryEquipment()}></RaisedButton><br />
-            </div>
-            或
-            <div>
+            <span style={{position: "relative", top: "0px", right: "30px"}}>或</span>
                 <TextField floatingLabelText="根据名称搜索" value={this.state.searchWord} onChange={(e, v) => this.setState({searchWord: v})} /><i style={{cursor: "pointer"}} className="fa fa-search" onClick={this.search.bind(this)} />
             </div>
             <MuiThemeProvider>

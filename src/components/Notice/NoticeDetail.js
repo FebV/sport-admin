@@ -6,7 +6,7 @@ export default class NoticeDetail extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            article: '',
+            article: '<h2>通知加载中</h2>',
             title: '',
             writer: '',
             time: '',

@@ -30,6 +30,7 @@ import AdminComment from '../admin/Comment';
 import Finances from '../admin/Finances';
 import FileAdmin from '../admin/File';
 import ReactCSSTransitionGroup from 'react-addons-transition-group';
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 export default class Main extends React.Component {
     constructor(props) {
@@ -56,6 +57,7 @@ export default class Main extends React.Component {
 
     render() {
         return (
+        <MuiThemeProvider>
         <div>
             {location.pathname.indexOf('admin') == -1 ?
             <div>
@@ -107,6 +109,7 @@ export default class Main extends React.Component {
             </div>
             <AlertBar />
         </div>
+        </MuiThemeProvider>
         )
     }
 }

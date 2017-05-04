@@ -43,6 +43,7 @@ const API = {
     getAllInnerComment: `${base}messages/all/type/1`, //1内部留言
     postInnerComment: `${base}messages`,
     deleteInnerComment: id => `${base}messages/id/${id}`,
+    getCommentDetail: id => `${base}messages/id/${id}`,
 
     acceptInnerComment: id => `${base}messages/id/${id}`,
 

@@ -37,11 +37,14 @@ export default class File extends React.Component {
                 this.query();
             }
         }
+        console.log(`mount`)
         addEventListener('delete file ok', () => {
             this.page = 1;
+            this.hasMore = true;
             this.query();
         });
         addEventListener('post file ok', () => {
+            this.hasMore = true;
             this.page = 1;
             this.query()
         });
