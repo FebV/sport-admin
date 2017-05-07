@@ -16,6 +16,7 @@ export default class Request {
                     throw new Error(`解析时出错`)
                 })
                 .then(res => {
+                    handleApiTokenFail(res.code);
                     if(res.code != 1) {
                         ED.dispatch({type: "alert", msg: res.status})
                         throw new Error(res.status);
@@ -43,6 +44,7 @@ export default class Request {
                         throw new Error(`解析时出错`)
                     })
                     .then(res => {
+                        handleApiTokenFail(res.code);
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})
                             throw new Error(res.status);
@@ -70,6 +72,7 @@ export default class Request {
                         throw new Error(`解析时出错`)
                     })
                     .then(res => {
+                        handleApiTokenFail(res.code);
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})
                             throw new Error(res.status);
@@ -97,6 +100,7 @@ export default class Request {
                         throw new Error(`解析时出错`)
                     })
                     .then(res => {
+                        handleApiTokenFail(res.code);
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})
                             throw new Error(res.status);
@@ -114,5 +118,12 @@ export default class Request {
             query += `&${ i}=${encoded}`
         }
         return query.substr(1);
+    }
+
+}
+function handleApiTokenFail(code) {
+    if(code == '-3') {
+        localStorage.clear();
+        location.href = '/';
     }
 }
