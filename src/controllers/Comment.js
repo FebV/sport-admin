@@ -36,9 +36,9 @@ export default class Comment {
             .then(res => res ? res : ED.dispatch({type: "post comment ok", msg: "评论发布成功"}))
     }
 
-    static deleteComment({commentId}) {
+    static deleteComment({id}) {
         return Request.delete({
-            url: API.deleteInnerComment(commentId),
+            url: API.deleteInnerComment(id),
             data: {api_token: Auth.getToken()}
         })
             .then(res => ED.dispatch({type: 'delete comment ok', msg: "删除成功"}))
@@ -58,5 +58,14 @@ export default class Comment {
             data: {api_token: Auth.getToken(), state: -1}
         })
             .then(res => ED.dispatch({type: 'decline comment ok'}));
+    }
+
+    static getCommentDetail({id}) {
+        return Request.get({
+            url: API.getCommentDetail(id),
+            data: {
+                api_token: Auth.getToken(),
+            }
+        })
     }
 }

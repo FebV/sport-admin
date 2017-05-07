@@ -25,6 +25,7 @@ export default class Comment extends React.Component {
             deleteDialogOpen: false,
             deleteCommentId: null,
             isLogin: Auth.isLogin(),
+            detailDialogOpen: false,
         }
         
     }
@@ -73,6 +74,11 @@ export default class Comment extends React.Component {
                 }
             });
     }
+
+    getDetail(id) {
+        CommentModel.getCommentDetail({id})
+            .then(res => this.setState(res));
+    }
     
     render() {
         return (
@@ -98,7 +104,8 @@ export default class Comment extends React.Component {
                     ?
                     <div>
                     <FlatButton label="查看联系方式" onClick={() => {
-                        alert(`姓名：${ele.name}\n邮箱：${ele.email}\n电话：${ele.tel}`);
+                        this.setState({detailDialogOpen: true})
+                        this.getDetail(ele.id);
                     }} />
                     <FlatButton label="删除" onClick={() => {
                         this.setState({deleteCommentId: ele.id});
@@ -139,12 +146,40 @@ export default class Comment extends React.Component {
                 open={this.state.postCommentDialogOpen}
                 close={() => this.setState({postCommentDialogOpen: false})}
             />
+            <CommentDetail
+                open={this.state.detailDialogOpen}
+                close={() => this.setState({detailDialogOpen: false})}
+                name={this.state.name}
+                tel={this.state.tel}
+                email={this.state.email}
+            />
             <DeleteDialog
                 open={this.state.deleteDialogOpen}
                 close={() => this.setState({deleteDialogOpen: false})}
                 deleteCommentId={this.state.deleteCommentId}
             />
             </div>
+        )
+    }
+}
+
+class CommentDetail extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    render() {
+        console.log(this.props);
+        return (
+            <Dialog
+                open={this.props.open}
+                onRequestClose={this.props.close}
+            >
+            <h2>联系方式<br /></h2>
+            <span style={{marginRight: "10px"}}>姓名:</span>{this.props.name}<br />
+            <span style={{marginRight: "10px"}}>电话:</span>{this.props.tel}<br />
+            <span style={{marginRight: "10px"}}>邮箱:</span>{this.props.email}<br />
+            </Dialog>
         )
     }
 }
@@ -234,6 +269,7 @@ class DeleteDialog extends React.Component {
     }
 
     render() {
+        console.log(this.props)
         return (
             <MuiThemeProvider>
             <Dialog
