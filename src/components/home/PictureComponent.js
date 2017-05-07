@@ -19,62 +19,9 @@ export default class PictureComponent extends React.Component{
             isChange:false,
             zIndex1:1
         };
-        this.style2 = {
 
-            width: '500px',
-            height:'300px',
-            margin:10,
 
-            display: 'inline-block',
-            bottom:"0",
-            left:"250px",
-            zIndex:1000,
-            boxShadow:"5px 5px 5px grey",
-            position:"absolute",
-
-        };
-        this.style1 = {
-
-            width: '300px',
-            height:'180px',
-            margin:10,
-
-            bottom:"50px",
-            left:"0",
-            display: 'inline-block',
-            zIndex:this.state.zIndex1,
-            boxShadow:"5px 5px 5px grey",
-            position:"absolute"
-
-        };this.style3 = {
-
-            width: '300px',
-            height:'180px',
-            margin:10,
-            bottom:"50px",
-            left:"700px",
-            display: 'inline-block',
-            zIndex:this.state.zIndex1,
-            boxShadow:"5px 5px 5px grey",
-            position:"absolute"
-
-        };
-        this.state.style4 = {
-
-            width: '300px',
-            height:'180px',
-            margin:10,
-
-            bottom:"50px",
-            left:"1000px",
-            display: 'none',
-
-            boxShadow:"5px 5px 5px grey",
-            position:"absolute"
-
-                };
-
-        this.state.picList=[
+        this.picList=[
             "../images/zx1.png",
             "../images/zh1.png",
             "../images/hjl5.png",
@@ -83,7 +30,9 @@ export default class PictureComponent extends React.Component{
             "../images/xls8.png",
             "../images/xls9.png",
         ]
-
+        this.classList=[['style1'],['style2'],['style3'],['style4_1','style4_2','style4_3']];
+        this.aniList =["goLeftVanish","goSmallLeft","goBigLeft","goShow"];
+        this.aniRightList =["goBigRight","goSmallRight","goRightVanish","goRightShow"];
         window.picInterval=setInterval(()=>this.handleNext(),3000);
     }
     handleNext(){
@@ -92,60 +41,44 @@ export default class PictureComponent extends React.Component{
         }else{
             clearInterval(picInterval);
             let sec = this.refs.sec;
-            sec.className="goSmallLeft";
+            sec.className=`${this.classList[1].length==3?this.classList[1][1]:this.classList[1][0]} ${this.aniList[1]} `;
             let third = this.refs.third;
-            third.className="goBigLeft";
+            third.className=`${this.classList[2].length==3?this.classList[2][1]:this.classList[2][0]} ${this.aniList[2]} `;
             let first = this.refs.first;
-            first.className="goLeftVanish";
+            first.className=`${this.classList[0].length==3?this.classList[0][1]:this.classList[0][0]} ${this.aniList[0]} `;
             this.setState({
-                style4:{
 
-                    width: '300px',
-                    height:'180px',
-                    margin:10,
-
-                    bottom:"50px",
-                    left:"1000px",
-                    display: "inline-block",
-
-                    boxShadow:"5px 5px 5px grey",
-                    position:"absolute"
-
-                },
                 isChange:!this.state.isChange,
                 zIndex1:10000,
             });
             let forth = this.refs.forth;
-            forth.className="goShow";
+            forth.className=`${this.aniList[3]} ${this.classList[3].length==3?this.classList[3][1]:this.classList[3][0]}`;
             setTimeout(
                 ()=>{
-                    let lastList = this.state.picList;
+
+
+                     let lastList = this.classList;
+                     this.classList =[lastList[3],lastList[0],lastList[1],lastList[2]];
+
+
+                    sec.className = this.classList[1][0];
+                    first.className = this.classList[0][0];
+                    third.className = this.classList[2][0];
+                    forth.className = this.classList[3][0];
+                    let lastAniList = this.aniList;
+                    this.aniList =[lastAniList[3],lastAniList[0],lastAniList[1],lastAniList[2]];
+                    let lastAniList1 = this.aniRightList;
+                    this.aniRightList =[lastAniList1[3],lastAniList1[0],lastAniList1[1],lastAniList1[2]];
+
                     this.setState({
-                        picList:[lastList[1],lastList[2],lastList[3],lastList[0]],
-                        style4:{
 
-                            width: '300px',
-                            height:'180px',
-                            margin:10,
 
-                            bottom:"50px",
-                            left:"1000px",
-                            display: "none",
+                    isChange:!this.state.isChange,
 
-                            boxShadow:"5px 5px 5px grey",
-                            position:"absolute"
-
-                        },
-                        isChange:!this.state.isChange,
-
-                    });
-                    sec.className="";
-                    first.className="";
-                    third.className="";
-                    forth.className="";
-
+                });
                 }
                 ,300);
+
             picInterval=setInterval(()=>this.handleNext(),3000);
 
 
@@ -161,59 +94,42 @@ export default class PictureComponent extends React.Component{
 
             clearInterval(picInterval);
             let sec = ReactDOM.findDOMNode(this.refs.sec);
-            sec.className = "goSmallRight";
+            sec.className=`${this.classList[1].length==3?this.classList[1][2]:this.classList[1][0]} ${this.aniRightList[1]} `;
             let third = ReactDOM.findDOMNode(this.refs.third);
-            third.className = "goRightVanish";
+            third.className=`${this.classList[2].length==3?this.classList[2][2]:this.classList[2][0]} ${this.aniRightList[2]} `;
             let first = ReactDOM.findDOMNode(this.refs.first);
-            first.className = "goBigRight";
+            first.className=`${this.classList[0].length==3?this.classList[0][2]:this.classList[0][0]} ${this.aniRightList[0]} `;
             this.setState({
-                style4: {
 
-                    width: '300px',
-                    height: '180px',
-                    margin: 10,
-
-                    bottom: "50px",
-                    left: "-180px",
-                    display: "inline-block",
-
-                    boxShadow: "5px 5px 5px grey",
-                    position: "absolute"
-
-                },
                 isChange: !this.state.isChange
             });
             let forth = ReactDOM.findDOMNode(this.refs.forth);
-            forth.className = "goRightShow";
+            forth.className=`${this.aniRightList[3]} ${this.classList[3].length==3?this.classList[3][2]:this.classList[3][0]}`;
             setTimeout(
                 ()=> {
-                    let lastList = this.state.picList;
+
+
+                    let lastList = this.classList;
+                    this.classList =[lastList[1],lastList[2],lastList[3],lastList[0]];
+                    sec.className = this.classList[1][0];
+                    first.className = this.classList[0][0];
+                    third.className = this.classList[2][0];
+                    forth.className = this.classList[3][0];
+                    let lastAniList = this.aniRightList;
+                    this.aniRightList =[lastAniList[1],lastAniList[2],lastAniList[3],lastAniList[0]];
+                    let lastAniList1 = this.aniList;
+                    this.aniList =[lastAniList1[1],lastAniList1[2],lastAniList1[3],lastAniList1[0]];
                     this.setState({
-                        picList: [lastList[3], lastList[0], lastList[1], lastList[2]],
-                        style4: {
 
-                            width: '300px',
-                            height: '180px',
-                            margin: 10,
 
-                            bottom: "50px",
-                            left: "1000px",
-                            display: "none",
-
-                            boxShadow: "5px 5px 5px grey",
-                            position: "absolute"
-
-                        },
                         isChange: !this.state.isChange,
 
 
                     });
-                    sec.className = "";
-                    first.className = "";
-                    third.className = "";
-                    forth.className = "";
+
                 }
                 , 300);
+
             picInterval=setInterval(()=>this.handleNext(),3000);
         }
 
@@ -234,10 +150,10 @@ export default class PictureComponent extends React.Component{
                 <div style={{display:"block",margin:"0 auto",width:"90%",height:"400px",position:"relative",maxWidth:1000,minWidth:1000,overflow:"hidden"}}>
 
 
-                        <img src={this.state.picList[0]} style={this.style1} ref="first" onClick={()=>this.handlePre()}/>
-                        <img src={this.state.picList[1]} style={this.style2} ref="sec"/>
-                        <img src={this.state.picList[2]} style={this.style3} ref="third" onClick={()=>this.handleNext()}/>
-                        <img src={this.state.picList[3]} style={this.state.style4} ref="forth"/>
+                        <img src={this.picList[0]}  className="style1" ref="first" onClick={()=>this.handlePre()}/>
+                        <img src={this.picList[1]} className="style2" ref="sec"/>
+                        <img src={this.picList[2]} className="style3" ref="third" onClick={()=>this.handleNext()}/>
+                        <img src={this.picList[3]} className="style4_1" ref="forth"/>
 
 
                 </div>
