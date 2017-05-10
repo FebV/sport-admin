@@ -180,7 +180,7 @@ export default class Apply extends React.Component {
             </MuiThemeProvider>
             <div style={{width: "100%", textAlign: "center"}}>
             <MuiThemeProvider>
-                <TextField floatingLabelText="手机号（必填）" onChange={(e, v) => this.setState({tel: v})} />
+                <TextField floatingLabelText="手机号（必填" value={this.state.tel} onChange={(e, v) => this.setState({tel: v})} />
             </MuiThemeProvider>
             <MuiThemeProvider>
             <RaisedButton
@@ -308,33 +308,32 @@ class InnerDetail extends React.Component {
         state = this.props.record.state == 3 ? '通过' : this.props.record  == -3 ? '未通过' : '正在审核';
         return (
             <Dialog
-                style={{userSelect: "none", width: "1000px", marginLeft: "calc(50% - 400px)"}}
+                style={{userSelect: "none", width: "1000px", marginLeft: "calc(50% - 500px)"}}
                 title="申请详情"
                 modal={false}
                 open={this.props.open}
                 onRequestClose={this.props.onRequestClose}
                 autoScrollBodyContent={true}
+                actions={<RaisedButton label="点击打印" onClick={() => printTable()} />}
             >
                 <div>
-                    {/*<span>校区：</span><span>{this.schoolNameMap[this.props.record.campus]}</span><br />
-                    <span>场馆：</span><span>{targetName}</span><br />
-                    <span>负责人：</span><span>{this.props.record.charger}</span><br />
-                    <span>使用时间：</span><span>{this.props.record.time}</span><br />
-                    <span>使用节次：</span><span>{targetClsTime}</span><br />
-                    <span>使用学院：</span><span>{this.props.record.major}</span><br />
-                    <span>活动内容：</span><span>{this.props.record.content}</span><br />
-                    <span>参加人数：</span><span>{this.props.record.pnumber}</span><br />
-                    <span>联系方式：</span><span>{this.props.record.tel}</span><br />
-                    <span>活动费用：</span><span>{this.props.record.money}</span><br />
-                    <span>审核状态：</span><span>{state}</span><br />
-                    <span>申请备注：</span><span>{this.props.record.remark}</span><br />*/}
                     <div dangerouslySetInnerHTML={{__html: `
+                    <div id="printDiv" style="width:600px;margin: 0 auto;">
                     <style>
                         .apply-table td {
-                            height: 50px;
+                            height: 70px;
                         }
                         .apply-table-content {
-                            height: 100px;
+                            height: 200px;
+                        }
+                        .apply-table-content td {
+                            text-align: left;
+                            padding-left: 20px;
+                        }
+                        table {
+                            border-spacing: 0;
+                            border-collapse: collapse;
+                            text-align: center;
                         }
                     </style>
                     <div style="text-align: center" class="apply-table">
@@ -384,12 +383,13 @@ class InnerDetail extends React.Component {
                             <td>活动第一负责人（联系方式）</td>
                             <td colspan="3">asd</td>
                         </tr>
-                        <tr>
+                        <tr class="apply-table-content">
                             <td>备注</td>
                             <td colspan="3">${this.props.record.remark}</td>
                         </tr>
                         </tbody>
                     </table>
+                    </div>
                     </div>
                     `}}>
                     
@@ -488,17 +488,83 @@ class OuterDetail extends React.Component {
         return (
             <MuiThemeProvider>
             <Dialog
-                style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
+                style={{userSelect: "none", width: "1000px", marginLeft: "calc(50% - 500px)"}}
                 title="申请详情"
                 modal={false}
                 open={this.props.open}
                 onRequestClose={this.props.onRequestClose}
+                autoScrollBodyContent={true}
+                actions={<RaisedButton label="点击打印" onClick={() => printTable()} />}
             >
-            <MuiThemeProvider>
-            <Table>
-
-            </Table>
-            </MuiThemeProvider>
+                <div>
+                    <div dangerouslySetInnerHTML={{__html: `
+                    <div id="printDiv" style="width:600px;margin: 0 auto;">
+                    <style>
+                        .apply-table td {
+                            height: 70px;
+                        }
+                        .apply-table-content {
+                            height: 200px;
+                        }
+                        .apply-table-content td {
+                            text-align: left;
+                        }
+                        table {
+                            border-spacing: 0;
+                            border-collapse: collapse;
+                            text-align: center;
+                        }
+                    </style>
+                    <div style="text-align: center" class="apply-table">
+                    <h2>山东大学学生社团活动申请表</h2>
+                    <span style="float: right; margin-right: 20px">申请时间:${this.props.record.created_at}</span>
+                    <table border="1" style="width:100%; text-align: center">
+                        <tbody>
+                        <tr>
+                            <td width="25%">申请校区</td>
+                            <td>${this.schoolNameMap[this.props.record.campus]}</td>
+                            <td width="25%">申请场馆</td>
+                            <td>${targetName}</td>
+                        </tr>
+                        <tr>
+                            <td>使用节次</td>
+                            <td>${targetClsTime}</td>
+                            <td>使用时间</td>
+                            <td>${this.props.record.time}</td>
+                        </tr>
+                        <tr>
+                            <td>参加人数</td>
+                            <td>${this.props.record.pnumber}</td>
+                            <td>费用</td>
+                            <td>${this.props.record.money}</td>
+                        </tr>
+                        <tr class="apply-table-content">
+                            <td>活动内容</td>
+                            <td colspan="3">${this.props.record.content}</td>
+                        </tr>
+                        <tr>
+                            <td>组织者</td>
+                            <td>${this.props.record.charger}</td>
+                            <td>组织者联系方式</td>
+                            <td>${this.props.record.tel}</td>
+                        </tr>
+                        <tr>
+                            <td>活动第一负责人（联系方式）</td>
+                            <td colspan="3">asd</td>
+                        </tr>
+                        <tr class="apply-table-content">
+                            <td>备注</td>
+                            <td colspan="3">${this.props.record.remark}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                    </div>
+                    </div>
+                    `}}>
+                    
+                    </div>
+                    {/*<span>上轮审批备注：</span><span>{this.props.record.teacher_remark}</span><br />*/}
+                </div>
             </Dialog>
             </MuiThemeProvider>
         )

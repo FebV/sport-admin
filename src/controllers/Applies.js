@@ -21,6 +21,7 @@ export default class Applies {
                 campus, gym, time, classtime, department, content, charger, tel,
             }
         })
+            .then(res => ED.dispatch({type: 'alert', msg: "提交申请成功"}))
     }
 
     static getInnerApply({campus, gym, start, end}) {

@@ -71,6 +71,22 @@ export default class Apply extends React.Component {
         return date;
     }
 
+    resetState() {
+        this.setState({
+            campus: 'zx',
+            gym: 'basketball',
+            major: '',
+            content: '',
+            pnumber: '',
+            charger: '',
+            tel: '',
+            teacher: '',
+            teacher_tel: '',
+            remark: '',
+            department: '',
+        });
+    }
+
     postInnerApply() {
         let ClsTime = [];
         this.state.classtime.map( (e, idx) => {
@@ -92,6 +108,7 @@ export default class Apply extends React.Component {
             teacher: this.state.teacher,
             teacher_tel: this.state.teacher_tel,
         })
+        this.resetState();
     }
 
     postOuterApply() {
@@ -111,6 +128,8 @@ export default class Apply extends React.Component {
             charger: this.state.charger,
             tel: this.state.tel,
         })
+        this.resetState();
+        
     }
 
     render() {
@@ -176,34 +195,42 @@ export default class Apply extends React.Component {
                     })}
                 </div>
                 <TextField
+                    value={this.state.major}
                     onChange={(e, v) => this.setState({major: v})}
                     floatingLabelText="使用学院"
                 /><br />
                 <TextField
+                    value={this.state.content}                
                     onChange={(e, v) => this.setState({content: v})}                
                     floatingLabelText="活动内容"
                 /><br />
                 <TextField
+                    value={this.state.pnumber}                
                     onChange={(e, v) => this.setState({pnumber: v})}                
                     floatingLabelText="参加人数"
                 /><br />
                 <TextField 
+                    value={this.state.charger}                
                     onChange={(e, v) => this.setState({charger: v})}                
                     floatingLabelText="负责人姓名"
                 /><br />
                 <TextField
+                    value={this.state.tel}                
                     onChange={(e, v) => this.setState({tel: v})}                
                     floatingLabelText="联系方式（手机）"
                 /><br />
                 <TextField
+                    value={this.state.teacher}                
                     onChange={(e, v) => this.setState({teacher: v})}                
                     floatingLabelText="学院老师姓名"
                 /><br />
                 <TextField
+                    value={this.state.teacher_tel}                
                     onChange={(e, v) => this.setState({teacher_tel: v})}                
                     floatingLabelText="学院老师电话（手机）"
                 /><br />
                 <TextField
+                    value={this.state.remark}                
                     onChange={(e, v) => this.setState({remark: v})}
                     floatingLabelText="备注"
                 /><br />
@@ -272,18 +299,22 @@ export default class Apply extends React.Component {
                     })}
                 </div>
                 <TextField
+                    value={this.state.department}                
                     onChange={(e, v) => this.setState({department: v})}
                     floatingLabelText="使用单位"
                 /><br />
                 <TextField
+                    value={this.state.content}                
                     onChange={(e, v) => this.setState({content: v})}                
                     floatingLabelText="活动内容"
                 /><br />
                 <TextField 
+                    value={this.state.charger}                
                     onChange={(e, v) => this.setState({charger: v})}                
                     floatingLabelText="负责人姓名"
                 /><br />
                 <TextField
+                    value={this.state.tel}                
                     onChange={(e, v) => this.setState({tel: v})}                
                     floatingLabelText="联系方式"
                 /><br />
