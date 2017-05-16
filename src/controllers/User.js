@@ -60,28 +60,34 @@ export default class User {
 
     static canAuthNews() {
         return User.getLevel()
-                .then(res => res.news == '1');
+                .then(res => res.news >= '1');
     }
 
     static canAuthEquip() {
         return User.getLevel()
-                .then(res => res.equipment == '1')
+                .then(res => res.equipment >= '1')
     }
 
     static canAuthFinance() {
         return User.getLevel()
-                .then(res => res.finance == '1');
+                .then(res => res.finance >= '1');
     }
 
-    static postPeople({schoolnum, password, grade, campus, realname}) {
+    static canAuthDocument() {
+        return User.getLevel()
+                .then(res => res.document >= '1');
+    }
+
+    static postPeople({schoolnum, password, grade, campus, realname, tel}) {
         return Request.post({url: API.postPeople,
             data:{
                 api_token: Auth.getToken(),
                 schoolnum,
                 password,
-                grade,
+                // grade,
                 campus,
                 realname,
+                tel,
             }
         })
             .then(res => ED.dispatch({type: 'user post ok', msg: '新增管理员成功'}))
@@ -96,6 +102,7 @@ export default class User {
 
     static authPeople(id, permission) {
         permission.api_token = Auth.getToken();
+        console.log(permission);
         Request.put({url: API.authPeople(id), data: permission})
             .then(res => ED.dispatch({type: 'user auth ok', msg: '权限修改成功'}))
     }

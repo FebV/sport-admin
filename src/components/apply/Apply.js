@@ -18,12 +18,12 @@ import camGym from '../../config/cam-gym';
 export default class Apply extends React.Component {
     constructor(props) {
         super(props);
-        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'];
+        this.serial = ['one', 'two', 'three', 'four', 'five', 'six'];
         this.state = {
             campus: 'zx',
             gym: 'basketball',
             time: null,
-            classtime: Array(11).fill(false),
+            classtime: Array(7).fill(false),
             major: '',
             content: '',
             pnumber: '',
@@ -33,7 +33,7 @@ export default class Apply extends React.Component {
             teacher_tel: '',
             remark: '',
             department: '',
-            classtimeDisTable: Array(11).fill(false)
+            classtimeDisTable: Array(7).fill(false)
         }
     }
 
@@ -180,17 +180,19 @@ export default class Apply extends React.Component {
                 /><br />
                 <div style={{marginTop: "10px 0"}}>使用节次</div>
                 <div style={{textAlign: "left"}}>
-                    {[...Array(11).keys()].map(e => {
+                    {[...Array(6).keys()].map( (e, idx) => {
+                        console.log(this.state.classtimeDisTable)
+                        let base = idx < 2 ? 8  : 10;
                         return (
                             <span key={e}><Checkbox
-                                style={{display: "inline-block", height: "15px", width: "8%", margin: "10px 0px 10px 80px"}}
-                                label={e+1}
+                                style={{marginLeft: "40%"}}
+                                label={`${base + idx * 2}:00 - ${base + 2 + idx * 2}:00`}
                                 onCheck={(ev, b) => {
                                     const newClsTime = [...this.state.classtime];
                                     newClsTime[e] = b;
                                     this.setState({classtime: newClsTime});
                                 }}
-                                disabled={!this.state.classtimeDisTable[e]}
+                                disabled={!this.state.classtimeDisTable[idx]}
                             /></span>)
                     })}
                 </div>
@@ -284,17 +286,19 @@ export default class Apply extends React.Component {
                 /><br />
                 <div style={{marginTop: "10px 0"}}>使用节次</div>
                 <div style={{textAlign: "left"}}>
-                    {[...Array(11).keys()].map(e => {
+                    {[...Array(6).keys()].map( (e, idx) => {
+                        console.log(this.state.classtimeDisTable)
+                        let base = idx < 2 ? 8  : 10;
                         return (
                             <span key={e}><Checkbox
-                                style={{display: "inline-block", height: "15px", width: "10%", margin: "10px 0px 10px 80px"}}
-                                label={e+1}
+                                style={{marginLeft: "40%"}}
+                                label={`${base + idx * 2}:00 - ${base + 2 + idx * 2}:00`}
                                 onCheck={(ev, b) => {
                                     const newClsTime = [...this.state.classtime];
                                     newClsTime[e] = b;
                                     this.setState({classtime: newClsTime});
                                 }}
-                                disabled={!this.state.classtimeDisTable[e]}
+                                disabled={!this.state.classtimeDisTable[idx]}
                             /></span>)
                     })}
                 </div>

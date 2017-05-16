@@ -13,8 +13,13 @@ import camGym from '../../config/cam-gym';
 export default class Query extends React.Component {
     constructor(props) {
         super(props);
+        let d = new Date();
+        d.setDate(d.getDate() + 5);
+        this.defaultDate = d;
+        d = new Date();
+        this.disabledDate = d.setDate(d.getDate() + 4);
         this.state = {
-            start: '',
+            start: this.fitDate(this.defaultDate),
             end: '',
             campus: 'zx',
             gym: 'basketball',
@@ -78,9 +83,11 @@ export default class Query extends React.Component {
                     locale="zh-CN"
                     cancelLabel="取消"
                     okLabel="确定"
+                    defaultDate={this.defaultDate}
                     onChange={(e, v) => {
                         this.setState({start: v});
                         }}
+                    shouldDisableDate={d => d < this.disabledDate}
                 /><br />
                 <span style={{margin: "0 20px"}}>至：</span><br />
                 <DatePicker
@@ -92,6 +99,8 @@ export default class Query extends React.Component {
                     onChange={(e, v) => {
                         this.setState({end: v});
                     }}
+                    shouldDisableDate={d => d < this.disabledDate}
+
                 />
             </div>
             </MuiThemeProvider>
@@ -152,7 +161,7 @@ export default class Query extends React.Component {
                 <TableHeaderColumn>#</TableHeaderColumn>
                 <TableHeaderColumn>日期</TableHeaderColumn>
                 <TableHeaderColumn>星期</TableHeaderColumn>
-                {[...Array(11).keys()].map((ele, idx) => <TableHeaderColumn key={idx}>{1*idx+1}</TableHeaderColumn>)}
+                {[...Array(7).keys()].map((ele, idx) => idx == 2 ? null : <TableHeaderColumn key={idx}>{`${8+idx*2}:00 - ${10 +idx*2}:00`}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -164,7 +173,7 @@ export default class Query extends React.Component {
                         <TableHeaderColumn>{1 + 1*idx}</TableHeaderColumn>                            
                         <TableHeaderColumn>{ele.date}</TableHeaderColumn>
                         <TableHeaderColumn>{ele.week}</TableHeaderColumn>
-                        {['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'].map(
+                        {['one', 'two', 'three', 'four', 'five', 'six'].map(
                             (d, idx) => <TableHeaderColumn key={idx} style={{backgroundColor: this.showStatus(ele[d]), border: "2px solid"}}></TableHeaderColumn>
                         )}
                         

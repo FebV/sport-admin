@@ -216,7 +216,8 @@ class AddAdmin extends React.Component {
             password: this.state.password,
             realname: this.state.realname,
             campus: this.schoolNameMap[this.state.campus],
-            grade: this.state.level+1,
+            // grade: this.state.level+1,
+            tel: this.state.tel,
         });
     }
 
@@ -267,6 +268,11 @@ class AddAdmin extends React.Component {
                     floatingLabelText="密码"
                     value={this.state.password}
                     onChange={(e, v) => this.setState({password: v})}                    
+                /><br />
+                <TextField
+                    floatingLabelText="联系方式"
+                    value={this.state.tel}
+                    onChange={(e, v) => this.setState({tel: v})}                    
                 /><br />
                 
             </Dialog>
@@ -383,20 +389,27 @@ class AuthAdmin extends React.Component {
                     />
                     <RadioButton
                         value={'1'}
-                        label="场地管理"
+                        label="馆长"
                     />
                     <RadioButton
                         value={'2'}
-                        label="井老师"
+                        label="·中心·"
                     />
                     <RadioButton
                         value={'3'}
                         label="院长"
                     />
                     </RadioButtonGroup>
-                <Checkbox label="财务管理" onCheck={(e, v) => this.setState({finance: v ? '1' : '0'})} checked={this.state.finance !== undefined ? this.state.finance == '1' : account.finance == '1'} />
+                <hr />                
+                <Checkbox label="财务查看" onCheck={(e, v) => this.setState({finance: v ? '1' : '0'})} checked={this.state.finance !== undefined ? this.state.finance >= '1' : account.finance >= '1'} />
+                <Checkbox label="财务修改" onCheck={(e, v) => this.setState({finance: v ? '2' : '1'})} checked={this.state.finance !== undefined ? this.state.finance == '2' : account.finance == '2'} />
+                <hr />                  
                 <Checkbox label="新闻管理" onCheck={(e, v) => this.setState({news: v ? '1' : '0'})} checked={this.state.news !==undefined ? this.state.news == '1' : account.news == '1'} />
-                <Checkbox label="器材管理" onCheck={(e, v) => this.setState({equipment: v ? '1' : '0'})} checked={this.state.equipment !== undefined ? this.state.equipment == '1' : account.equipment == '1'} />
+                <hr />
+                <Checkbox label="器材查看" onCheck={(e, v) => this.setState({equipment: v ? '1' : '0'})} checked={this.state.equipment !== undefined ? this.state.equipment >= '1' : account.equipment >= '1'} />
+                <Checkbox label="器材修改" onCheck={(e, v) => this.setState({equipment: v ? '2' : '1'})} checked={this.state.equipment !== undefined ? this.state.equipment == '2' : account.equipment == '2'} />
+                <hr />                
+                <Checkbox label="文件管理" onCheck={(e, v) => this.setState({document: v ? '1' : '0'})} checked={this.state.document !==undefined ? this.state.document == '1' : account.document == '1'} />                
             </Dialog>
             </MuiThemeProvider>
         )

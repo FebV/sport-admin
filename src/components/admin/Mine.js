@@ -110,7 +110,7 @@ export default class Profile extends React.Component {
 
     render() {
         return (
-            <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
+            <div style={{width: "100%", height:"100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
             <MuiThemeProvider>
             <Paper style={{padding: "50px", margin: '20px'}}>
             <div>个人资料</div>
@@ -132,7 +132,7 @@ export default class Profile extends React.Component {
             </Paper>
             </MuiThemeProvider>
             {
-                this.state.level
+                false
                     ?
             <MuiThemeProvider>
             <Paper style={{width: "80%", textAlign: "center", marginTop: "20px"}}>
@@ -161,8 +161,8 @@ export default class Profile extends React.Component {
                 {Object.keys(this.state.level).map( (e, idx) =>{
                     const CampusLevelMap = [
                         '没有权限',
-                        '场馆管理员',
-                        '井老师',
+                        '馆长',
+                        '·中心·',
                         '院长',
                     ];
                     if(this.schoolNameMap[e])

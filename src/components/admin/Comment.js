@@ -103,8 +103,9 @@ export default class Comment extends React.Component {
     }
 
     deleteComment() {
+        console.log(this.state.articleDetailId)
         this.setState({articleDetailModalOpen: false});
-        CommentInfoModel.deleteComment({commentId: this.state.articleDetailId});
+        CommentInfoModel.deleteComment({id: this.state.articleDetailId});
     }
 
     postComment(picUrl='') {
@@ -183,6 +184,7 @@ export default class Comment extends React.Component {
                         <TableRowColumn>{state}</TableRowColumn>
                         <TableRowColumn>
                             <RaisedButton onClick={() => {
+                                    console.log(ele.id)
                                     this.setState({articleDetailId: 1*(ele.id)});
                                     this.setState({articleDetailModalOpen: true});
                                     this.setState({mode: 'post'});

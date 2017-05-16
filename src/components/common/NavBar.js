@@ -324,7 +324,7 @@ class PopMenu extends React.Component {
                 open={popMenuOpen}
                 useLayerForClickAway={false}
                 anchorEl={anchorEl}
-                anchorOrigin={{horizontal: 'middle', vertical: 'center'}}
+                anchorOrigin={{horizontal: 'middle', vertical: 'bottom'}}
                 targetOrigin={{horizontal: 'middle', vertical: 'top'}}
                 onRequestClose={close}
             >

@@ -194,17 +194,17 @@ export default class Apply extends React.Component {
                 if(ele.state == 3)
                     state = '已通过';
                 if(ele.state == 2)
-                    state = '正在由院长审批'
+                    state = '·中心·审批通过'
                 if(ele.state == 1)
-                    state = '正在由井老师审批'
+                    state = '馆长通过'
                 if(ele.state == 0)
-                    state = '正在由场馆管理员审批'
+                    state = '未审核'
                 if(ele.state == -1)
-                    state = '场馆管理员已回绝'
+                    state = '馆长未通过'
                 if(ele.state == -2)
-                    state = '井老师已回绝'
+                    state = '·中心·未通过'
                 if(ele.state == -3)
-                    state = '院长已回绝'
+                    state = '院长未通过'
                 let targetClsTime = ele.classtime;
                 for(let i in this.serial) {
                     targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
@@ -243,7 +243,7 @@ export default class Apply extends React.Component {
             />
             </div>
             </Tab>
-            <Tab label="校外申请">
+            <Tab label="校外申请" style={{backgroundColor: "rgb(144, 15, 19)"}}>
             <div style={{padding: "20px"}}>
             <MuiThemeProvider>
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -428,17 +428,17 @@ class InnerDetail extends React.Component {
             if(this.props.record.state == 3)
                 state = '已通过';
             if(this.props.record.state == 2)
-                state = '正在由院长审批'
+                state = '·中心·审批通过'
             if(this.props.record.state == 1)
-                state = '正在由井老师审批'
+                state = '馆长审批通过'
             if(this.props.record.state == 0)
-                state = '正在由场馆管理员审批'
+                state = '未审核'
             if(this.props.record.state == -1)
-                state = '场馆管理员已回绝'
+                state = '馆长未通过'
             if(this.props.record.state == -2)
-                state = '井老师已回绝'
+                state = '·中心·未通过'
             if(this.props.record.state == -3)
-                state = '院长已回绝'
+                state = '院长未通过'
         return (
             <MuiThemeProvider>
             <Dialog
