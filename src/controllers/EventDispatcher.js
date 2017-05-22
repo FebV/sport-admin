@@ -2,7 +2,16 @@ export default class EventHandler {
 
 
     static dispatch({type, msg=''}) {
-
+        // if(type == 'alert'&&msg=='请等待其他财务管理员审核'){
+        //     const e = new Event('alert');
+        //     e.msg = msg;
+        //     console.log(1);
+        //     dispatchEvent(e);
+        //     setTimeout(function () {
+        //         location.reload();
+        //     },2000);
+        //     return;
+        // }
         if(type == 'alert') {
             const e = new Event('alert');
             e.msg = msg;
@@ -79,8 +88,10 @@ export default class EventHandler {
         //     e.msg = msg;
         //     dispatchEvent(e);
         // }
+
     }
     static hasLogStatusChanged(type) {
         return type == 'login' || type == 'logout';
     }
+
 }

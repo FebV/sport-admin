@@ -26,19 +26,19 @@ export default class Finance{
 
 
     static deleteFinance(id) {
-        console.log(id);
+        // console.log(id);
         return Request.delete({
             url: API.deleteFinance(id),
             data: {api_token: Auth.getToken()}
         })
-            .then(res => ED.dispatch({type: 'delete finance ok', msg: "删除成功"}))
+            .then(res => ED.dispatch({type: 'delete finance ok', msg: res}))
     }
-    static postFinance({department,campus,content, money,billing_time,remark,admin}) {
+    static postFinance({department,campus,content,billing_time, money,remark}) {
         return Request.post({
             url:API.postFinance,
             data:{
                 api_token: Auth.getToken(),
-                department,campus,content, money,billing_time,remark,admin
+                department,campus,content, money,remark,billing_time
 
             }
         })

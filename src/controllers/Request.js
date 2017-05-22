@@ -104,6 +104,7 @@ export default class Request {
                         if(res.code != 1) {
                             ED.dispatch({type: "alert", msg: res.status})
                             throw new Error(res.status);
+
                         }
                         return res.data
                     })

@@ -77,7 +77,7 @@ export default class Finances extends React.Component{
         })
         addEventListener('delete finance ok', () => {
             this.page = 1;
-            this.setState({financeArr: []})            
+            this.setState({financeArr: []})
             this.query();
         })
         addEventListener('put finance ok', () => {
@@ -99,13 +99,13 @@ export default class Finances extends React.Component{
             .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
             .then(
                 res =>{
+                    console.log(res);
 
-                    if(res.finance == 1) {
+                    if(res.finance != 0) {
                         let getF =FinanceModel.getFinance(this.page);
                             getF.then(
                                 _res=> {
                                     this.isLoading = false;
-
                                     if(this.state.financeArr != _res.data){
                                         this.setState({
                                             financeArr: [...this.state.financeArr, ..._res.data]
@@ -120,15 +120,15 @@ export default class Finances extends React.Component{
                     })
     }
     handleDeleteFinance(id){
-        this.setState({
-            financeArr:[]
-        });
+        // this.setState({
+        //     financeArr:[]
+        // });
         Request.get({url: API.getLevel, data: {api_token: Auth.getToken()}})
             .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
             .then(
                 res =>{
-                    console.log(res);
-                    if(res.finance == 1) {
+                    // console.log(res);
+                    if(res.finance != 0) {
                         console.log(id);
                         FinanceModel.deleteFinance(id);
 
@@ -147,12 +147,11 @@ export default class Finances extends React.Component{
                         <TableHeader displaySelectAll={false}
                                      adjustForCheckbox={false}>
                             <TableRow>
-                                <TableHeaderColumn>记账单位</TableHeaderColumn>
-                                <TableHeaderColumn>记账校区</TableHeaderColumn>
-                                <TableHeaderColumn>记账内容</TableHeaderColumn>
-                                <TableHeaderColumn>记账费用</TableHeaderColumn>
+                                <TableHeaderColumn>使用单位</TableHeaderColumn>
+                                <TableHeaderColumn>校区</TableHeaderColumn>
+                                <TableHeaderColumn>活动内容</TableHeaderColumn>
+                                <TableHeaderColumn>费用</TableHeaderColumn>
                                 <TableHeaderColumn>入账时间</TableHeaderColumn>
-                                <TableHeaderColumn>更新时间</TableHeaderColumn>
                                 <TableHeaderColumn>收费员</TableHeaderColumn>
                                 <TableHeaderColumn>备注</TableHeaderColumn>
                                 <TableHeaderColumn>操作</TableHeaderColumn>
@@ -162,14 +161,13 @@ export default class Finances extends React.Component{
 
 
                             {this.state.financeArr.map((item,idx)=>{
-                                return(<TableRow key={idx}>
+                               return (<TableRow key={idx} style={{color:`${item.state != 0?"gray":"black"}`}} hovered={item.state == -1?true:false}>
 
                                         <TableRowColumn title={item.department}>{item.department}</TableRowColumn>
                                         <TableRowColumn title={this.schoolNameMap[item.campus]}>{this.schoolNameMap[item.campus]}</TableRowColumn>
                                         <TableRowColumn title={item.content}>{item.content}</TableRowColumn>
                                         <TableRowColumn title={item.money}>{item.money}</TableRowColumn>
                                         <TableRowColumn title={item.billing_time}>{item.billing_time}</TableRowColumn>
-                                        <TableRowColumn title={item.updated_at}>{item.updated_at}</TableRowColumn>
                                         <TableRowColumn title={item.admin}>{item.admin}</TableRowColumn>
                                         <TableRowColumn title={item.remark}>{item.remark}</TableRowColumn>
                                         <TableRowColumn>
@@ -275,7 +273,6 @@ class AddFinance extends React.Component {
             content: this.state.content,
             money: this.state.money,
             billing_time: this.fitDate(this.state.billing_time),
-            admin: this.state.admin,
             remark: this.state.remark,
         });
         console.log(this.state.department);
@@ -313,12 +310,12 @@ class AddFinance extends React.Component {
                     autoScrollBodyContent={true}
                 >
                     <TextField
-                        floatingLabelText="记账单位"
+                        floatingLabelText="使用单位"
                         value={this.state.department}
                         onChange={(e, v) => this.setState({department: v})}
                     /><br />
                     <div style={{width: "100%", textAlign: "center"}}>
-                        记账校区
+                        校区
                         <DropDownMenu
                             style={{position: 'relative', top: '20px'}}
                             value={this.state.campus}
@@ -337,18 +334,18 @@ class AddFinance extends React.Component {
 
                     </div>
                     <TextField
-                        floatingLabelText="记账内容"
+                        floatingLabelText="活动内容"
                         value={this.state.content}
                         onChange={(e, v) => this.setState({content: v})}
                     /><br />
                     <TextField
-                        floatingLabelText="记账费用"
+                        floatingLabelText="费用"
                         value={this.state.money}
                         onChange={(e, v) => this.setState({money: v})}
                     /><br />
                     <DatePicker
                         style={{display: "inline-block", position: "relative", top: "10px"}}
-                        hintText="更新时间"
+                        hintText="入账时间"
                         DateTimeFormat={Intl.DateTimeFormat}
                         locale="zh-CN"
                         cancelLabel="取消"
@@ -357,11 +354,11 @@ class AddFinance extends React.Component {
                             this.setState({billing_time: v});
                         }}
                     /><br />
-                    <TextField
-                        floatingLabelText="收费员"
-                        value={this.state.admin}
-                        onChange={(e, v) => this.setState({admin: v})}
-                    /><br />
+                    {/*<TextField*/}
+                        {/*floatingLabelText="收费员"*/}
+                        {/*value={this.state.admin}*/}
+                        {/*onChange={(e, v) => this.setState({admin: v})}*/}
+                    {/*/><br />*/}
                     <TextField
                         floatingLabelText="备注"
                         value={this.state.remark}
@@ -397,14 +394,14 @@ class ChangeFinance extends React.Component {
 
     putFinance() {
         this.props.close();
-        console.log(this.state.department?this.state.department:this.props.putFinanceDepartment);
+        // console.log(this.state.department?this.state.department:this.props.putFinanceDepartment);
         FinanceModel.putFinance({
             id:this.props.id,
             department: this.state.department?this.state.department:this.props.putFinanceDepartment,
             campus: this.state.campus?this.state.campus:this.props.putFinanceCampus,
             content: this.state.content?this.state.content:this.props.putFinanceContent,
             money: this.state.money?this.state.money:this.props.putFinanceMoney,
-            billing_time: this.fitDate(this.state.billing_time),
+            billing_time: this.props.putFinanceBilling_time,
             admin: this.state.admin?this.state.admin:this.props.putFinanceAdmin,
             remark: this.state.remark?this.state.remark:this.props.putFinanceRemark,
         });
@@ -420,7 +417,7 @@ class ChangeFinance extends React.Component {
     }
 
     render() {
-        console.log(this.props);
+        // console.log(this.props);
         return (
             <MuiThemeProvider>
                 <Dialog
@@ -443,12 +440,12 @@ class ChangeFinance extends React.Component {
                     autoScrollBodyContent={true}
                 >
                     <TextField
-                        floatingLabelText="记账单位"
+                        floatingLabelText="使用单位"
                         defaultValue={this.props.putFinanceDepartment}
                         onChange={(e, v) => this.setState({department: v})}
                     /><br />
                     <div style={{width: "100%", textAlign: "center"}}>
-                        记账校区
+                        校区
                         <DropDownMenu
                             style={{position: 'relative', top: '20px'}}
                             value={this.state.campus}
@@ -467,31 +464,31 @@ class ChangeFinance extends React.Component {
 
                     </div>
                     <TextField
-                        floatingLabelText="记账内容"
+                        floatingLabelText="活动内容"
                         defaultValue={this.props.putFinanceContent}
 
                         onChange={(e, v) => this.setState({content: v})}
                     /><br />
                     <TextField
-                        floatingLabelText="记账费用"
+                        floatingLabelText="费用"
                         defaultValue={this.props.putFinanceMoney}
                         onChange={(e, v) => this.setState({money: v})}
                     /><br />
-                    <DatePicker
-                        style={{display: "inline-block", position: "relative", top: "10px"}}
-                        hintText= { this.props.putFinanceBilling_time || "更新时间" }
-                        DateTimeFormat={Intl.DateTimeFormat}
-                        locale="zh-CN"
-                        cancelLabel="取消"
-                        okLabel="确定"
-                        onChange={(e, v) => {
-                            this.setState({billing_time: v});
-                        }}
-                    /><br />
+                    {/*<DatePicker*/}
+                        {/*style={{display: "inline-block", position: "relative", top: "10px"}}*/}
+                        {/*hintText= { this.props.putFinanceBilling_time || "更新时间" }*/}
+                        {/*DateTimeFormat={Intl.DateTimeFormat}*/}
+                        {/*locale="zh-CN"*/}
+                        {/*cancelLabel="取消"*/}
+                        {/*okLabel="确定"*/}
+                        {/*onChange={(e, v) => {*/}
+                            {/*this.setState({billing_time: v});*/}
+                        {/*}}*/}
+                    {/*/><br />*/}
                     <TextField
                         floatingLabelText="收费员"
                         defaultValue={this.props.putFinanceAdmin}
-
+                        disabled={true}
                         onChange={(e, v) => this.setState({admin: v})}
                     /><br />
                     <TextField
