@@ -94,12 +94,12 @@ export default class Awesome extends React.Component {
     return (<div style={this.props.style}>
               <div className="control-box">
               <h1 style={{display: "inline"}} className="title">正文内容</h1>
-              <MuiThemeProvider>
+              
               <button style={{position: "relative", bottom: "5px", left: "20px", backgroundColor: "rgba(0,0,0,0)", border: "0px", cursor: "pointer", color: "lightgray"}} onClick={() => {
                 this.setState({editorState: EditorState.createEmpty()});
                 this.props.change(EditorState.createEmpty());
                 }} >重置</button>
-              </MuiThemeProvider>
+              
               <BlockStyleControls
                 editorState={editorState}
                 onToggle={this.toggleBlockType}

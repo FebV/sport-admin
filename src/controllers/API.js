@@ -4,6 +4,7 @@ const API = {
     base,
     login: `${base}users/i/auth`,
     logout: `${base}users/i/auth`,
+    camGym: `${base}campus/gym`,
     
     //User Info
     getInfo: `${base}users/i/info`,

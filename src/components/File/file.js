@@ -64,7 +64,7 @@ export default class File extends React.Component {
     render() {
         return (
             <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px"}}>
-                <MuiThemeProvider>
+                
                 <div style={{width: "100%", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
                 <div style={{width: "80%", padding: "20px"}}>
                     <div style={{width: "100%", textAlign: "center"}}><h2>文件下载</h2></div>
@@ -82,7 +82,7 @@ export default class File extends React.Component {
                     })}
                 </div>
                 </div>
-                </MuiThemeProvider>
+                
             </div>
         )
     }

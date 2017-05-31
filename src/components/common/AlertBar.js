@@ -16,14 +16,14 @@ export default class AlertBar extends React.Component {
     
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Snackbar
                 open={this.state.open}
                 message={this.state.message}
                 autoHideDuration={3000}
                 onRequestClose={() => this.setState({open: false})}
             />
-            </MuiThemeProvider>
+            
         )
     }
 }

@@ -200,7 +200,7 @@ export default class SideBar extends React.Component {
   render() {
     return (
       <div>
-        <MuiThemeProvider>
+        
         <Drawer
             docked={this.props.drawerDocked}
             open={this.props.open}
@@ -238,7 +238,7 @@ export default class SideBar extends React.Component {
           </List>
             
         </Drawer>
-        </MuiThemeProvider>
+        
       </div>
     );
   }

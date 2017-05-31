@@ -90,11 +90,11 @@ export default class Apply extends React.Component {
 
     render() {
         return (
-        <MuiThemeProvider>
+        
             <Tabs>
             <Tab label="校内申请">
             <div style={{padding: "20px"}}>
-                <MuiThemeProvider>
+                
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <span style={{margin: "0 20px"}}>从：</span><br />
                 <DatePicker
@@ -120,10 +120,10 @@ export default class Apply extends React.Component {
                     }}
                 />
             </div>
-            </MuiThemeProvider>
+            
             <div style={{width: "100%", textAlign: "center"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -137,9 +137,9 @@ export default class Apply extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
@@ -150,15 +150,15 @@ export default class Apply extends React.Component {
                     })}
                     
                 </DropDownMenu>
-                </MuiThemeProvider>
-            <MuiThemeProvider>
+                
+            
             <RaisedButton
                 label="查询"
                 onClick={this.innerQuery.bind(this)}
             />
-            </MuiThemeProvider>
+            
             </div>
-            <MuiThemeProvider>
+            
             <Paper style={{marginTop: "20px", width: "100%"}}>
             <Table
                 selectable={false}
@@ -232,7 +232,7 @@ export default class Apply extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
+            
             <InnerDetail
                 handleRemark={(r) => this.setState({remark: r})}
                 remark={this.state.remark}
@@ -245,7 +245,7 @@ export default class Apply extends React.Component {
             </Tab>
             <Tab label="校外申请" style={{backgroundColor: "rgb(144, 15, 19)"}}>
             <div style={{padding: "20px"}}>
-            <MuiThemeProvider>
+            
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <span style={{margin: "0 20px"}}>从：</span><br />
                 <DatePicker
@@ -271,10 +271,10 @@ export default class Apply extends React.Component {
                     }}
                 />
             </div>
-            </MuiThemeProvider>
+            
             <div style={{width: "100%", textAlign: "center"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -288,9 +288,9 @@ export default class Apply extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
@@ -301,15 +301,15 @@ export default class Apply extends React.Component {
                     })}
                     
                 </DropDownMenu>
-                </MuiThemeProvider>
-            <MuiThemeProvider>
+                
+            
             <RaisedButton
                 label="查询"
                 onClick={this.outerQuery.bind(this)}
             />
-            </MuiThemeProvider>
+            
             </div>
-            <MuiThemeProvider>
+            
             <Paper style={{marginTop: "20px", width: "100%"}}>
             <Table
                 selectable={false}
@@ -371,7 +371,7 @@ export default class Apply extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
+            
             <OuterDetail
                 applyId={this.state.applyId}
                 open={this.state.outerDetailDialogOpen}
@@ -381,7 +381,7 @@ export default class Apply extends React.Component {
             </div>
             </Tab>
             </Tabs>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -440,7 +440,7 @@ class InnerDetail extends React.Component {
             if(this.props.record.state == -3)
                 state = '院长未通过'
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{userSelect: "none", width: "1000px", marginLeft: "calc(50% - 400px)"}}
                 title="申请详情"
@@ -491,7 +491,7 @@ class InnerDetail extends React.Component {
                 />
                 </div>
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -541,7 +541,7 @@ class OuterDetail extends React.Component {
             if(this.props.record.state == 1)
                 state = '待审核'
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
                 title="申请详情"
@@ -586,7 +586,7 @@ class OuterDetail extends React.Component {
                 />
                 </div>
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }

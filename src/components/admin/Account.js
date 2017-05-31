@@ -109,7 +109,7 @@ export default class Account extends React.Component {
     render() {
         return (
             <div style={{width: "100%", height: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "80%"}}>
             <Table selectable={false} >
             <TableHeader
@@ -164,12 +164,12 @@ export default class Account extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
-            <MuiThemeProvider>
+            
+            
             <FloatingActionButton onClick={this.handleOpenAddAdminDialog.bind(this)} style={{position: 'absolute', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
-            </MuiThemeProvider>
+            
             <AddAdmin handleClose={this.handleCloseAddAdminDialog.bind(this)} handleOpen={this.handleOpenAddAdminDialog.bind(this)} open={this.state.addAdminDialogOpen} />
             <DeleteAdmin deleteAdmin={this.deleteAdmin.bind(this)} toggle={this.handleDeleteDialogOpen.bind(this)} open={this.state.deleteAdminDialogOpen} />
             <AuthAdmin props={this} toggle={this.handleAuthDialogOpen.bind(this)} open={this.state.authAdminDialogOpen} />
@@ -223,7 +223,7 @@ class AddAdmin extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="创建管理员"
@@ -276,7 +276,7 @@ class AddAdmin extends React.Component {
                 /><br />
                 
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -288,7 +288,7 @@ class DeleteAdmin extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "400px", marginLeft: "calc(50% - 200px)"}}
                 actions={[
@@ -311,7 +311,7 @@ class DeleteAdmin extends React.Component {
                 >
                 删除该管理员？
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -345,7 +345,7 @@ class AuthAdmin extends React.Component {
         console.log(this.state);
         console.log(account[this.state.campus]);
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "400px", marginLeft: "calc(50% - 200px)"}}
                 actions={[
@@ -411,7 +411,7 @@ class AuthAdmin extends React.Component {
                 <hr />                
                 <Checkbox label="文件管理" onCheck={(e, v) => this.setState({document: v ? '1' : '0'})} checked={this.state.document !==undefined ? this.state.document == '1' : account.document == '1'} />                
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }

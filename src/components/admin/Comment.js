@@ -15,6 +15,7 @@ import DropDownMenu from 'material-ui/DropDownMenu';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Divider from 'material-ui/Divider';
 
+
 import API from '../../controllers/API'
 import Auth from '../../controllers/Auth'
 
@@ -148,7 +149,7 @@ export default class Comment extends React.Component {
         // console.log(this.state.commentDetail);
         return (
             <div style={{padding: "20px", width: "calc(100% - 40px)", height: "clac(100% - 20px)", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "90%"}}>
             <Table
                 selectable={false}
@@ -200,7 +201,7 @@ export default class Comment extends React.Component {
             <Divider />
             {this.state.hasMore ? "滚到底部加载更多" : "没有更多记录"}
             </Paper>
-            </MuiThemeProvider>
+            
             <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} commentId={this.state.articleDetailId} props={this} deleteComment={this.deleteComment.bind(this)} />
             </div>
         )
@@ -234,7 +235,7 @@ class ArticleDetail extends React.Component {
             return null;
         const {title, time, content, email, name, tel, created_at} = this.props.props.state.commentList[this.props.props.state.articleIdx];
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 autoScrollBodyContent={true}
                 autoDetectWindowHeight={false}
@@ -245,17 +246,17 @@ class ArticleDetail extends React.Component {
                 actions={
                     <div style={{width: "100%"}}>
                     <span style={{width: '50%', textAlign: "right"}}>
-                        <MuiThemeProvider>
+                        
                             <RaisedButton label="取消" onClick={() => this.props.close()} />
-                        </MuiThemeProvider><MuiThemeProvider>
+                        
                             <RaisedButton style={{marginLeft: "20px"}} label="删除" onClick={() => this.props.deleteComment()} />
-                        </MuiThemeProvider>
-                        <MuiThemeProvider>
+                        
+                        
                             <RaisedButton style={{marginLeft: "20px"}} label="不通过" onClick={this.decline.bind(this)} />
-                        </MuiThemeProvider>
-                        <MuiThemeProvider>
+                        
+                        
                             <RaisedButton style={{marginLeft: "20px"}} label="通过" onClick={this.accept.bind(this)} />
-                        </MuiThemeProvider>
+                        
                     </span>
                     </div>
                 }
@@ -270,7 +271,7 @@ class ArticleDetail extends React.Component {
                     </div>
                 }
             />
-            </MuiThemeProvider>
+            
         )
     }
 }

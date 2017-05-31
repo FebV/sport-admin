@@ -141,7 +141,7 @@ export default class Finances extends React.Component{
 
     render(){
         return(
-            <MuiThemeProvider>
+            
                 <div>
                     <Table selectable={false}>
                         <TableHeader displaySelectAll={false}
@@ -237,14 +237,14 @@ export default class Finances extends React.Component{
 
                     />
                     <AddFinance open={this.state.addFinanceDialogOpen} close={() => this.setState({addFinanceDialogOpen: false})} />
-                    <MuiThemeProvider>
+                    
                         <FloatingActionButton onClick={() => this.setState({addFinanceDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                             <i className="fa fa-plus fa-lg"></i>
                         </FloatingActionButton>
-                    </MuiThemeProvider>
+                    
                 </div>
 
-            </MuiThemeProvider>
+            
         );
     }
 
@@ -289,7 +289,7 @@ class AddFinance extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
                 <Dialog
                     style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                     title="发布财务信息"
@@ -366,7 +366,7 @@ class AddFinance extends React.Component {
                     /><br />
 
                 </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -419,7 +419,7 @@ class ChangeFinance extends React.Component {
     render() {
         // console.log(this.props);
         return (
-            <MuiThemeProvider>
+            
                 <Dialog
                     style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                     title="修改财务信息"
@@ -499,7 +499,7 @@ class ChangeFinance extends React.Component {
                     /><br />
 
                 </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }

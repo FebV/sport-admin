@@ -11,6 +11,9 @@ import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Menu from 'material-ui/Menu';
 import Popover from 'material-ui/Popover';
 
+import GymSelector from '../common/GymSelector';
+
+
 import Schedule from '../../controllers/Schedule';
 import camGym from '../../config/cam-gym';
 
@@ -21,8 +24,9 @@ export default class Gym extends React.Component {
         this.state = {
             start: '',
             end: '',
-            campus: 'zx',
-            gym: 'basketball',
+            // campus: 'zx',
+            // gym: 'basketball',
+            // type: '',
             records: [],
             uploadModalOpen: false,
             isModifying: false,
@@ -31,10 +35,22 @@ export default class Gym extends React.Component {
             anchorEl: null,
             date: null,
             nthClass: null,
+            batModStart: null,
+            batModEnd: null,
+            camGym: null,
         }
 
         addEventListener("put schedules ok", () => {
             this.query();
+        })
+
+    }
+
+    componentDidMount() {
+        console.log(`res`);
+        camGym.then(res => {
+            console.log(res);
+            this.setState({camGym: res})
         })
     }
 
@@ -42,6 +58,7 @@ export default class Gym extends React.Component {
         Schedule.getSchedules({
             campus: this.state.campus,
             gym: this.state.gym,
+            type: this.state.type,
             start: this.fitDate(this.state.start),
             end: this.fitDate(this.state.end),
         })
@@ -73,18 +90,16 @@ export default class Gym extends React.Component {
         return backgroundColor;
     }
 
-    handleCampusChange(e, k, v) {
-        this.setState({campus: v})
-    }
-
-    handleGymChange(e, k, v) {
-        this.setState({gym: v})
-    }
 
     //show a popover
-    modify(r, c, p, e) {
+    modify(r, c, p) {
         if(!this.state.isModifying)
             return;
+        //bat modify control
+        // if(p.ctrlKey) {
+        //     if(!this.state.batModStart)
+        //         this.setState({batModStart: })
+        // }
         this.setState({arrangeModifierOpen: true});
         this.setState({anchorEl: p.target});
         this.setState({date: this.state.records[r].date, nthClass: this.serial[c-4]});
@@ -103,7 +118,7 @@ export default class Gym extends React.Component {
     render() {
         return (
             <div style={{paddingTop: "20px"}}>
-            <MuiThemeProvider>
+            
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <span style={{margin: "0 20px"}}>从：</span><br />
                 <DatePicker
@@ -129,53 +144,28 @@ export default class Gym extends React.Component {
                     }}
                 />
             </div>
-            </MuiThemeProvider>
-            <div style={{width: "100%", textAlign: "center"}}>
-                校区
-            <MuiThemeProvider>
-            <DropDownMenu
-                style={{position: 'relative', top: '20px'}}
-                value={this.state.campus}
-                onChange={this.handleCampusChange.bind(this)}
-            >
-                <MenuItem value={"mu"} primaryText="综合体育馆" />
-                <MenuItem value={"zx"} primaryText="中心校区" />
-                <MenuItem value={"hj"} primaryText="洪家楼校区" />
-                <MenuItem value={"qf"} primaryText="千佛山校区" />
-                <MenuItem value={"bt"} primaryText="趵突泉校区" />
-                <MenuItem value={"xl"} primaryText="兴隆山校区" />
-                <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            </MuiThemeProvider>
-            场馆
-            <MuiThemeProvider>
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={this.handleGymChange.bind(this)}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
-                </MuiThemeProvider>
-            <MuiThemeProvider>
+            
+            <div style={{width: "100%", textAlign: "center"}}>            
+            <GymSelector onChange={(g) => {
+                this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+            }} />
+                
+            
             <RaisedButton
                 label="查询"
                 onClick={this.query.bind(this)}
             />
-            </MuiThemeProvider>
-            <MuiThemeProvider>
+            
+            
             <RaisedButton
                 style={{marginLeft: "20px"}}
                 label={this.state.isModifying ? "确定" : "修改"}
                 onClick={() => this.setState({isModifying: !this.state.isModifying})}
             />
-            </MuiThemeProvider>
+            
             </div>
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "90%", textAlign: "center"}}>
                 <div style={{width: "40%", display:"flex"}}>
                     <div style={{lineHeight: "52px", marginLeft: "1vw"}}>体育教学</div>
@@ -225,14 +215,14 @@ export default class Gym extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
+            
             </div>
             <UploadArrangeExcel open={this.state.uploadModalOpen} onRequestClose={() => this.setState({uploadModalOpen: false})} />
-            <MuiThemeProvider>
-            <FloatingActionButton onClick={() => this.setState({uploadModalOpen: true})} style={{position: 'absolute', right: "30px", bottom: "30px"}}>
+            
+            <FloatingActionButton onClick={() => this.setState({uploadModalOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
-            </MuiThemeProvider>
+            
             <ArrangeModifier
                 postModify={this.postModify.bind(this)}
                 anchorEl={this.state.anchorEl}
@@ -277,6 +267,7 @@ class UploadArrangeExcel extends React.Component {
             file: null,
             campus: 'mu',
             gym: 'basketball',
+            camGym: null,
         };
     }
 
@@ -294,7 +285,7 @@ class UploadArrangeExcel extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
                 title="上传场馆排期表格"
@@ -304,7 +295,7 @@ class UploadArrangeExcel extends React.Component {
             >
             <div style={{width: "100%", textAlign: "center"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -318,20 +309,23 @@ class UploadArrangeExcel extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             场馆
-            <MuiThemeProvider>
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
                     onChange={this.handleGymChange.bind(this)}
                 >
-                    {camGym[this.state.campus].map((e, idx) => {
+                    {
+                        this.state.camGym ? 
+                        this.state.camGym[this.state.campus].map((e, idx) => {
                         return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
+                    })
+                    :
+                    null
+                    }
                     
                 </DropDownMenu>
-                </MuiThemeProvider>
                 </div>
             <div
                 onDragLeave={e => {
@@ -370,7 +364,7 @@ class UploadArrangeExcel extends React.Component {
                 onClick={this.props.onRequestClose}
             />
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -382,7 +376,7 @@ class ArrangeModifier extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Popover
                 anchorOrigin={{vertical: 'center', horizontal: 'middle'}}
                 anchorEl={this.props.anchorEl}
@@ -407,7 +401,7 @@ class ArrangeModifier extends React.Component {
                         primaryText="调为开放" />
                 </Menu>
             </Popover>
-            </MuiThemeProvider>
+            
         )
     }
 }

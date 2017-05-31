@@ -5,10 +5,10 @@ import ED from './EventDispatcher';
 
 export default class Schedule {
 
-    static getSchedules({campus, gym, start, end}) {
+    static getSchedules({campus, gym, type, start, end}) {
         return Request.get({
             url: API.getSchedules({campus, gym}),
-            data: {start, end},
+            data: {start, end, type},
         })
             .then(res => res ? res : [])
     }

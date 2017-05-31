@@ -82,7 +82,7 @@ export default class CardComponent extends React.Component {
         // timeOut();
 
         return(
-            <MuiThemeProvider>
+            
             <Card
                 style={{overflow: "hidden", width: "100%"}}
             >
@@ -115,7 +115,7 @@ export default class CardComponent extends React.Component {
                 </div>
 
             </Card>
-            </MuiThemeProvider>
+            
         );
     }
 }

@@ -18,12 +18,12 @@ export default class NewsLetterComponent extends React.Component{
     }
     render(){
         return(
-            <MuiThemeProvider>
+            
                 <NewsPaperComponent/>
 
 
 
-            </MuiThemeProvider>
+            
         );
     }
 

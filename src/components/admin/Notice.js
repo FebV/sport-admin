@@ -155,7 +155,7 @@ export default class Notice extends React.Component {
         // console.log(this.state.noticeDetail);
         return (
             <div style={{padding: "20px", width: "calc(100% - 40px)", height: "clac(100% - 20px)", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "90%"}}>
             <Table
                 selectable={false}
@@ -218,15 +218,15 @@ export default class Notice extends React.Component {
             <Divider />
             {this.state.hasMore ? "滚到底部加载更多" : "没有更多记录"}
             </Paper>
-            </MuiThemeProvider>
-                <MuiThemeProvider>
+            
+                
                 <FloatingActionButton onClick={() => {
                     this.setState({postNoticeModalOpen: true});
                     this.setState({title: '', writer: '', article: '', time: '选择日期'});
                     }} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                     <i className="fa fa-plus fa-lg"></i>
                 </FloatingActionButton>
-                </MuiThemeProvider>
+                
             <PostNoticeModal open={this.state.postNoticeModalOpen} close={() => this.setState({postNoticeModalOpen: false})} mode={this.state.mode} notice={this.state.noticeDetail} noticeId={this.state.articleDetailId} props={this} detail={this.state.noticeDetail} />
             <ArticleDetail open={this.state.articleDetailModalOpen} close={() => this.setState({articleDetailModalOpen: false})} mode={this.state.mode} noticeId={this.state.articleDetailId} props={this} deleteNotice={this.deleteNotice.bind(this)} />
             </div>
@@ -271,7 +271,7 @@ class PostNoticeModal extends React.Component {
     render() {
         let {props} = this.props;
         return (
-        <MuiThemeProvider>
+        
             <Dialog
                 autoScrollBodyContent={true}
                 style={{userSelect: "none", width: "60%", marginLeft: "20%"}}
@@ -281,7 +281,7 @@ class PostNoticeModal extends React.Component {
                 onRequestClose={this.props.close}
             >
             <div style={{width: "100%", textAlign: "center", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column", alignContent: "center"}}>
-                <MuiThemeProvider>
+                
                     <DatePicker
                     style={{display: "inline-block"}}
                     hintText={props.mode == 'post' ? "新闻时间" : props.state.time}
@@ -293,28 +293,28 @@ class PostNoticeModal extends React.Component {
                         props.setState({time: props.fitDate(v)});
                         }}
                 />
-                </MuiThemeProvider>
-                <MuiThemeProvider>
+                
+                
                     <TextField floatingLabelText="标题" value={props.state.title} onChange={(e, v) => props.setState({title: v})} fullWidth={true} />
-                </MuiThemeProvider><br />
-                <MuiThemeProvider>                
+                <br />
+                                
                     <TextField floatingLabelText="作者" value={props.state.writer} onChange={(e, v) => props.setState({writer: v})} fullWidth={true} />
-                </MuiThemeProvider>
+                
                 </div>
                 <div style={{marginTop: "50px", height: "30%"}}>
                 <ReactQuill modules={this.modules} theme="snow" onChange={(s) => props.setState({article: s})} value={props.state.article} style={{height: "60%"}} />
                 </div>
                 <div style={{width: "100%", textAlign: "right"}}>
-                <MuiThemeProvider>
+                
                     <RaisedButton label="取消" onClick={() => this.props.close()} />
-                </MuiThemeProvider>
-                <MuiThemeProvider>
+                
+                
                     <RaisedButton style={{marginLeft: "20px"}} label="提交" onClick={() => props.postNotice(this.state.picUrl)} />
-                </MuiThemeProvider>
+                
                 </div>
 
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -344,7 +344,7 @@ class ArticleDetail extends React.Component {
             return null;
         const {title, writer, time, article} = this.props.props.state;
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 autoScrollBodyContent={true}
                 autoDetectWindowHeight={false}
@@ -355,17 +355,17 @@ class ArticleDetail extends React.Component {
                 actions={
                     <div style={{width: "100%"}}>
                     <span style={{width: '50%', textAlign: "right"}}>
-                        <MuiThemeProvider>
+                        
                             <RaisedButton label="取消" onClick={() => this.props.close()} />
-                        </MuiThemeProvider><MuiThemeProvider>
+                        
                             <RaisedButton style={{marginLeft: "20px"}} label="删除新闻" onClick={() => this.props.deleteNotice()} />
-                        </MuiThemeProvider>
-                        <MuiThemeProvider>
+                        
+                        
                             <RaisedButton style={{marginLeft: "20px"}} label="不通过" onClick={this.decline.bind(this)} />
-                        </MuiThemeProvider>
-                        <MuiThemeProvider>
+                        
+                        
                             <RaisedButton style={{marginLeft: "20px"}} label="通过" onClick={this.accept.bind(this)} />
-                        </MuiThemeProvider>
+                        
                     </span>
                     </div>
                 }
@@ -378,7 +378,7 @@ class ArticleDetail extends React.Component {
                     </div>
                 }
             />
-            </MuiThemeProvider>
+            
         )
     }
 }

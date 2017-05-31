@@ -26,9 +26,9 @@ export default class InforComponent extends React.Component{
     }
     render(){
         return(
-          <MuiThemeProvider>
+          
               <Paper style={this.style} zDepth={2} children={<InforListComponent/>}/>
-          </MuiThemeProvider>
+          
         );
     }
 

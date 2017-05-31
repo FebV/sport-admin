@@ -111,7 +111,7 @@ export default class Profile extends React.Component {
     render() {
         return (
             <div style={{width: "100%", height:"100%", display: "flex", justifyContent: "center", alignItems: "center", flexDirection: "column"}}>
-            <MuiThemeProvider>
+            
             <Paper style={{padding: "50px", margin: '20px'}}>
             <div>个人资料</div>
             {this.tfs.map( (e, idx) => {
@@ -130,11 +130,11 @@ export default class Profile extends React.Component {
             })}
             <RaisedButton style={{float: "right", marginTop: "20px"}} label="修改密码" onClick={() => this.setState({changePassDialogOpen: true})} />
             </Paper>
-            </MuiThemeProvider>
+            
             {
                 false
                     ?
-            <MuiThemeProvider>
+            
             <Paper style={{width: "80%", textAlign: "center", marginTop: "20px"}}>
                 <h2 style={{margin: "10px"}}>个人权限表</h2>
             <Table selectable={false} >
@@ -179,7 +179,7 @@ export default class Profile extends React.Component {
             </TableBody>}
             </Table>
             </Paper>
-            </MuiThemeProvider>
+            
                 :
                 null
             }
@@ -201,7 +201,7 @@ class ChangePassDialog extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <div>
             <Dialog
                 contentStyle={{width: "500px"}}
@@ -226,7 +226,7 @@ class ChangePassDialog extends React.Component {
             </div>
             </Dialog>
             </div>
-            </MuiThemeProvider>
+            
         )
     }
 }

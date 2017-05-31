@@ -43,7 +43,7 @@ export default class headBar extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <div>
             <AppBar
                 style={{zIndex: 1500, position: 'fixed', height: "10vh", backgroundColor: location.pathname.indexOf('admin') > -1 ? "rgb(0, 188, 212)" : '#900f13', fontWeight: "900", display: "flex", justifyContent: "center", alignItems: "center", textAlign: "center", fontSize: "5vh"}}
@@ -57,7 +57,7 @@ export default class headBar extends React.Component {
             {/*{location.pathname.indexOf('admin') > -1 ? null : <div style={{height: "30vh", backgroundColor: "black"}}></div>}*/}
             <LoginDialog closeDialog={this.closeDialog.bind(this)} open={this.state.dialogOpen} />
             </div>
-            </MuiThemeProvider>
+            
         );
     }
 }

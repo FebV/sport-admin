@@ -90,13 +90,13 @@ export default class Equipment extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Tabs>
             <Tab label="器材总览">
             <div style={{width: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             <div style={{width: "100%", textAlign: "center"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -110,12 +110,12 @@ export default class Equipment extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             <RaisedButton label="查询" onClick={() => this.queryEquipment()}></RaisedButton><br />
             <span style={{position: "relative", top: "0px", right: "30px"}}>或</span>
                 <TextField floatingLabelText="根据名称搜索" value={this.state.searchWord} onChange={(e, v) => this.setState({searchWord: v})} /><i style={{cursor: "pointer"}} className="fa fa-search" onClick={this.search.bind(this)} />
             </div>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "90%"}}>
             <Table selectable={false} >
             <TableHeader
@@ -196,12 +196,12 @@ export default class Equipment extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
-            <MuiThemeProvider>
+            
+            
             <FloatingActionButton onClick={() => this.setState({addEquipmentDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
-            </MuiThemeProvider>
+            
             
             <AddEquipment handleClose={() => this.setState({addEquipmentDialogOpen: false})} open={this.state.addEquipmentDialogOpen} />
             <TransEquipment equipment_name={this.state.transEquipName} id={this.state.transEquipmentId} open={this.state.transEquipmentDialogOpen} close={() => this.setState({transEquipmentDialogOpen: false})} />
@@ -212,7 +212,7 @@ export default class Equipment extends React.Component {
             <div style={{width: "100%", display: "flex", justifyContent: "center", flexDirection: "column", alignItems: "center"}}>
             <div style={{width: "100%", textAlign: "center", height: "20%"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -226,10 +226,10 @@ export default class Equipment extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             <RaisedButton label="查询" onClick={() => this.queryTrans()}></RaisedButton>
             </div>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "90%"}}>
             <Table selectable={false} >
             <TableHeader
@@ -294,17 +294,17 @@ export default class Equipment extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
-            <MuiThemeProvider>
+            
+            
             <FloatingActionButton onClick={() => this.setState({addEquipmentDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
-            </MuiThemeProvider>
+            
             </div>
             
             </Tab>
             </Tabs>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -357,7 +357,7 @@ class AddEquipment extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="新增器材"
@@ -394,7 +394,7 @@ class AddEquipment extends React.Component {
             </DropDownMenu>
             <br />
             场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
@@ -405,7 +405,7 @@ class AddEquipment extends React.Component {
                     })}
                     
                 </DropDownMenu>
-            </MuiThemeProvider>
+            
             </div>
                 <TextField
                     floatingLabelText="器材名称"
@@ -450,7 +450,7 @@ class AddEquipment extends React.Component {
                 /><br />
                 
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -484,7 +484,7 @@ class TransEquipment extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="器材调动"
@@ -521,7 +521,7 @@ class TransEquipment extends React.Component {
             </DropDownMenu>
             <br />
             所属场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.belong_gym}
@@ -532,7 +532,7 @@ class TransEquipment extends React.Component {
                     })}
                     
                 </DropDownMenu>
-            </MuiThemeProvider>
+            
             </div>
             <div style={{width: "100%", textAlign: "center"}}>
             使用校区
@@ -551,7 +551,7 @@ class TransEquipment extends React.Component {
             </DropDownMenu>
             <br />
             使用场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.use_gym}
@@ -562,7 +562,7 @@ class TransEquipment extends React.Component {
                     })}
                     
                 </DropDownMenu>
-            </MuiThemeProvider>
+            
             </div>
             <TextField
                 floatingLabelText="器材名称"
@@ -581,7 +581,7 @@ class TransEquipment extends React.Component {
             /><br />
             
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -602,7 +602,7 @@ class EditEquipment extends React.Component {
         const equip = this.props.props.equipments.find(e => e.id == this.props.id);
         console.log(equip);
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="修改器材"
@@ -661,7 +661,7 @@ class EditEquipment extends React.Component {
             /><br />
             </div>
             </Dialog>
-            </MuiThemeProvider>
+            
         );
     }
 }

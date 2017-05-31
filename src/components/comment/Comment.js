@@ -90,7 +90,6 @@ export default class Comment extends React.Component {
             
             {this.state.comments.map((ele, idx) => {
                 return (
-                    <MuiThemeProvider key={idx}>
                     <Card style={{margin: "50px", width: "80%"}}>
                     <CardHeader
                     title={ele.id+" --- "+ele.title}
@@ -116,13 +115,13 @@ export default class Comment extends React.Component {
                     null }
                     </CardActions>
                     </Card>
-                    </MuiThemeProvider>
+                    
                 )
             })}
             <div style={{position: "fixed", left: "calc(50% - 25px)", top: "calc(50% - 25px)", width: "50px", height: "50px"}}>
             {this.state.loading
             ?
-            <MuiThemeProvider>
+            
             <RefreshIndicator
             size={50}
             left={0}
@@ -131,17 +130,17 @@ export default class Comment extends React.Component {
             status="loading"
             style={{position: "relative"}}
             />
-            </MuiThemeProvider>
+            
             :
             null
             }
             </div>
             </div>
-            <MuiThemeProvider>
+            
             <FloatingActionButton onClick={() => this.setState({postCommentDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
-            </MuiThemeProvider>
+            
             <PostCommentDialog
                 open={this.state.postCommentDialogOpen}
                 close={() => this.setState({postCommentDialogOpen: false})}
@@ -208,7 +207,7 @@ class PostCommentDialog extends React.Component{
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="发布评论"
@@ -253,7 +252,7 @@ class PostCommentDialog extends React.Component{
                 onChange={(e, v) => this.setState({email: v})}                    
             /><br />
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }
@@ -271,7 +270,7 @@ class DeleteDialog extends React.Component {
     render() {
         console.log(this.props)
         return (
-            <MuiThemeProvider>
+            
             <Dialog
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="确认删除评论？"
@@ -291,7 +290,7 @@ class DeleteDialog extends React.Component {
                 onRequestClose={this.props.close}
             >
             </Dialog>
-            </MuiThemeProvider>
+            
         )
     }
 }

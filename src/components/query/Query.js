@@ -73,7 +73,7 @@ export default class Query extends React.Component {
     render() {
         return (
             <div style={{paddingTop: "20px"}}>
-            <MuiThemeProvider>
+            
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <span style={{margin: "0 20px"}}>从：</span><br />
                 <DatePicker
@@ -103,10 +103,10 @@ export default class Query extends React.Component {
 
                 />
             </div>
-            </MuiThemeProvider>
+            
             <div style={{width: "100%", textAlign: "center"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -120,9 +120,9 @@ export default class Query extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
@@ -133,16 +133,16 @@ export default class Query extends React.Component {
                     })}
                     
                 </DropDownMenu>
-                </MuiThemeProvider>
-            <MuiThemeProvider>
+                
+            
             <RaisedButton
                 label="查询"
                 onClick={this.query.bind(this)}
             />
-            </MuiThemeProvider>
+            
             </div>
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
-            <MuiThemeProvider>
+            
             <Paper style={{width: "90%", textAlign: "center"}}>
                 <div style={{width: "40%", display:"flex"}}>
                     <div style={{lineHeight: "52px", marginLeft: "5vw"}}>体育教学</div>
@@ -184,7 +184,7 @@ export default class Query extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            </MuiThemeProvider>
+            
             </div>
             </div>
         )

@@ -101,7 +101,7 @@ export default class News extends React.Component {
             </Carousel>
             </div>
 
-            <MuiThemeProvider>
+            
             <div style={{width: "calc(100% - 40px)", display: "flex", justifyContent: "center", padding: "20px"}}>
             <div style={{width: "80%", padding: "20px", border: "1px solid rgb(144, 15, 19)", borderRadius: "20px"}}>
                 <h4>体育活动</h4>
@@ -122,10 +122,10 @@ export default class News extends React.Component {
             </List>
             </div>
             </div>
-            </MuiThemeProvider>
+            
             </div>
         );
-        return (
+        /*return (
             <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
             <div style={{width: "50%"}}>
             {this.state.comments.length == 0 && !this.state.loading
@@ -159,13 +159,13 @@ export default class News extends React.Component {
                     null }
                     </CardActions>
                     </Card>
-                    </MuiThemeProvider>
+                    
                 )
             })}
             <div style={{position: "fixed", left: "calc(50% - 25px)", top: "calc(50% - 25px)", width: "50px", height: "50px"}}>
             {this.state.loading
             ?
-            <MuiThemeProvider>
+            
             <RefreshIndicator
             size={50}
             left={0}
@@ -174,20 +174,20 @@ export default class News extends React.Component {
             status="loading"
             style={{position: "relative"}}
             />
-            </MuiThemeProvider>
+            
             :
             null
             }
             </div>
             </div>
-            <MuiThemeProvider>
+            
             <FloatingActionButton onClick={() => this.setState({postCommentDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
-            </MuiThemeProvider>
+            
 
-            </div>
-        )
+            </div>*/
+        // )
     }
 }
 

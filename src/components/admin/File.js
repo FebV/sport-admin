@@ -72,7 +72,7 @@ export default class File extends React.Component {
     render() {
         return (
             <div style={{width: "100%", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", padding: "20px"}}>
-                <MuiThemeProvider>
+                
                 <div style={{width: "100%", padding: "20px", display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center"}}>
                 <div style={{width: "80%", padding: "20px"}}>
                 <UploadFile />
@@ -92,7 +92,7 @@ export default class File extends React.Component {
                     })}
                 </div>
                 </div>
-                </MuiThemeProvider>
+                
             </div>
         )
     }
@@ -154,7 +154,7 @@ class UploadFile extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <div>
             <div
                 onDragLeave={e => {
@@ -194,7 +194,7 @@ class UploadFile extends React.Component {
                 onClick={this.upload.bind(this)}
             />
             </div>
-            </MuiThemeProvider>
+            
         )
     }
 }

@@ -110,6 +110,7 @@ export default class Main extends React.Component {
             <AlertBar />
         </div>
         </MuiThemeProvider>
+        
         )
     }
 }

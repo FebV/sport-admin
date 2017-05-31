@@ -226,7 +226,7 @@ export default class NavBar extends React.Component {
   render() {
 
     return (
-        <MuiThemeProvider>
+        
         <div>
         <Tabs
             style={{padding: "0 10vw"}}
@@ -255,12 +255,12 @@ export default class NavBar extends React.Component {
         </Tabs>
         <PopMenu props={this} />
         </div>
-        </MuiThemeProvider>
+        
     )
 
     /*return (
       <div>
-        <MuiThemeProvider>
+        
         <Drawer
             docked={this.props.drawerDocked}
             open={this.props.open}
@@ -297,7 +297,7 @@ export default class NavBar extends React.Component {
           </List>
             
         </Drawer>
-        </MuiThemeProvider>
+        
       </div>
     );*/
   }

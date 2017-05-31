@@ -6,6 +6,9 @@ html, body {
     font-family: "Microsoft Yahei", sans-serif;
     font-size: 15px;
 }
+td {
+  white-space: normal !important;
+}
 .fade-enter {
   opacity: 0;
   z-index: 1;

@@ -18,22 +18,28 @@ import camGym from '../../config/cam-gym';
 export default class Apply extends React.Component {
     constructor(props) {
         super(props);
+        let d = new Date();
+        d.setDate(d.getDate() + 5);
+        this.defaultDate = d;
+        d = new Date();
+        this.disabledDate = d.setDate(d.getDate() + 4);
         this.serial = ['one', 'two', 'three', 'four', 'five', 'six'];
         this.state = {
             campus: 'zx',
             gym: 'basketball',
             time: null,
-            classtime: Array(7).fill(false),
+            classtime: Array(14).fill(false),
             major: '',
             content: '',
             pnumber: '',
             charger: '',
             tel: '',
+            num: '',
             teacher: '',
             teacher_tel: '',
             remark: '',
             department: '',
-            classtimeDisTable: Array(7).fill(false)
+            classtimeDisTable: Array(14).fill(false)
         }
     }
 
@@ -80,6 +86,7 @@ export default class Apply extends React.Component {
             pnumber: '',
             charger: '',
             tel: '',
+            num: '',
             teacher: '',
             teacher_tel: '',
             remark: '',
@@ -103,6 +110,7 @@ export default class Apply extends React.Component {
             content: this.state.content,
             pnumber: this.state.pnumber,
             charger: this.state.charger,
+            num: this.state.num,
             tel: this.state.tel,
             remark: this.state.remark,
             teacher: this.state.teacher,
@@ -123,6 +131,7 @@ export default class Apply extends React.Component {
             gym: this.state.gym,
             time: this.state.time,
             classtime: ClsTime,
+            num: this.state.num,
             department: this.state.department,
             content: this.state.content,
             charger: this.state.charger,
@@ -134,14 +143,14 @@ export default class Apply extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
             <div style={{width:"100%", display: "flex", justifyContent: "center"}}>
             <Tabs style={{width: "40%"}}>
                 <Tab label="校内申请" style={{backgroundColor: "#DD2C00"}}>
                 <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -155,9 +164,9 @@ export default class Apply extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
@@ -168,7 +177,7 @@ export default class Apply extends React.Component {
                     })}
                     
                 </DropDownMenu>
-            </MuiThemeProvider><br />
+            <br />
                 <DatePicker
                     style={{display: "inline-block", marginTop: "20px"}}
                     hintText="使用日期"
@@ -176,12 +185,13 @@ export default class Apply extends React.Component {
                     locale="zh-CN"
                     cancelLabel="取消"
                     okLabel="确定"
+                    shouldDisableDate={d => d < this.disabledDate}
                     onChange={this.handleDateChange.bind(this)}
                 /><br />
                 <div style={{marginTop: "10px 0"}}>使用节次</div>
                 <div style={{textAlign: "left"}}>
-                    {[...Array(6).keys()].map( (e, idx) => {
-                        console.log(this.state.classtimeDisTable)
+                    {/*{[...Array(14).keys()].map( (e, idx) => {
+                        //console.log(this.state.classtimeDisTable)
                         let base = idx < 2 ? 8  : 10;
                         return (
                             <span key={e}><Checkbox
@@ -194,7 +204,175 @@ export default class Apply extends React.Component {
                                 }}
                                 disabled={!this.state.classtimeDisTable[idx]}
                             /></span>)
-                    })}
+                    })}*/}
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`6:00 - 8:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[0]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`8:00 - 9:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[1]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`9:00 - 10:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[2]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`10:00 - 11:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[3]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`11:00 - 12:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[4]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`12:00 - 13:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[5]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`13:00 - 14:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[6]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`14:00 - 15:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[7]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`15:00 - 16:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[8]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`16:00 - 17:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[9]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`17:00 - 18:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[10]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`18:00 - 19:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[11]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`19:00 - 20:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[12]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`20:00 - 21:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[13]}
+                        />
+                    </span>
                 </div>
                 <TextField
                     value={this.state.major}
@@ -222,6 +400,11 @@ export default class Apply extends React.Component {
                     floatingLabelText="联系方式（手机）"
                 /><br />
                 <TextField
+                    value={this.state.num}                
+                    onChange={(e, v) => this.setState({num: v})}                
+                    floatingLabelText="申请数量"
+                /><br />
+                <TextField
                     value={this.state.teacher}                
                     onChange={(e, v) => this.setState({teacher: v})}                
                     floatingLabelText="学院老师姓名"
@@ -247,7 +430,7 @@ export default class Apply extends React.Component {
                 <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
                 校区
-            <MuiThemeProvider>
+            
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -261,9 +444,9 @@ export default class Apply extends React.Component {
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>
-            </MuiThemeProvider>
+            
             场馆
-            <MuiThemeProvider>
+            
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.gym}
@@ -274,7 +457,7 @@ export default class Apply extends React.Component {
                     })}
                     
                 </DropDownMenu>
-            </MuiThemeProvider><br />
+            <br />
                 <DatePicker
                     style={{display: "inline-block", marginTop: "20px"}}
                     hintText="使用日期"
@@ -282,11 +465,12 @@ export default class Apply extends React.Component {
                     locale="zh-CN"
                     cancelLabel="取消"
                     okLabel="确定"
+                    shouldDisableDate={d => d < this.disabledDate}
                     onChange={this.handleDateChange.bind(this)}
                 /><br />
                 <div style={{marginTop: "10px 0"}}>使用节次</div>
                 <div style={{textAlign: "left"}}>
-                    {[...Array(6).keys()].map( (e, idx) => {
+                    {/*{[...Array(6).keys()].map( (e, idx) => {
                         console.log(this.state.classtimeDisTable)
                         let base = idx < 2 ? 8  : 10;
                         return (
@@ -300,7 +484,175 @@ export default class Apply extends React.Component {
                                 }}
                                 disabled={!this.state.classtimeDisTable[idx]}
                             /></span>)
-                    })}
+                    })}*/}
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`6:00 - 8:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[0]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`8:00 - 9:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[1]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`9:00 - 10:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[2]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`10:00 - 11:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[3]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`11:00 - 12:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[4]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`12:00 - 13:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[5]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`13:00 - 14:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[6]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`14:00 - 15:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[7]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`15:00 - 16:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[8]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`16:00 - 17:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[9]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`17:00 - 18:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[10]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`18:00 - 19:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[11]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`19:00 - 20:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[12]}
+                        />
+                    </span>
+                    <span>
+                        <Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`20:00 - 21:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[13]}
+                        />
+                    </span>
                 </div>
                 <TextField
                     value={this.state.department}                
@@ -311,6 +663,11 @@ export default class Apply extends React.Component {
                     value={this.state.content}                
                     onChange={(e, v) => this.setState({content: v})}                
                     floatingLabelText="活动内容"
+                /><br />
+                <TextField
+                    value={this.state.num}                
+                    onChange={(e, v) => this.setState({num: v})}                
+                    floatingLabelText="申请数量"
                 /><br />
                 <TextField 
                     value={this.state.charger}                
@@ -331,7 +688,7 @@ export default class Apply extends React.Component {
                 </Tab>
             </Tabs>
             </div>
-            </MuiThemeProvider>
+            
         )
     }
 }

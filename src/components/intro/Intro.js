@@ -39,13 +39,13 @@ export default class Intro extends React.Component {
 
     render() {
         return (
-            <MuiThemeProvider>
+            
                 <div>
                     <Tabs>
                     {this.list.map( (e, idx) => <Tab value={idx} style={{fontSize: "12px"}} key={idx} label={e.label}>{e.ele}</Tab>)}
                     </Tabs>
                 </div>
-            </MuiThemeProvider>
+            
         )
     }
 }
