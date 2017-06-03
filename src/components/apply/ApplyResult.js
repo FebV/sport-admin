@@ -50,7 +50,10 @@ export default class Apply extends React.Component {
         ApplyModel.queryInnerApplyByTel({
             tel: this.state.tel
         })
-            .then(res => this.setState({innerRecords: res}));
+            .then(res => {
+                console.log(res);
+                this.setState({innerRecords: res})
+            });
     }
     
     outerQuery() {
@@ -80,6 +83,7 @@ export default class Apply extends React.Component {
     }
 
     render() {
+        console.log(this.state.innerRecords);
         return (
         
             <Tabs>
@@ -125,13 +129,14 @@ export default class Apply extends React.Component {
                 displayRowCheckbox={false}
             >
             {this.state.innerRecords.map((ele, idx) => {
-                let targetName = null;
-                for(let i of camGym[ele.campus]) {
+                {/*let targetName = null;
+                for(let i of this.camGym[ele.campus]) {
                     if(i.name == ele.gym) {
                         targetName = i.label;
                         break;
                     }
-                }
+                }*/}
+                let targetName = ele.gym;
                 let state = null;
                 state = ele.state == 3 ? '通过' : ele.record  == -3 ? '未通过' : '正在审核';
                 let targetClsTime = ele.classtime;
@@ -212,13 +217,13 @@ export default class Apply extends React.Component {
                 displayRowCheckbox={false}
             >
             {this.state.outerRecords.map((ele, idx) => {
-                let targetName = null;
-                for(let i of camGym[ele.campus]) {
+                let targetName = ele.gym;
+                {/*for(let i of camGym[ele.campus]) {
                     if(i.name == ele.gym) {
                         targetName = i.label;
                         break;
                     }
-                }
+                }*/}
                 let state = null;
                 if(ele.state == 3)
                     state = '通过';

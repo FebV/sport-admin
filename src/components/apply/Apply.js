@@ -11,6 +11,8 @@ import DatePicker from 'material-ui/DatePicker';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import Checkbox from 'material-ui/Checkbox';
 
+import GymSelector from '../common/GymSelector';
+
 import Schedule from '../../controllers/Schedule';
 import Applies from '../../controllers/Applies';
 import camGym from '../../config/cam-gym';
@@ -27,6 +29,7 @@ export default class Apply extends React.Component {
         this.state = {
             campus: 'zx',
             gym: 'basketball',
+            type: '',
             time: null,
             classtime: Array(14).fill(false),
             major: '',
@@ -43,18 +46,10 @@ export default class Apply extends React.Component {
         }
     }
 
-    handleCampusChange(e, k, v) {
-        this.setState({campus: v})
-    }
-
-    handleGymChange(e, k, v) {
-        this.setState({gym: v})
-    }
-
     handleDateChange(n, v) {
         const formatTime = this.fitDate(v);
         this.setState({time: formatTime});
-        Schedule.getSchedulesOfDay({campus: this.state.campus, gym: this.state.gym, day: formatTime})
+        Schedule.getSchedulesOfDay({campus: this.state.campus, gym: this.state.gym, day: formatTime, type: this.state.type})
             .then(res => {
                 if(res != null) {
                     let disTable = [];
@@ -81,6 +76,7 @@ export default class Apply extends React.Component {
         this.setState({
             campus: 'zx',
             gym: 'basketball',
+            type: '',
             major: '',
             content: '',
             pnumber: '',
@@ -145,38 +141,13 @@ export default class Apply extends React.Component {
         return (
             
             <div style={{width:"100%", display: "flex", justifyContent: "center"}}>
-            <Tabs style={{width: "40%"}}>
+            <Tabs style={{width: "60%"}}>
                 <Tab label="校内申请" style={{backgroundColor: "#DD2C00"}}>
                 <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
-                校区
-            
-            <DropDownMenu
-                style={{position: 'relative', top: '20px'}}
-                value={this.state.campus}
-                onChange={this.handleCampusChange.bind(this)}
-            >
-                <MenuItem value={"mu"} primaryText="综合体育馆" />
-                <MenuItem value={"zx"} primaryText="中心校区" />
-                <MenuItem value={"hj"} primaryText="洪家楼校区" />
-                <MenuItem value={"qf"} primaryText="千佛山校区" />
-                <MenuItem value={"bt"} primaryText="趵突泉校区" />
-                <MenuItem value={"xl"} primaryText="兴隆山校区" />
-                <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            
-            场馆
-            
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={this.handleGymChange.bind(this)}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
+                <GymSelector onChange={(g) => {
+                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                }} />
             <br />
                 <DatePicker
                     style={{display: "inline-block", marginTop: "20px"}}
@@ -429,34 +400,9 @@ export default class Apply extends React.Component {
                 <Tab label="校外申请" >
                 <div style={{width: "100%", display: "flex", justifyContent: "center", alignItems: "center"}}>
                 <Paper style={{width: "80%", textAlign: "center", margin: "20px 0", padding: "20px 0"}}>
-                校区
-            
-            <DropDownMenu
-                style={{position: 'relative', top: '20px'}}
-                value={this.state.campus}
-                onChange={this.handleCampusChange.bind(this)}
-            >
-                <MenuItem value={"mu"} primaryText="综合体育馆" />
-                <MenuItem value={"zx"} primaryText="中心校区" />
-                <MenuItem value={"hj"} primaryText="洪家楼校区" />
-                <MenuItem value={"qf"} primaryText="千佛山校区" />
-                <MenuItem value={"bt"} primaryText="趵突泉校区" />
-                <MenuItem value={"xl"} primaryText="兴隆山校区" />
-                <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            
-            场馆
-            
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={this.handleGymChange.bind(this)}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
+                <GymSelector onChange={(g) => {
+                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                }} />
             <br />
                 <DatePicker
                     style={{display: "inline-block", marginTop: "20px"}}

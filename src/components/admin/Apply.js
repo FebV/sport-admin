@@ -14,7 +14,7 @@ import {Tabs, Tab} from 'material-ui/Tabs';
 import TextField from 'material-ui/TextField';
 
 import ApplyModel from '../../controllers/Applies';
-import camGym from '../../config/cam-gym';
+import GymSelector from '../common/GymSelector';
 
 
 export default class Apply extends React.Component {
@@ -122,36 +122,10 @@ export default class Apply extends React.Component {
             </div>
             
             <div style={{width: "100%", textAlign: "center"}}>
-                校区
             
-            <DropDownMenu
-                style={{position: 'relative', top: '20px'}}
-                value={this.state.campus}
-                onChange={this.handleCampusChange.bind(this)}
-            >
-                <MenuItem value={"mu"} primaryText="综合体育馆" />
-                <MenuItem value={"zx"} primaryText="中心校区" />
-                <MenuItem value={"hj"} primaryText="洪家楼校区" />
-                <MenuItem value={"qf"} primaryText="千佛山校区" />
-                <MenuItem value={"bt"} primaryText="趵突泉校区" />
-                <MenuItem value={"xl"} primaryText="兴隆山校区" />
-                <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            
-            场馆
-            
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={this.handleGymChange.bind(this)}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
-                
-            
+                <GymSelector onChange={(g) => {
+                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                }} />            
             <RaisedButton
                 label="查询"
                 onClick={this.innerQuery.bind(this)}
@@ -273,35 +247,9 @@ export default class Apply extends React.Component {
             </div>
             
             <div style={{width: "100%", textAlign: "center"}}>
-                校区
-            
-            <DropDownMenu
-                style={{position: 'relative', top: '20px'}}
-                value={this.state.campus}
-                onChange={this.handleCampusChange.bind(this)}
-            >
-                <MenuItem value={"mu"} primaryText="综合体育馆" />
-                <MenuItem value={"zx"} primaryText="中心校区" />
-                <MenuItem value={"hj"} primaryText="洪家楼校区" />
-                <MenuItem value={"qf"} primaryText="千佛山校区" />
-                <MenuItem value={"bt"} primaryText="趵突泉校区" />
-                <MenuItem value={"xl"} primaryText="兴隆山校区" />
-                <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            
-            场馆
-            
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={this.handleGymChange.bind(this)}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
-                
+                <GymSelector onChange={(g) => {
+                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                }} />
             
             <RaisedButton
                 label="查询"

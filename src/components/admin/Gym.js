@@ -20,7 +20,7 @@ import camGym from '../../config/cam-gym';
 export default class Gym extends React.Component {
     constructor(props) {
         super(props);
-        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven'];
+        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'];
         this.state = {
             start: '',
             end: '',
@@ -38,6 +38,7 @@ export default class Gym extends React.Component {
             batModStart: null,
             batModEnd: null,
             camGym: null,
+            gymNumber: 0,
         }
 
         addEventListener("put schedules ok", () => {
@@ -63,7 +64,8 @@ export default class Gym extends React.Component {
             end: this.fitDate(this.state.end),
         })
             .then(res => {
-                this.setState({records: res})
+                this.setState({records: res[0]})
+                this.setState({gymNumber: res[0].one.length})
                 console.log(res);
             });
     }
@@ -80,12 +82,13 @@ export default class Gym extends React.Component {
     }
 
     showStatus(status) {
+        console.log(status);
         let backgroundColor = null;
-        if(status == '体育教学')
+        if(status == '3') //体育教学
             backgroundColor = 'red';
-        if(status == '开放')
+        if(status == '1') //开放
             backgroundColor = 'green';
-        if(status == '占用')
+        if(status == '2') //占用
             backgroundColor = 'gray';
         return backgroundColor;
     }
@@ -93,6 +96,7 @@ export default class Gym extends React.Component {
 
     //show a popover
     modify(r, c, p) {
+        return ;
         if(!this.state.isModifying)
             return;
         //bat modify control
@@ -120,10 +124,11 @@ export default class Gym extends React.Component {
             <div style={{paddingTop: "20px"}}>
             
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <span style={{margin: "0 20px"}}>从：</span><br />
+                {/*<span style={{margin: "0 20px"}}>从：</span><br />*/}
+                <span style={{margin: "0 20px"}}>选择日期：</span><br />
                 <DatePicker
                     style={{display: "inline-block"}}
-                    hintText="起始日期"
+                    hintText="选择日期"
                     DateTimeFormat={Intl.DateTimeFormat}
                     locale="zh-CN"
                     cancelLabel="取消"
@@ -132,7 +137,7 @@ export default class Gym extends React.Component {
                         this.setState({start: v});
                         }}
                 /><br />
-                <span style={{margin: "0 20px"}}>至：</span><br />
+                {/*<span style={{margin: "0 20px"}}>至：</span><br />
                 <DatePicker
                     hintText="截止日期"
                     DateTimeFormat={Intl.DateTimeFormat}
@@ -142,7 +147,7 @@ export default class Gym extends React.Component {
                     onChange={(e, v) => {
                         this.setState({end: v});
                     }}
-                />
+                />*/}
             </div>
             
             <div style={{width: "100%", textAlign: "center"}}>            
@@ -186,29 +191,29 @@ export default class Gym extends React.Component {
                 adjustForCheckbox={false}
             >
                 <TableRow>
-                <TableHeaderColumn style={{width: "20px"}}>#</TableHeaderColumn>
-                <TableHeaderColumn>日期</TableHeaderColumn>
-                <TableHeaderColumn>星期</TableHeaderColumn>
-                {[...Array(11).keys()].map((ele, idx) => <TableHeaderColumn  style={{width: "5%"}} key={idx}>{1*idx+1}</TableHeaderColumn>)}
+                <TableHeaderColumn>#</TableHeaderColumn>
+                {/*<TableHeaderColumn>日期</TableHeaderColumn>
+                <TableHeaderColumn>星期</TableHeaderColumn>*/}
+                {[...Array(14).keys()].map((ele, idx) => idx == 0 ? 
+                 <TableHeaderColumn key={idx}>{`6:00 - 8:00`}</TableHeaderColumn>
+                 :
+                 <TableHeaderColumn key={idx}>{`${7 + idx}:00 - ${9 + idx}:00`}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
             <TableBody
                 displayRowCheckbox={false}
             >
-                {this.state.records.map((ele, idx) => {
+                {[...Array(this.state.gymNumber).keys()].map((ele, idx) => {
                     return (
                         <TableRow key={idx}>
-                        <TableRowColumn style={{width: "20px"}}>{1 + 1*idx}</TableRowColumn>                            
-                        <TableRowColumn>{ele.date}</TableRowColumn>
-                        <TableRowColumn>{ele.week}</TableRowColumn>
+                        <TableHeaderColumn>{1 + 1*idx}</TableHeaderColumn>                            
+                        {/*<TableHeaderColumn>{ele.date}</TableHeaderColumn>
+                        <TableHeaderColumn>{ele.week}</TableHeaderColumn>*/}
                         {this.serial.map(
-                            (d, idx) => (
-                                    <TableRowColumn
-                                        key={idx}
-                                        style={{backgroundColor: this.showStatus(ele[d]), border: "1px solid", width: "5%", opacity: !this.state.isModifying ? "1" : "0.7", cursor: this.state.isModifying ? "pointer" : ""}}
-                                    ></TableRowColumn>
-                                )
+                            (d, i) => <TableHeaderColumn key={i} style={{backgroundColor: this.showStatus(this.state.records[d][idx]), border: "2px solid"}}></TableHeaderColumn>
                         )}
+                        
+ 
                     </TableRow>
                     );
                 })}
@@ -271,6 +276,17 @@ class UploadArrangeExcel extends React.Component {
         };
     }
 
+    fitDate(date) {
+        const d = new Date(date);
+        return `${this.leftPadding(d.getFullYear())}-${this.leftPadding((d.getMonth()+1))}-${this.leftPadding(d.getDate())}`;
+    }
+
+    leftPadding(date) {
+        if(1*date < 10)
+            date = '0' + date;
+        return date;
+    }
+
     handleCampusChange(e, k, v) {
         this.setState({campus: v});
     }
@@ -280,7 +296,13 @@ class UploadArrangeExcel extends React.Component {
     }
 
     uploadExcel() {
-        Schedule.postSchedules({campus: this.state.campus, gym: this.state.gym, file: this.state.file});
+        Schedule.postSchedules({
+            campus: this.state.campus,
+            type: this.state.type,
+            gym: this.state.gym,
+            start: this.fitDate(this.state.start),
+            end: this.fitDate(this.state.end)});
+        this.props.close();
     }
 
     render() {
@@ -288,12 +310,42 @@ class UploadArrangeExcel extends React.Component {
             
             <Dialog
                 style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
-                title="上传场馆排期表格"
+                title="生成场馆排期"
                 modal={false}
                 open={this.props.open}
                 onRequestClose={this.props.onRequestClose}
             >
-            <div style={{width: "100%", textAlign: "center"}}>
+            <div>
+            <span style={{margin: "0 20px"}}>从：</span>
+                {/*<span style={{margin: "0 20px"}}>选择日期：</span><br />*/}
+                <DatePicker
+                    style={{display: "inline-block"}}
+                    hintText="选择日期"
+                    DateTimeFormat={Intl.DateTimeFormat}
+                    locale="zh-CN"
+                    cancelLabel="取消"
+                    okLabel="确定"
+                    onChange={(e, v) => {
+                        this.setState({start: v});
+                        }}
+                /><br />
+                <span style={{margin: "0 20px"}}>至：</span>
+                <DatePicker
+                    style={{display: "inline-block"}}
+                    hintText="截止日期"
+                    DateTimeFormat={Intl.DateTimeFormat}
+                    locale="zh-CN"
+                    cancelLabel="取消"
+                    okLabel="确定"
+                    onChange={(e, v) => {
+                        this.setState({end: v});
+                    }}
+                /><br />
+            <GymSelector onChange={(g) => {
+                this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+            }} />
+            </div>
+            {/*<div style={{width: "100%", textAlign: "center"}}>
                 校区
             
             <DropDownMenu
@@ -326,8 +378,8 @@ class UploadArrangeExcel extends React.Component {
                     }
                     
                 </DropDownMenu>
-                </div>
-            <div
+                </div>*/}
+            {/*<div
                 onDragLeave={e => {
                     e.preventDefault();
                     e.stopPropagation();
@@ -353,13 +405,14 @@ class UploadArrangeExcel extends React.Component {
                 {this.state.file == null ? "拖拽上传文件" : "文件名： " + this.state.file.name}
                 {this.state.file == null ? "" : <br />}
                 {this.state.file == null ? "" : "文件大小： " + Number(this.state.file.size / 1024).toFixed(2)  + "k"}
-            </div>
+            </div>*/}
             <RaisedButton
-                style={{float: "right", marginLeft: "20px"}}
-                label="上传"
+                style={{margin: "15px"}}
+                label="生成"
                 onClick={this.uploadExcel.bind(this)}
             /><RaisedButton
-                style={{float: "right"}}
+                style={{margin: "15px"}}
+
                 label="取消"
                 onClick={this.props.onRequestClose}
             />

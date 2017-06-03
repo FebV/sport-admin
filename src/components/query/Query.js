@@ -8,6 +8,9 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DropDownMenu from 'material-ui/DropDownMenu';
 import MenuItem from 'material-ui/MenuItem';
 
+
+import GymSelector from '../common/GymSelector';
+
 import camGym from '../../config/cam-gym';
 
 export default class Query extends React.Component {
@@ -72,13 +75,15 @@ export default class Query extends React.Component {
 
     render() {
         return (
+            <div>
             <div style={{paddingTop: "20px"}}>
             
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
-                <span style={{margin: "0 20px"}}>从：</span><br />
+                {/*<span style={{margin: "0 20px"}}>从：</span><br />*/}
+                <span style={{margin: "0 20px"}}>选择日期：</span><br />
                 <DatePicker
                     style={{display: "inline-block"}}
-                    hintText="起始日期"
+                    hintText="选择日期"
                     DateTimeFormat={Intl.DateTimeFormat}
                     locale="zh-CN"
                     cancelLabel="取消"
@@ -89,7 +94,7 @@ export default class Query extends React.Component {
                         }}
                     shouldDisableDate={d => d < this.disabledDate}
                 /><br />
-                <span style={{margin: "0 20px"}}>至：</span><br />
+                {/*<span style={{margin: "0 20px"}}>至：</span><br />
                 <DatePicker
                     hintText="截止日期"
                     DateTimeFormat={Intl.DateTimeFormat}
@@ -101,44 +106,18 @@ export default class Query extends React.Component {
                     }}
                     shouldDisableDate={d => d < this.disabledDate}
 
-                />
+                />*/}
             </div>
-            
             <div style={{width: "100%", textAlign: "center"}}>
-                校区
-            
-            <DropDownMenu
-                style={{position: 'relative', top: '20px'}}
-                value={this.state.campus}
-                onChange={this.handleCampusChange.bind(this)}
-            >
-                <MenuItem value={"mu"} primaryText="综合体育馆" />
-                <MenuItem value={"zx"} primaryText="中心校区" />
-                <MenuItem value={"hj"} primaryText="洪家楼校区" />
-                <MenuItem value={"qf"} primaryText="千佛山校区" />
-                <MenuItem value={"bt"} primaryText="趵突泉校区" />
-                <MenuItem value={"xl"} primaryText="兴隆山校区" />
-                <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            
-            场馆
-            
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={this.handleGymChange.bind(this)}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
-                
-            
+            <GymSelector onChange={(g) => {
+                this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+            }} />
             <RaisedButton
                 label="查询"
                 onClick={this.query.bind(this)}
             />
+            </div>
+            
             
             </div>
             <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
@@ -159,9 +138,12 @@ export default class Query extends React.Component {
             >
                 <TableRow>
                 <TableHeaderColumn>#</TableHeaderColumn>
-                <TableHeaderColumn>日期</TableHeaderColumn>
-                <TableHeaderColumn>星期</TableHeaderColumn>
-                {[...Array(7).keys()].map((ele, idx) => idx == 2 ? null : <TableHeaderColumn key={idx}>{`${8+idx*2}:00 - ${10 +idx*2}:00`}</TableHeaderColumn>)}
+                {/*<TableHeaderColumn>日期</TableHeaderColumn>
+                <TableHeaderColumn>星期</TableHeaderColumn>*/}
+                {[...Array(14).keys()].map((ele, idx) => idx == 0 ? 
+                 <TableHeaderColumn key={idx}>{`6:00 - 8:00`}</TableHeaderColumn>
+                 :
+                 <TableHeaderColumn key={idx}>{`${7 + idx}:00 - ${9 + idx}:00`}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -171,8 +153,8 @@ export default class Query extends React.Component {
                     return (
                         <TableRow key={idx}>
                         <TableHeaderColumn>{1 + 1*idx}</TableHeaderColumn>                            
-                        <TableHeaderColumn>{ele.date}</TableHeaderColumn>
-                        <TableHeaderColumn>{ele.week}</TableHeaderColumn>
+                        {/*<TableHeaderColumn>{ele.date}</TableHeaderColumn>
+                        <TableHeaderColumn>{ele.week}</TableHeaderColumn>*/}
                         {['one', 'two', 'three', 'four', 'five', 'six'].map(
                             (d, idx) => <TableHeaderColumn key={idx} style={{backgroundColor: this.showStatus(ele[d]), border: "2px solid"}}></TableHeaderColumn>
                         )}

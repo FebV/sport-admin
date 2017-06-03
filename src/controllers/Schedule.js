@@ -13,23 +13,23 @@ export default class Schedule {
             .then(res => res ? res : [])
     }
 
-    static getSchedulesOfDay({campus, gym, day}) {
+    static getSchedulesOfDay({campus, gym, day, type}) {
         return Request.get({
             url: API.getSchedules({campus, gym}),
-            data: {start: day, end: day},
+            data: {start: day, end: day, type},
         })
             .then(res => res ? res[0] : null)
     } 
 
-    static postSchedules({campus, gym, file}) {
-        const fd = new FormData();
-        fd.append('api_token', Auth.getToken());
-        fd.append('excel', file);
-        return fetch(API.postSchedules({campus, gym}), {
-            method: "POST",
-            body: fd,
+    static postSchedules({campus, gym, type, start, end}) {
+        return Request.post({
+            url: API.postSchedules({campus, gym}),
+            data: {
+                api_token: Auth.getToken(),
+                campus, gym, type, start, end
+            }
         })
-            .then(res => ED.dispatch({type: 'post schedules ok'}));
+            .then(res => ED.dispatch({type: 'post schedules ok', msg: "生成成功"}));
     }
 
     static putSchedules({campus, gym, date, nthClass, targetStatus}) {
