@@ -99,6 +99,7 @@ const API = {
 
 //财务相关
     getFinance:`${base}finances`,
+    exportFinance:`${base}finances/export`,
     deleteFinance: (id)=>`${base}finances/id/${id}`,
     postFinance:`${base}finances`,
     putFinance: (id)=>`${base}finances/id/${id}`,

@@ -14,6 +14,8 @@ import MenuItem from 'material-ui/MenuItem';
 import camGym from '../../config/cam-gym';
 import TextField from 'material-ui/TextField';
 
+
+
 export default class Finances extends React.Component{
     constructor(props){
         super(props);
@@ -29,6 +31,9 @@ export default class Finances extends React.Component{
             putFinanceBilling_time: '',
             putFinanceAdmin: '',
             putFinanceRemark: '',
+            searchCampus:'zx',
+            start:'',
+            end:'',
 
         };
         this.schoolNameMap = {
@@ -65,8 +70,11 @@ export default class Finances extends React.Component{
                 return;
             //let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
             if((document.body.scrollTop + innerHeight) == document.body.scrollHeight) {
-                this.page++;
-                this.query();
+                if(this.state.financeArr.length!=0){
+                    this.page++;
+                    this.query();
+                }
+
             }
         }
 
@@ -89,9 +97,17 @@ export default class Finances extends React.Component{
 
     }
     componentDidMount(){
-        this.query();
+        // this.query();
     }
-
+    fitDate(date) {
+        const d = new Date(date);
+        return `${this.leftPadding(d.getFullYear())}-${this.leftPadding((d.getMonth()+1))}-${this.leftPadding(d.getDate())}`;
+    }
+    leftPadding(date) {
+        if(1*date < 10)
+            date = '0' + date;
+        return date;
+    }
     query(){
         this.isLoading = true;
 
@@ -102,7 +118,7 @@ export default class Finances extends React.Component{
                     console.log(res);
 
                     if(res.finance != 0) {
-                        let getF =FinanceModel.getFinance(this.page);
+                        let getF =FinanceModel.getFinance(this.page,this.state.searchCampus,this.fitDate(this.state.start),this.fitDate(this.state.end));
                             getF.then(
                                 _res=> {
                                     this.isLoading = false;
@@ -118,6 +134,29 @@ export default class Finances extends React.Component{
 
                         }
                     })
+    }
+    exportFin(){
+
+
+        Request.get({url: API.getLevel, data: {api_token: Auth.getToken()}})
+            .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
+            .then(
+                res =>{
+                    console.log(res);
+
+                    if(res.finance != 0) {
+                        let getF =FinanceModel.exportFinance(this.page,this.state.searchCampus,this.fitDate(this.state.start),this.fitDate(this.state.end));
+                        // getF.then(
+                        //     _res=> {
+                        //
+                        //
+                        //
+                        //         console.log(_res);
+                        //     }
+                        // )
+
+                    }
+                })
     }
     handleDeleteFinance(id){
         // this.setState({
@@ -141,7 +180,61 @@ export default class Finances extends React.Component{
 
     render(){
         return(
-            
+            <div>
+                <div style={{display: "flex", justifyContent: "center", alignItems: "center",marginTop:'20px'}}>
+                    <span style={{margin: "0px 20px"}}>从：</span><br />
+                    <DatePicker
+                        style={{display: "inline-block"}}
+                        hintText="起始日期"
+                        DateTimeFormat={Intl.DateTimeFormat}
+                        locale="zh-CN"
+                        cancelLabel="取消"
+                        okLabel="确定"
+                        onChange={(e, v) => {
+                            this.setState({start: v});
+                        }}
+                    /><br />
+                    <span style={{margin: "0 20px"}}>至：</span><br />
+                    <DatePicker
+                        hintText="截止日期"
+                        DateTimeFormat={Intl.DateTimeFormat}
+                        locale="zh-CN"
+                        cancelLabel="取消"
+                        okLabel="确定"
+                        onChange={(e, v) => {
+                            this.setState({end: v});
+                        }}
+                    />
+
+                </div>
+                <div style={{width: "100%", textAlign: "center",height:'80px'}}>
+                    校区
+                    <DropDownMenu
+                        style={{position: 'relative', top: '20px'}}
+                        value={this.state.searchCampus}
+                        onChange={(e, k, v) => {this.setState({searchCampus: v})}}
+                    >
+                        <MenuItem value={"mu"} primaryText="综合体育馆" />
+                        <MenuItem value={"zx"} primaryText="中心校区" />
+                        <MenuItem value={"hj"} primaryText="洪家楼校区" />
+                        <MenuItem value={"qf"} primaryText="千佛山校区" />
+                        <MenuItem value={"bt"} primaryText="趵突泉校区" />
+                        <MenuItem value={"xl"} primaryText="兴隆山校区" />
+                        <MenuItem value={"rj"} primaryText="软件园校区" />
+                    </DropDownMenu>
+                    <RaisedButton
+                        label="查询"
+                        onClick={()=>{this.setState({financeArr:[]}); this.query()}}
+                        style={{marginRight:'20px'}}
+                    />
+                    <RaisedButton
+                        label="导出"
+                        onClick={()=>{ this.exportFin()}}
+                    />
+
+                </div>
+
+
                 <div>
                     <Table selectable={false}>
                         <TableHeader displaySelectAll={false}
@@ -160,11 +253,16 @@ export default class Finances extends React.Component{
                         <TableBody  displayRowCheckbox={false}>
 
 
-                            {this.state.financeArr.map((item,idx)=>{
-                               return (<TableRow key={idx} style={{color:`${item.state != 0?"gray":"black"}`}} hovered={item.state == -1?true:false}>
+
+                            {
+                                this.state.financeArr.map((item,idx)=>{
+
+                                    return (<TableRow key={idx} style={{color: `${item.state != 0 ? "gray" : "black"}`}}
+                                              hovered={item.state == -1 ? true : false}>
 
                                         <TableRowColumn title={item.department}>{item.department}</TableRowColumn>
-                                        <TableRowColumn title={this.schoolNameMap[item.campus]}>{this.schoolNameMap[item.campus]}</TableRowColumn>
+                                        <TableRowColumn
+                                            title={this.schoolNameMap[item.campus]}>{this.schoolNameMap[item.campus]}</TableRowColumn>
                                         <TableRowColumn title={item.content}>{item.content}</TableRowColumn>
                                         <TableRowColumn title={item.money}>{item.money}</TableRowColumn>
                                         <TableRowColumn title={item.billing_time}>{item.billing_time}</TableRowColumn>
@@ -178,7 +276,7 @@ export default class Finances extends React.Component{
                                                 onMouseLeave={() => this.setState({deleteIndex: null})}
                                                 onClick={ () => {
                                                     const re = confirm(`确定要删除此项?`);
-                                                    if(re)
+                                                    if (re)
                                                         this.handleDeleteFinance(item.id);
                                                     //this.handleDeleteDialogOpen();
                                                     //this.setState({deleteAdminId: e.u_id});
@@ -186,12 +284,12 @@ export default class Finances extends React.Component{
                                                 className="fa fa-times">
                                             </i>
                                             <i
-                                                title={"变动"}
+                                                title={`${item.state != 0 ? "撤销" : "变动"}`}
                                                 style={ this.state.authIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
                                                 onMouseOver={() => this.setState({authIndex: idx})}
                                                 onMouseLeave={() => this.setState({authIndex: null})}
                                                 onClick={ () => {
-                                                    this.setState({putFinanceDialogOpen: true});
+                                                    this.setState({putFinanceDialogOpen: `${item.state != 0 ?false:true}`});
                                                     this.setState({putFinanceId: item.id});
                                                     this.setState({putFinanceDepartment: item.department});
                                                     this.setState({putFinanceCampus: item.campus});
@@ -200,24 +298,33 @@ export default class Finances extends React.Component{
                                                     this.setState({putFinanceBilling_time: item.billing_time});
                                                     this.setState({putFinanceAdmin: item.admin});
                                                     this.setState({putFinanceRemark: item.remark});
-
-                                                    {/*this.state.putFinanceId =item.id;*/}
-                                                    {/*this.state.putFinanceDepartment =item.department;*/}
-                                                    {/*this.state.putFinanceCampus =item.putFinanceCampus;*/}
-                                                    {/*this.state.putFinanceContent =item.putFinanceContent;*/}
-                                                    {/*this.state.putFinanceMoney =item.putFinanceMoney;*/}
-                                                    {/*this.state.putFinanceBilling_time =item.putFinanceBilling_time;*/}
-                                                    {/*this.state.putFinanceAdmin =item.putFinanceAdmin;*/}
-                                                    {/*this.state.putFinanceRemark =item.putFinanceRemark;*/}
-                                                    {/*console.log(item.money)*/}
+                                                    this.setState({putOrBack:`${item.state != 0 ? "back" :"put"}`});
+                                                    {/*this.state.putFinanceId =item.id;*/
+                                                    }
+                                                    {/*this.state.putFinanceDepartment =item.department;*/
+                                                    }
+                                                    {/*this.state.putFinanceCampus =item.putFinanceCampus;*/
+                                                    }
+                                                    {/*this.state.putFinanceContent =item.putFinanceContent;*/
+                                                    }
+                                                    {/*this.state.putFinanceMoney =item.putFinanceMoney;*/
+                                                    }
+                                                    {/*this.state.putFinanceBilling_time =item.putFinanceBilling_time;*/
+                                                    }
+                                                    {/*this.state.putFinanceAdmin =item.putFinanceAdmin;*/
+                                                    }
+                                                    {/*this.state.putFinanceRemark =item.putFinanceRemark;*/
+                                                    }
+                                                    {/*console.log(item.money)*/
+                                                    }
 
                                                 }}
-                                                className={"fa fa-check-square-o"}>
+                                                className={`${item.state != 0 ? "fa fa-reply" :"fa fa-check-square-o"}`}>
                                             </i>
                                         </TableRowColumn>
-                                    </TableRow>
-                                )
-                            })}
+                                    </TableRow>)
+                                }
+                            )}
 
 
 
@@ -243,7 +350,7 @@ export default class Finances extends React.Component{
                         </FloatingActionButton>
                     
                 </div>
-
+            </div>
             
         );
     }
