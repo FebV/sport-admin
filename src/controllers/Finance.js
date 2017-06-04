@@ -25,19 +25,26 @@ export default class Finance{
 
 
                 }
-    static exportFinance(page,searchCampus,startTime,endTime){
+    static exportFinance({campus, start, end}){
 
-        return Request.get({
-            url:API.exportFinance,
-            data:{
-                page,
-                rows:15,
-                api_token: Auth.getToken(),
-                campus:searchCampus,
-                start:startTime,
-                end:endTime
-            }
-        })
+        const a = document.createElement('a');
+        a.href = API.exportFinance+'?'+Request.parseData({data: {api_token: Auth.getToken(),start, end, campus}});
+        console.log(a.href);
+        a.download = 'download';
+        a.click();
+        a.remove();
+
+        // return Request.get({
+        //     url:API.exportFinance,
+        //     data:{
+        //         page,
+        //         rows:15,
+        //         api_token: Auth.getToken(),
+        //         campus:searchCampus,
+        //         start:startTime,
+        //         end:endTime
+        //     }
+        // })
 
 
 

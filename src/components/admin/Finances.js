@@ -14,7 +14,7 @@ import MenuItem from 'material-ui/MenuItem';
 import camGym from '../../config/cam-gym';
 import TextField from 'material-ui/TextField';
 
-
+import Export from './exporter/Exporter';
 
 export default class Finances extends React.Component{
     constructor(props){
@@ -135,28 +135,32 @@ export default class Finances extends React.Component{
                         }
                     })
     }
-    exportFin(){
+    exportFin({start, end, campus}){
+        FinanceModel.exportFinance({
+            campus,
+            start,
+            end,
+        })
 
+        // Request.get({url: API.getLevel, data: {api_token: Auth.getToken()}})
+        //     .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
+        //     .then(
+        //         res =>{
+        //             console.log(res);
 
-        Request.get({url: API.getLevel, data: {api_token: Auth.getToken()}})
-            .then(res => res ? res : ED.dispatch({type: 'alert', msg: '请求用户级别失败'}))
-            .then(
-                res =>{
-                    console.log(res);
+        //             if(res.finance != 0) {
+        //                 let getF =FinanceModel.exportFinance(this.page,this.state.searchCampus,this.fitDate(this.state.start),this.fitDate(this.state.end));
+        //                 // getF.then(
+        //                 //     _res=> {
+        //                 //
+        //                 //
+        //                 //
+        //                 //         console.log(_res);
+        //                 //     }
+        //                 // )
 
-                    if(res.finance != 0) {
-                        let getF =FinanceModel.exportFinance(this.page,this.state.searchCampus,this.fitDate(this.state.start),this.fitDate(this.state.end));
-                        // getF.then(
-                        //     _res=> {
-                        //
-                        //
-                        //
-                        //         console.log(_res);
-                        //     }
-                        // )
-
-                    }
-                })
+        //             }
+        //         })
     }
     handleDeleteFinance(id){
         // this.setState({
@@ -344,7 +348,7 @@ export default class Finances extends React.Component{
 
                     />
                     <AddFinance open={this.state.addFinanceDialogOpen} close={() => this.setState({addFinanceDialogOpen: false})} />
-                    
+                    <Export export={this.exportFin.bind(this)} title="导出财务记录" />
                         <FloatingActionButton onClick={() => this.setState({addFinanceDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                             <i className="fa fa-plus fa-lg"></i>
                         </FloatingActionButton>

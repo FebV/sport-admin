@@ -69,6 +69,7 @@ export default class User {
                 .then(res => res.schoolnum == 'root');
     }
 
+
     static canAuthNews() {
         return User.getLevel()
                 .then(res => res.news >= '1');

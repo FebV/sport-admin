@@ -165,7 +165,7 @@ export default class Apply extends React.Component {
                         <TableRowColumn title={ele.major}>{ele.major}</TableRowColumn>
                         <TableRowColumn title={ele.tel}>{ele.tel}</TableRowColumn>
                         <TableRowColumn title={ele.remark}>{ele.remark}</TableRowColumn>
-                        <TableRowColumn title={state}>{state}</TableRowColumn>
+                        <TableRowColumn title={ele.state}>{ele.state}</TableRowColumn>
                         <TableRowColumn>
                             <RaisedButton onClick={() => {
                                     this.setState({innerDetailIdx: idx});
@@ -249,12 +249,12 @@ export default class Apply extends React.Component {
                 targetClsTime = tweakClsTime(targetClsTime);
                 return (
                     <TableRow key={idx}>
-                        <TableRowColumn title={this.schoolNameMap[ele.campus]}>{this.schoolNameMap[ele.campus]}</TableRowColumn>
+                        <TableRowColumn title={ele.campus_chinese}>{ele.campus_chinese}</TableRowColumn>
                         <TableRowColumn title={targetName}>{targetName}</TableRowColumn>
                         <TableRowColumn title={ele.time}>{ele.time}</TableRowColumn>
                         <TableRowColumn title={targetClsTime}>{targetClsTime}</TableRowColumn>
                         <TableRowColumn title={ele.tel}>{ele.tel}</TableRowColumn>
-                        <TableRowColumn title={state}>{state}</TableRowColumn>
+                        <TableRowColumn title={ele.state}>{ele.state}</TableRowColumn>
                         <TableRowColumn>
                             <RaisedButton onClick={() => {
                                     this.setState({outerDetailIdx: idx});
@@ -332,7 +332,7 @@ class InnerDetail extends React.Component {
                 open={this.props.open}
                 onRequestClose={this.props.onRequestClose}
                 autoScrollBodyContent={true}
-                actions={state == 3 ? <RaisedButton label="点击打印" onClick={() => printTable()} /> : null}
+                actions={this.props.record.state == '已通过' ? <RaisedButton label="点击打印" onClick={() => printTable()} /> : null}
             >
                 <div>
                     <div dangerouslySetInnerHTML={{__html: `
@@ -361,7 +361,7 @@ class InnerDetail extends React.Component {
                         <tbody>
                         <tr>
                             <td width="25%">申请校区</td>
-                            <td>${this.schoolNameMap[this.props.record.campus]}</td>
+                            <td>${this.props.record.campus_chinese}</td>
                             <td width="25%">申请场馆</td>
                             <td>${this.props.record.gym}</td>
                         </tr>
@@ -513,7 +513,7 @@ class OuterDetail extends React.Component {
                 open={this.props.open}
                 onRequestClose={this.props.onRequestClose}
                 autoScrollBodyContent={true}
-                actions={state == '通过' ? <RaisedButton label="点击打印" onClick={() => printTable()} /> : null}
+                actions={this.props.record.state == '已通过' ? <RaisedButton label="点击打印" onClick={() => printTable()} /> : null}
             >
                 <div>
                     <div dangerouslySetInnerHTML={{__html: `
@@ -541,7 +541,7 @@ class OuterDetail extends React.Component {
                         <tbody>
                         <tr>
                             <td width="25%">申请校区</td>
-                            <td>${this.schoolNameMap[this.props.record.campus]}</td>
+                            <td>${this.props.record.campus_chinese}</td>
                             <td width="25%">申请场馆</td>
                             <td>${targetName}</td>
                         </tr>

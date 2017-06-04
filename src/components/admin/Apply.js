@@ -188,10 +188,10 @@ export default class Apply extends React.Component {
                     }
                 }*/}
                 let state = null;
-                if(ele.state == 3)
-                    state = '已通过';
+                {/*if(ele.state == 3)
+                    state = '已通过';*/}
                 if(ele.state == 2)
-                    state = '·中心·审批通过'
+                    state = '已通过'
                 if(ele.state == 1)
                     state = '馆长通过'
                 if(ele.state == 0)
@@ -416,10 +416,10 @@ class InnerDetail extends React.Component {
         targetClsTime = tweakClsTime(targetClsTime);
 
         let state = null;
-            if(this.props.record.state == 3)
-                state = '已通过';
+            // if(this.props.record.state == 3)
+            //     state = '已通过';
             if(this.props.record.state == 2)
-                state = '·中心·审批通过'
+                state = '已通过'
             if(this.props.record.state == 1)
                 state = '馆长审批通过'
             if(this.props.record.state == 0)
