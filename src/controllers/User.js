@@ -35,7 +35,18 @@ export default class User {
                 old_password, new_password, new_password_re,
             }
         })
-            .then(res => ED.dispatch({type: 'info put ok', msg: "修改成功"}))            
+            .then(res => ED.dispatch({type: 'pass set ok', msg: "修改成功"}))            
+    }
+
+    static resetPass(u_id) {
+        Request.put({
+            url: API.resetPass,
+            data: {
+                api_token: Auth.getToken(),
+                u_id,
+            }
+        })
+            .then(res => ED.dispatch({type: 'pass reset ok', msg: "重置成功"}))            
     }
 
     static getPeople() {
@@ -67,6 +78,12 @@ export default class User {
         return User.getLevel()
                 .then(res => res.equipment >= '1')
     }
+
+    static canModEquip() {
+        return User.getLevel()
+                .then(res => res.equipment >= '2')
+    }
+
 
     static canAuthFinance() {
         return User.getLevel()

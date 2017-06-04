@@ -13,6 +13,7 @@ const API = {
     // getInfo: `${base}info.json`,
     //修改密码
     putPass: `${base}users/i/pass`,
+    resetPass: `${base}users/i/people/pass`,
 
     //People  下属相关
     getPeople: `${base}users/info`,

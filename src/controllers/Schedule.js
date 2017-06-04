@@ -32,13 +32,12 @@ export default class Schedule {
             .then(res => ED.dispatch({type: 'post schedules ok', msg: "生成成功"}));
     }
 
-    static putSchedules({campus, gym, date, nthClass, targetStatus}) {
+    static putSchedules({campus, gym, records}) {
         return Request.put({
             url: API.putSchedules({campus, gym}),
             data: {
                 api_token: Auth.getToken(),
-                date: date,
-                [nthClass]: targetStatus
+                records
             }
         })
             .then(res => ED.dispatch({type: "put schedules ok", msg: "排期修改成功"}))

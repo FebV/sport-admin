@@ -74,7 +74,6 @@ export default class GymSelector extends React.Component {
 
 
     render() {
-        console.log(this.state)
         return (
             <span style={this.props.style}>
                 校区

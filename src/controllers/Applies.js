@@ -4,31 +4,32 @@ import Auth from './Auth';
 import ED from './EventDispatcher';
 
 export default class Applies {
-    static postInnerApply({campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel}) {
+    static postInnerApply({campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel, gym_number, type}) {
         Request.post({
             url: API.postApply,
             data: {
-                campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel
+                campus, gym, time, classtime, major, content, pnumber, charger, tel, remark, teacher, teacher_tel, gym_number, type
             }
         })
             .then(res => ED.dispatch({type: 'alert', msg: '提交申请成功'}))
     }
 
-    static postOuterApply({campus, gym, time, classtime, department, content, charger, tel}) {
+    static postOuterApply({campus, gym, time, classtime, department, content, charger, tel, type}) {
         Request.post({
             url: API.postOuterApply,
             data: {
-                campus, gym, time, classtime, department, content, charger, tel,
+                campus, gym, time, classtime, department, content, charger, tel, type
             }
         })
             .then(res => ED.dispatch({type: 'alert', msg: "提交申请成功"}))
     }
 
-    static getInnerApply({campus, gym, start, end}) {
+    static getInnerApply({campus, gym, start, end, type}) {
         return Request.get({
             url: API.getInnerApply({campus, gym}),
             data: {
                 api_token: Auth.getToken(),
+                type,
                 start,
                 end,
             }
@@ -36,23 +37,24 @@ export default class Applies {
             .then(res => res ? res : [])
     }
 
-    static getOuterApply({campus, gym, start, end}) {
+    static getOuterApply({campus, gym, start, end, type}) {
         return Request.get({
             url: API.getOuterApply({campus, gym}),
             data: {
                 api_token: Auth.getToken(),
                 start,
                 end,
+                type,
             }
         })
             .then(res => res ? res : [])
 
     }
 
-    static putInnerApply({applyId, state, remark}) {
+    static putInnerApply({applyId, state, remark, cost}) {
         return Request.put({
             url: API.putInnerApply(applyId),
-            data: {api_token: Auth.getToken(), state, teacher_remark: remark}
+            data: {api_token: Auth.getToken(), state, teacher_remark: remark, money: cost}
         })
             .then(res => ED.dispatch({type: "put innerApply ok"}))
     }

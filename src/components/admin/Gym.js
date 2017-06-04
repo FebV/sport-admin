@@ -48,9 +48,7 @@ export default class Gym extends React.Component {
     }
 
     componentDidMount() {
-        console.log(`res`);
         camGym.then(res => {
-            console.log(res);
             this.setState({camGym: res})
         })
     }
@@ -58,7 +56,7 @@ export default class Gym extends React.Component {
     query() {
         Schedule.getSchedules({
             campus: this.state.campus,
-            gym: this.state.gym,
+            gym: this.state.gym ,
             type: this.state.type,
             start: this.fitDate(this.state.start),
             end: this.fitDate(this.state.end),
@@ -66,7 +64,6 @@ export default class Gym extends React.Component {
             .then(res => {
                 this.setState({records: res[0]})
                 this.setState({gymNumber: res[0].one.length})
-                console.log(res);
             });
     }
 
@@ -82,7 +79,6 @@ export default class Gym extends React.Component {
     }
 
     showStatus(status) {
-        console.log(status);
         let backgroundColor = null;
         if(status == '3') //体育教学
             backgroundColor = 'red';
@@ -96,26 +92,81 @@ export default class Gym extends React.Component {
 
     //show a popover
     modify(r, c, p) {
-        return ;
         if(!this.state.isModifying)
             return;
+        const target = p.target;
         //bat modify control
-        // if(p.ctrlKey) {
-        //     if(!this.state.batModStart)
-        //         this.setState({batModStart: })
-        // }
+        if(p.ctrlKey) {
+            if(!this.state.selectBegin)
+                return this.setState({selectBegin: [r, c]});
+            if(!this.state.selectEnd) {
+                this.setState({selectEnd: [r, c]}, () => {
+                    this.setState({anchorEl: target});
+                    this.setState({arrangeModifierOpen: true});
+                });
+                return;
+            }
+        }
+
+        this.setState({selectCell: [r, c]});
+        this.setState({anchorEl: target});
         this.setState({arrangeModifierOpen: true});
-        this.setState({anchorEl: p.target});
-        this.setState({date: this.state.records[r].date, nthClass: this.serial[c-4]});
+        
     }
 
     postModify(targetStatus) {
+
+        let records = this.state.records;
+
+        if(this.state.selectEnd) {
+            let {selectBegin, selectEnd} = this.state;
+            let b = [];
+            let e = [];
+            if(selectBegin[0] < selectEnd[0]) {
+                b[0] = selectBegin[0];
+                e[0] = selectEnd[0];
+            } else {
+                b[0] = selectEnd[0];
+                e[0] = selectBegin[0];
+            }
+
+            if(selectBegin[1] < selectEnd[1]) {
+                b[1] = selectBegin[1];
+                e[1] = selectEnd[1];
+            } else {
+                b[1] = selectEnd[1];
+                e[1] = selectBegin[1];
+            }
+
+            for(let r = b[0]; r <= e[0]; r++) {
+                for(let c = b[1]; c <= e[1]; c++) {
+                    console.log(records, r, c);
+                    let newRec = records[this.serial[c-2]].split('');
+                    newRec[r] = targetStatus;
+                    records[this.serial[c-2]] = newRec.join('');
+                }
+            }
+        }
+
+        if(this.state.selectCell) {
+            let cell = this.state.selectCell;
+            let r = cell[0];
+            let c = cell[1];
+            console.log(records, r, c);
+            let newRec = records[this.serial[c-2]].split('');
+            newRec[r] = targetStatus;
+            records[this.serial[c-2]] = newRec.join('');
+        }
+
+        this.setState({records});
+
+        console.log(this.state);
+
         Schedule.putSchedules({
             campus: this.state.campus,
             gym: this.state.gym,
-            date: this.state.date,
-            nthClass: this.state.nthClass,
-            targetStatus
+            type: this.state.type,
+            records: JSON.stringify(this.state.records)
         })
     }
 
@@ -167,11 +218,12 @@ export default class Gym extends React.Component {
                 label={this.state.isModifying ? "确定" : "修改"}
                 onClick={() => this.setState({isModifying: !this.state.isModifying})}
             />
+            <span>#按住Ctrl键批量修改</span>
             
             </div>
-            <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
+            <div style={{marginTop: "20px", display: "flex", width: "1800px", justifyContent: "center", alignItems: "center"}}>
             
-            <Paper style={{width: "90%", textAlign: "center"}}>
+            <Paper style={{width: "100%", textAlign: "center"}}>
                 <div style={{width: "40%", display:"flex"}}>
                     <div style={{lineHeight: "52px", marginLeft: "1vw"}}>体育教学</div>
                 <div style={{backgroundColor: "red", width: "2vw", height: "26px", border: "2px solid gray", display: "inline-block", marginTop: "12px", marginLeft: "3px"}}></div>
@@ -197,7 +249,7 @@ export default class Gym extends React.Component {
                 {[...Array(14).keys()].map((ele, idx) => idx == 0 ? 
                  <TableHeaderColumn key={idx}>{`6:00 - 8:00`}</TableHeaderColumn>
                  :
-                 <TableHeaderColumn key={idx}>{`${7 + idx}:00 - ${9 + idx}:00`}</TableHeaderColumn>)}
+                 <TableHeaderColumn key={idx}>{`${7 + idx}:00 - ${8 + idx}:00`}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -206,11 +258,11 @@ export default class Gym extends React.Component {
                 {[...Array(this.state.gymNumber).keys()].map((ele, idx) => {
                     return (
                         <TableRow key={idx}>
-                        <TableHeaderColumn>{1 + 1*idx}</TableHeaderColumn>                            
+                        <TableHeaderColumn>{1 + 1*idx}号{this.state.gym}</TableHeaderColumn>                            
                         {/*<TableHeaderColumn>{ele.date}</TableHeaderColumn>
                         <TableHeaderColumn>{ele.week}</TableHeaderColumn>*/}
                         {this.serial.map(
-                            (d, i) => <TableHeaderColumn key={i} style={{backgroundColor: this.showStatus(this.state.records[d][idx]), border: "2px solid"}}></TableHeaderColumn>
+                            (d, i) => <TableHeaderColumn key={i} style={{backgroundColor: this.showStatus(this.state.records[d][idx]), border: "2px solid", opacity: this.state.isModifying ? 0.7 : 1}}></TableHeaderColumn>
                         )}
                         
  
@@ -232,7 +284,12 @@ export default class Gym extends React.Component {
                 postModify={this.postModify.bind(this)}
                 anchorEl={this.state.anchorEl}
                 open={this.state.arrangeModifierOpen}
-                close={() => this.setState({arrangeModifierOpen: false})}
+                close={() => {
+                    this.setState({arrangeModifierOpen: false});
+                    this.setState({selectCell: undefined});
+                    this.setState({selectBegin: undefined});
+                    this.setState({selectEnd: undefined});
+                }}
             />
             </div>
         )
@@ -302,7 +359,7 @@ class UploadArrangeExcel extends React.Component {
             gym: this.state.gym,
             start: this.fitDate(this.state.start),
             end: this.fitDate(this.state.end)});
-        this.props.close();
+        this.props.onRequestClose();
     }
 
     render() {
@@ -438,17 +495,17 @@ class ArrangeModifier extends React.Component {
                 >
                 <Menu>
                     <MenuItem onClick={() => {
-                        this.props.postModify('体育教学')
+                        this.props.postModify('3') // 体育教学
                         this.props.close();
                         }}
                         primaryText="调为体育教学" />
                     <MenuItem onClick={() => {
-                        this.props.postModify('占用')
+                        this.props.postModify('2') //占用
                         this.props.close();
                         }}
                         primaryText="调为占用" />
                     <MenuItem onClick={() => {
-                        this.props.postModify('开放')
+                        this.props.postModify('1') //开放
                         this.props.close();
                         }}
                         primaryText="调为开放" />

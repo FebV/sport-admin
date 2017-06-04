@@ -17,6 +17,16 @@ import ApplyModel from '../../controllers/Applies';
 import GymSelector from '../common/GymSelector';
 
 
+const tweakClsTime = (oldStr) => {
+    return oldStr.split(',').map(e => {
+                if(e == 1)
+                    return '6:00 - 8:00';
+                else
+                    return `${1*e + 6}:00 - ${1*e + 7}:00`;
+            }).join(',');
+}
+
+
 export default class Apply extends React.Component {
     constructor(props) {
         super(props);
@@ -33,9 +43,11 @@ export default class Apply extends React.Component {
         this.state = {
             start: '',
             end: '',
-            campus: 'zx',
-            gym: 'basketball',
+            campus: '',
+            gym: '',
+            type: '',
             remark: '',
+            cost: '',
             innerRecords: [],
             outerRecords: [],
             innerDetailDialogOpen: false,
@@ -52,6 +64,7 @@ export default class Apply extends React.Component {
     innerQuery() {
         ApplyModel.getInnerApply({
             campus: this.state.campus,
+            type: this.state.type,
             gym: this.state.gym,
             start: this.fitDate(this.state.start),
             end: this.fitDate(this.state.end),
@@ -62,6 +75,7 @@ export default class Apply extends React.Component {
     outerQuery() {
         ApplyModel.getOuterApply({
             campus: this.state.campus,
+            type: this.state.type,
             gym: this.state.gym,
             start: this.fitDate(this.state.start),
             end: this.fitDate(this.state.end),
@@ -125,7 +139,7 @@ export default class Apply extends React.Component {
             
                 <GymSelector onChange={(g) => {
                     this.setState({campus: g.campus, type: g.type, gym: g.gym})    
-                }} />            
+                }} />
             <RaisedButton
                 label="查询"
                 onClick={this.innerQuery.bind(this)}
@@ -145,7 +159,7 @@ export default class Apply extends React.Component {
                 <TableHeaderColumn>校区</TableHeaderColumn>
                 <TableHeaderColumn>场馆</TableHeaderColumn>
                 <TableHeaderColumn>日期</TableHeaderColumn>
-                <TableHeaderColumn>节次</TableHeaderColumn>
+                <TableHeaderColumn>使用时间</TableHeaderColumn>
                 <TableHeaderColumn>院系</TableHeaderColumn>
                 <TableHeaderColumn>联系方式</TableHeaderColumn>
                 <TableHeaderColumn>备注</TableHeaderColumn>
@@ -157,13 +171,13 @@ export default class Apply extends React.Component {
                 displayRowCheckbox={false}
             >
             {this.state.innerRecords.map((ele, idx) => {
-                let targetName = null;
+                {/*let targetName = null;
                 for(let i of camGym[ele.campus]) {
                     if(i.name == ele.gym) {
                         targetName = i.label;
                         break;
                     }
-                }
+                }*/}
                 let state = null;
                 if(ele.state == 3)
                     state = '已通过';
@@ -183,10 +197,11 @@ export default class Apply extends React.Component {
                 for(let i in this.serial) {
                     targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
                 }
+                targetClsTime = tweakClsTime(targetClsTime);
                 return (
                     <TableRow key={idx}>
-                        <TableRowColumn title={this.schoolNameMap[ele.campus]}>{this.schoolNameMap[ele.campus]}</TableRowColumn>
-                        <TableRowColumn title={targetName}>{targetName}</TableRowColumn>
+                        <TableRowColumn title={ele.campus_chinese}>{ele.campus_chinese}</TableRowColumn>
+                        <TableRowColumn title={ele.gym}>{ele.gym}</TableRowColumn>
                         <TableRowColumn title={ele.time}>{ele.time}</TableRowColumn>
                         <TableRowColumn title={targetClsTime}>{targetClsTime}</TableRowColumn>
                         <TableRowColumn title={ele.major}>{ele.major}</TableRowColumn>
@@ -209,7 +224,9 @@ export default class Apply extends React.Component {
             
             <InnerDetail
                 handleRemark={(r) => this.setState({remark: r})}
+                handleCost={(r) => this.setState({cost: r})}
                 remark={this.state.remark}
+                cost={this.state.cost}
                 applyId={this.state.applyId}
                 open={this.state.innerDetailDialogOpen}
                 onRequestClose={() => this.setState({innerDetailDialogOpen: false, remark: ''})}
@@ -270,7 +287,7 @@ export default class Apply extends React.Component {
                 <TableHeaderColumn>校区</TableHeaderColumn>
                 <TableHeaderColumn>场馆</TableHeaderColumn>
                 <TableHeaderColumn>日期</TableHeaderColumn>
-                <TableHeaderColumn>节次</TableHeaderColumn>
+                <TableHeaderColumn>使用时间</TableHeaderColumn>
                 <TableHeaderColumn>联系方式</TableHeaderColumn>
                 <TableHeaderColumn>状态</TableHeaderColumn>
                 <TableHeaderColumn>查看详情</TableHeaderColumn>
@@ -280,28 +297,30 @@ export default class Apply extends React.Component {
                 displayRowCheckbox={false}
             >
             {this.state.outerRecords.map((ele, idx) => {
-                let targetName = null;
+                {/*let targetName = null;
                 for(let i of camGym[ele.campus]) {
                     if(i.name == ele.gym) {
                         targetName = i.label;
                         break;
                     }
-                }
+                }*/}
                 let state = null;
+                state = '待审核';
                 if(ele.state == 3)
                     state = '通过';
-                if(ele.state == 2)
+                if(ele.state < 0)
                     state = '未通过'
-                if(ele.state == 1)
-                    state = '待审核'
                 let targetClsTime = ele.classtime;
                 for(let i in this.serial) {
                     targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
                 }
+
+                targetClsTime = tweakClsTime(targetClsTime);
+
                 return (
                     <TableRow key={idx}>
-                        <TableRowColumn title={this.schoolNameMap[ele.campus]}>{this.schoolNameMap[ele.campus]}</TableRowColumn>
-                        <TableRowColumn title={targetName}>{targetName}</TableRowColumn>
+                        <TableRowColumn title={ele.campus_chinese}>{ele.campus_chinese}</TableRowColumn>
+                        <TableRowColumn title={ele.gym}>{ele.gym}</TableRowColumn>
                         <TableRowColumn title={ele.time}>{ele.time}</TableRowColumn>
                         <TableRowColumn title={targetClsTime}>{targetClsTime}</TableRowColumn>
                         <TableRowColumn title={ele.tel}>{ele.tel}</TableRowColumn>
@@ -351,27 +370,34 @@ class InnerDetail extends React.Component {
     }
 
     putApplyState(state) {
-        ApplyModel.putInnerApply({applyId: this.props.applyId, state, remark: this.props.remark});
+        ApplyModel.putInnerApply({applyId: this.props.applyId, state, remark: this.props.remark, cost: this.props.cost});
+        this.props.handleRemark('');
+        this.props.handleCost('');
     }
 
     deleteApplyState() {
         ApplyModel.deleteInnerApply({applyId: this.props.applyId});
+        this.props.handleRemark('');
+        this.props.handleCost('');
     }
 
     render() {
         if(!this.props.record)
             return <div></div>
-        let targetName = null;
-        for(let i of camGym[this.props.record.campus]) {
-            if(i.name == this.props.record.gym) {
-                targetName = i.label;
-                break;
-            }
-        }
+        // let targetName = null;
+        // for(let i of camGym[this.props.record.campus]) {
+        //     if(i.name == this.props.record.gym) {
+        //         targetName = i.label;
+        //         break;
+        //     }
+        // }
         let targetClsTime = this.props.record.classtime;
         for(let i in this.serial) {
             targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
         }
+
+        targetClsTime = tweakClsTime(targetClsTime);
+
         let state = null;
             if(this.props.record.state == 3)
                 state = '已通过';
@@ -390,6 +416,7 @@ class InnerDetail extends React.Component {
         return (
             
             <Dialog
+                autoScrollBodyContent={true}
                 style={{userSelect: "none", width: "1000px", marginLeft: "calc(50% - 400px)"}}
                 title="申请详情"
                 modal={false}
@@ -397,22 +424,23 @@ class InnerDetail extends React.Component {
                 onRequestClose={this.props.onRequestClose}
             >
                 <div>
-                    <span>校区：</span><span>{this.schoolNameMap[this.props.record.campus]}</span><br />
-                    <span>场馆：</span><span>{targetName}</span><br />
+                    <span>校区：</span><span>{this.props.record.campus_chinese}</span><br />
+                    <span>场馆：</span><span>{this.props.record.gym}</span><br />
                     <span>负责人：</span><span>{this.props.record.charger}</span><br />
-                    <span>使用时间：</span><span>{this.props.record.time}</span><br />
+                    <span>日期：</span><span>{this.props.record.time}</span><br />
                     <span>使用节次：</span><span>{targetClsTime}</span><br />
                     <span>使用学院：</span><span>{this.props.record.major}</span><br />
                     <span>活动内容：</span><span>{this.props.record.content}</span><br />
                     <span>参加人数：</span><span>{this.props.record.pnumber}</span><br />
                     <span>联系方式：</span><span>{this.props.record.tel}</span><br />
-                    <span>活动费用：</span><span>{this.props.record.cost}</span><br />
+                    <span>活动费用：</span><span>{this.props.record.money}</span><br />
                     <span>审核状态：</span><span>{state}</span><br />
                     <span>申请备注：</span><span>{this.props.record.remark}</span><br />
                     <span>上轮审批备注：</span><span>{this.props.record.teacher_remark}</span><br />
                 </div>
-                <div style={{float: "right"}}>
-                <TextField floatingLabelText="原因备注" value={this.props.remark} onChange={(e, v) => this.props.handleRemark(v)} />
+                <div style={{float: "left"}}>
+                <TextField floatingLabelText="活动费用" value={this.props.cost} onChange={(e, v) => this.props.handleCost(v)} /><br />
+                <TextField floatingLabelText="审核备注" value={this.props.remark} onChange={(e, v) => this.props.handleRemark(v)} />
                 <RaisedButton
                     style={{marginLeft: "10px"}}
                     onClick={() => {
@@ -470,27 +498,30 @@ class OuterDetail extends React.Component {
     render() {
         if(!this.props.record)
             return <div></div>
-        let targetName = null;
-        for(let i of camGym[this.props.record.campus]) {
-            if(i.name == this.props.record.gym) {
-                targetName = i.label;
-                break;
-            }
-        }
+        // let targetName = null;
+        // for(let i of camGym[this.props.record.campus]) {
+        //     if(i.name == this.props.record.gym) {
+        //         targetName = i.label;
+        //         break;
+        //     }
+        // }
         let targetClsTime = this.props.record.classtime;
         for(let i in this.serial) {
             targetClsTime = targetClsTime.replace(this.serial[i], 1*i+1);
         }
+        targetClsTime = tweakClsTime(targetClsTime);
+
+        console.log(this.props.record);
         let state = null;
-            if(this.props.record.state == 3)
-                state = '通过';
-            if(this.props.record.state == 2)
-                state = '未通过'
-            if(this.props.record.state == 1)
-                state = '待审核'
+        state = '待审核';
+        if(this.props.record.state == 3)
+            state = '通过';
+        if(this.props.record.state < 0)
+            state = '未通过'
         return (
             
             <Dialog
+                autoScrollBodyContent={true}
                 style={{userSelect: "none", width: "800px", marginLeft: "calc(50% - 400px)"}}
                 title="申请详情"
                 modal={false}
@@ -498,10 +529,10 @@ class OuterDetail extends React.Component {
                 onRequestClose={this.props.onRequestClose}
             >
                 <div>
-                    <span>校区：</span><span>{this.schoolNameMap[this.props.record.campus]}</span><br />
-                    <span>场馆：</span><span>{targetName}</span><br />
+                    <span>校区：</span><span>{this.props.record.campus_chinese}</span><br />
+                    <span>场馆：</span><span>{this.props.record.gym}</span><br />
                     <span>负责人：</span><span>{this.props.record.charger}</span><br />
-                    <span>使用时间：</span><span>{this.props.record.time}</span><br />
+                    <span>日期：</span><span>{this.props.record.time}</span><br />
                     <span>使用节次：</span><span>{targetClsTime}</span><br />
                     <span>使用单位：</span><span>{this.props.record.department}</span><br />
                     <span>活动内容：</span><span>{this.props.record.content}</span><br />

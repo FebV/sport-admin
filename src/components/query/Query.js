@@ -21,12 +21,14 @@ export default class Query extends React.Component {
         this.defaultDate = d;
         d = new Date();
         this.disabledDate = d.setDate(d.getDate() + 4);
+        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'];
         this.state = {
             start: this.fitDate(this.defaultDate),
             end: '',
-            campus: 'zx',
-            gym: 'basketball',
-            records: []
+            campus: '',
+            gym: '',
+            records: [],
+            gymNumber: 0,
         }
     }
 
@@ -34,12 +36,13 @@ export default class Query extends React.Component {
         Schedule.getSchedules({
             campus: this.state.campus,
             gym: this.state.gym,
+            type: this.state.type,
             start: this.fitDate(this.state.start),
             end: this.fitDate(this.state.end),
         })
             .then(res => {
-                this.setState({records: res})
-                console.log(res);
+                this.setState({records: res[0]})
+                this.setState({gymNumber: res[0].one.length})
             });
     }
 
@@ -56,11 +59,11 @@ export default class Query extends React.Component {
 
     showStatus(status) {
         let backgroundColor = null;
-        if(status == '体育教学')
+        if(status == '3') // 体育教学
             backgroundColor = 'red';
-        if(status == '开放')
+        if(status == '1') //开放
             backgroundColor = 'green';
-        if(status == '占用')
+        if(status == '2') //占用
             backgroundColor = 'gray';
         return backgroundColor;
     }
@@ -149,14 +152,14 @@ export default class Query extends React.Component {
             <TableBody
                 displayRowCheckbox={false}
             >
-                {this.state.records.map((ele, idx) => {
+                {[...Array(this.state.gymNumber).keys()].map((ele, idx) => {
                     return (
                         <TableRow key={idx}>
-                        <TableHeaderColumn>{1 + 1*idx}</TableHeaderColumn>                            
+                        <TableHeaderColumn>{1 + 1*idx}号{this.state.gym}</TableHeaderColumn>                            
                         {/*<TableHeaderColumn>{ele.date}</TableHeaderColumn>
                         <TableHeaderColumn>{ele.week}</TableHeaderColumn>*/}
-                        {['one', 'two', 'three', 'four', 'five', 'six'].map(
-                            (d, idx) => <TableHeaderColumn key={idx} style={{backgroundColor: this.showStatus(ele[d]), border: "2px solid"}}></TableHeaderColumn>
+                        {this.serial.map(
+                            (d, i) => <TableHeaderColumn key={i} style={{backgroundColor: this.showStatus(this.state.records[d][idx]), border: "2px solid", opacity: this.state.isModifying ? 0.7 : 1}}></TableHeaderColumn>
                         )}
                         
  

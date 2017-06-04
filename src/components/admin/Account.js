@@ -157,6 +157,20 @@ export default class Account extends React.Component {
                             }}
                             className={"fa fa-check-square-o"}>
                             </i>
+                            <i 
+                            title={"重置密码"}
+                            style={ this.state.authIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
+                            onMouseOver={() => this.setState({authIndex: idx})}
+                            onClick={ () => {
+                                this.setState({authIndex: idx});
+                                this.setState({authAdminId: e.u_id, permission: e.permission % 2 + 1});
+                                const re = confirm('确定要重置密码?');
+                                if(re) {
+                                    User.resetPass(e.u_id);
+                                }
+                            }}
+                            className={"fa fa-pencil-square-o"}>
+                            </i>
                         </TableRowColumn>
                     </TableRow>
                 )
@@ -341,12 +355,10 @@ class AuthAdmin extends React.Component {
         if(!account)
             return null;
         let {campus} = account;
-        console.log(account);
-        console.log(this.state);
-        console.log(account[this.state.campus]);
         return (
             
             <Dialog
+                autoScrollBodyContent={true}
                 style={{width: "400px", marginLeft: "calc(50% - 200px)"}}
                 actions={[
                     <RaisedButton

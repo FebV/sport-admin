@@ -25,12 +25,12 @@ export default class User {
             .then(res => res ? res : [])
     }
 
-    static postEquipment({campus, gym, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark}) {
+    static postEquipment({campus, gym, type, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark, unit}) {
         Request.post({
             url: API.postEquipment,
             data: {
                 api_token: Auth.getToken(),
-                campus, gym, equipment_name, buy_date, buy_number, in_number, no_number, use_campus, use_number, price, remark
+                campus, gym, type, equipment_name, buy_date, buy_number, in_number, no_number, use_campus, use_number, price, remark, unit
             }
         })
             .then(res => ED.dispatch({type: 'post equipment ok'}))

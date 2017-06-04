@@ -25,10 +25,10 @@ export default class Apply extends React.Component {
         this.defaultDate = d;
         d = new Date();
         this.disabledDate = d.setDate(d.getDate() + 4);
-        this.serial = ['one', 'two', 'three', 'four', 'five', 'six'];
+        this.serial = ['one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine', 'ten', 'eleven', 'twelve', 'thirteen', 'fourteen'];
         this.state = {
-            campus: 'zx',
-            gym: 'basketball',
+            campus: '',
+            gym: '',
             type: '',
             time: null,
             classtime: Array(14).fill(false),
@@ -37,13 +37,21 @@ export default class Apply extends React.Component {
             pnumber: '',
             charger: '',
             tel: '',
-            num: '',
+            gym_number: '',
             teacher: '',
             teacher_tel: '',
             remark: '',
             department: '',
+            camGym: null,
             classtimeDisTable: Array(14).fill(false)
         }
+    }
+
+    componentDidMount() {
+        camGym.then(res => {
+            console.log(res);
+        })
+        // this.setState({camGym: })
     }
 
     handleDateChange(n, v) {
@@ -82,11 +90,12 @@ export default class Apply extends React.Component {
             pnumber: '',
             charger: '',
             tel: '',
-            num: '',
+            gym_number: '',
             teacher: '',
             teacher_tel: '',
             remark: '',
             department: '',
+            classtimeDisTable: Array(14).fill(false),
         });
     }
 
@@ -98,6 +107,7 @@ export default class Apply extends React.Component {
         });
         ClsTime = ClsTime.join(',');
         Applies.postInnerApply({
+            type: this.state.type,
             campus: this.state.campus,
             gym: this.state.gym,
             time: this.state.time,
@@ -106,7 +116,7 @@ export default class Apply extends React.Component {
             content: this.state.content,
             pnumber: this.state.pnumber,
             charger: this.state.charger,
-            num: this.state.num,
+            gym_number: this.state.gym_number,
             tel: this.state.tel,
             remark: this.state.remark,
             teacher: this.state.teacher,
@@ -124,10 +134,11 @@ export default class Apply extends React.Component {
         ClsTime = ClsTime.join(',');
         Applies.postOuterApply({
             campus: this.state.campus,
+            type: this.state.type,
             gym: this.state.gym,
             time: this.state.time,
             classtime: ClsTime,
-            num: this.state.num,
+            gym_number: this.state.gym_number,
             department: this.state.department,
             content: this.state.content,
             charger: this.state.charger,
@@ -161,13 +172,13 @@ export default class Apply extends React.Component {
                 /><br />
                 <div style={{marginTop: "10px 0"}}>使用节次</div>
                 <div style={{textAlign: "left"}}>
-                    {/*{[...Array(14).keys()].map( (e, idx) => {
-                        //console.log(this.state.classtimeDisTable)
-                        let base = idx < 2 ? 8  : 10;
+                    {[...Array(14).keys()].map( (e, idx) => {
+                        let base = idx < 1 ? 6  : 7;
+                        let offset = idx < 1 ? 2 : 1;
                         return (
                             <span key={e}><Checkbox
                                 style={{marginLeft: "40%"}}
-                                label={`${base + idx * 2}:00 - ${base + 2 + idx * 2}:00`}
+                                label={`${base + idx}:00 - ${base + offset + idx}:00`}
                                 onCheck={(ev, b) => {
                                     const newClsTime = [...this.state.classtime];
                                     newClsTime[e] = b;
@@ -175,8 +186,8 @@ export default class Apply extends React.Component {
                                 }}
                                 disabled={!this.state.classtimeDisTable[idx]}
                             /></span>)
-                    })}*/}
-                    <span>
+                    })}
+                    {/*<span>
                         <Checkbox
                                 style={{marginLeft: "40%"}}
                                 label={`6:00 - 8:00`}
@@ -187,163 +198,7 @@ export default class Apply extends React.Component {
                                 }}
                                 disabled={!this.state.classtimeDisTable[0]}
                         />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`8:00 - 9:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[1]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`9:00 - 10:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[2]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`10:00 - 11:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[3]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`11:00 - 12:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[4]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`12:00 - 13:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[5]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`13:00 - 14:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[6]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`14:00 - 15:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[7]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`15:00 - 16:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[8]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`16:00 - 17:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[9]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`17:00 - 18:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[10]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`18:00 - 19:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[11]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`19:00 - 20:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[12]}
-                        />
-                    </span>
-                    <span>
-                        <Checkbox
-                                style={{marginLeft: "40%"}}
-                                label={`20:00 - 21:00`}
-                                onCheck={(ev, b) => {
-                                    const newClsTime = [...this.state.classtime];
-                                    newClsTime[e] = b;
-                                    this.setState({classtime: newClsTime});
-                                }}
-                                disabled={!this.state.classtimeDisTable[13]}
-                        />
-                    </span>
+                    </span>*/}
                 </div>
                 <TextField
                     value={this.state.major}
@@ -371,8 +226,8 @@ export default class Apply extends React.Component {
                     floatingLabelText="联系方式（手机）"
                 /><br />
                 <TextField
-                    value={this.state.num}                
-                    onChange={(e, v) => this.setState({num: v})}                
+                    value={this.state.gym_number}                
+                    onChange={(e, v) => this.setState({gym_number: v})}                
                     floatingLabelText="申请数量"
                 /><br />
                 <TextField
@@ -431,7 +286,22 @@ export default class Apply extends React.Component {
                                 disabled={!this.state.classtimeDisTable[idx]}
                             /></span>)
                     })}*/}
-                    <span>
+                    {[...Array(14).keys()].map( (e, idx) => {
+                        let base = idx < 1 ? 6  : 7;
+                        let offset = idx < 1 ? 2 : 1;
+                        return (
+                            <span key={e}><Checkbox
+                                style={{marginLeft: "40%"}}
+                                label={`${base + idx}:00 - ${base + offset + idx}:00`}
+                                onCheck={(ev, b) => {
+                                    const newClsTime = [...this.state.classtime];
+                                    newClsTime[e] = b;
+                                    this.setState({classtime: newClsTime});
+                                }}
+                                disabled={!this.state.classtimeDisTable[idx]}
+                            /></span>)
+                    })}
+                    {/*<span>
                         <Checkbox
                                 style={{marginLeft: "40%"}}
                                 label={`6:00 - 8:00`}
@@ -598,7 +468,7 @@ export default class Apply extends React.Component {
                                 }}
                                 disabled={!this.state.classtimeDisTable[13]}
                         />
-                    </span>
+                    </span>*/}
                 </div>
                 <TextField
                     value={this.state.department}                
@@ -611,8 +481,8 @@ export default class Apply extends React.Component {
                     floatingLabelText="活动内容"
                 /><br />
                 <TextField
-                    value={this.state.num}                
-                    onChange={(e, v) => this.setState({num: v})}                
+                    value={this.state.gym_number}
+                    onChange={(e, v) => this.setState({gym_number: v})}
                     floatingLabelText="申请数量"
                 /><br />
                 <TextField 

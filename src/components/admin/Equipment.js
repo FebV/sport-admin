@@ -13,8 +13,10 @@ import DatePicker from 'material-ui/DatePicker';
 import {Tabs, Tab} from 'material-ui/Tabs';
 
 import Auth from '../../controllers/Auth';
+import User from '../../controllers/User';
 import EquipmentModel from '../../controllers/Equipment';
 import camGym from '../../config/cam-gym';
+import GymSelector from '../common/GymSelector';
 
 export default class Equipment extends React.Component {
     constructor(props) {
@@ -55,10 +57,17 @@ export default class Equipment extends React.Component {
             transEquipmentDialogOpen: false,
             editEquipmentDialogOpen: false,
             searchWord: '',
+            canOperate: true,
         }
         addEventListener('post equipment ok', () => this.queryEquipment())
         addEventListener('delete equipment ok', () => this.queryEquipment())
         addEventListener('delete trans ok', () => this.queryTrans())
+    }
+
+    componentDidMount() {
+        User.canModEquip().then(res => {
+            this.setState({canOperate: res});
+        })
     }
 
     queryEquipment() {
@@ -124,16 +133,18 @@ export default class Equipment extends React.Component {
             >
                 <TableRow>
                 <TableHeaderColumn>体育馆</TableHeaderColumn>
+                <TableHeaderColumn>场馆类型</TableHeaderColumn>
                 <TableHeaderColumn><span onClick={() => {
                     this.setState({equipments: this.state.equipments.sort((a, b) => a.equipment_name > b.equipment_name)})  
                 }}>器材名称</span></TableHeaderColumn>
                 <TableHeaderColumn>购置日期</TableHeaderColumn>
                 <TableHeaderColumn>购置数量</TableHeaderColumn>
-                <TableHeaderColumn>弃置数量</TableHeaderColumn>
                 <TableHeaderColumn>在用数量</TableHeaderColumn>
+                <TableHeaderColumn>弃置数量</TableHeaderColumn>
+                <TableHeaderColumn>规格</TableHeaderColumn>
                 <TableHeaderColumn>采购价格</TableHeaderColumn>
                 <TableHeaderColumn>备注</TableHeaderColumn>
-                <TableHeaderColumn>操作</TableHeaderColumn>
+                {this.state.canOperate ? <TableHeaderColumn>操作</TableHeaderColumn> : null}
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -143,14 +154,16 @@ export default class Equipment extends React.Component {
                 return (
                     <TableRow key={idx}> 
                         <TableRowColumn>{e.gym}</TableRowColumn>
+                        <TableRowColumn>{e.type}</TableRowColumn>
                         <TableRowColumn>{e.equipment_name}</TableRowColumn>
                         <TableRowColumn>{e.buy_date}</TableRowColumn>
                         <TableRowColumn>{e.buy_number}</TableRowColumn>
                         <TableRowColumn>{e.in_number}</TableRowColumn>
                         <TableRowColumn>{e.no_number}</TableRowColumn>
+                        <TableRowColumn>{e.unit}</TableRowColumn>
                         <TableRowColumn>{e.price}</TableRowColumn>
                         <TableRowColumn title={e.remark}>{e.remark}</TableRowColumn>
-                        <TableRowColumn>
+                        {this.state.canOperate ? <TableRowColumn>
                             <i 
                             title="删除"
                             style={ this.state.deleteIndex == idx ? this.deleteHoverStyle : this.deleteInitStyle}
@@ -189,7 +202,7 @@ export default class Equipment extends React.Component {
                             }}
                             className={"fa fa-check-square-o"}>
                             </i>
-                        </TableRowColumn>
+                        </TableRowColumn> : null}
                     </TableRow>
                 )
             })}
@@ -252,7 +265,7 @@ export default class Equipment extends React.Component {
             <TableBody
                 displayRowCheckbox={false}
             >
-            {this.state.trans.map( (e, idx) => {
+            {/*this.state.trans.map( (e, idx) => {
                 let belongGym = camGym[e.belong_campus].find(v => v.name == e.belong_gym);
                 let useGym = camGym[e.belong_campus].find(v => v.name == e.belong_gym);
                 let belongGymName = '未指定';
@@ -290,7 +303,7 @@ export default class Equipment extends React.Component {
                         </TableRowColumn>
                     </TableRow>
                 )
-            })}
+            })*/}
             </TableBody>
             </Table>
             </Paper>
@@ -313,12 +326,14 @@ class AddEquipment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            campus: 'zx',
-            gym: 'basketball',
+            campus: '',
+            gym: '',
+            type: '',
             equipment_name: '',
             buy_date: '',
             buy_number: '',
             in_number: '',
+            unit: '',
             no_number: '',
             use_campus: 'zx',
             use_number: '0',
@@ -331,10 +346,12 @@ class AddEquipment extends React.Component {
         this.props.handleClose();
         EquipmentModel.postEquipment({
             campus: this.state.campus,
-            gym: camGym[this.state.campus].find(v => v.name == this.state.gym).label,
+            type: this.state.type,
+            gym: this.state.gym,
             equipment_name: this.state.equipment_name,
             buy_date: this.fitDate(this.state.buy_date),
             buy_number: this.state.buy_number,
+            unit: this.state.unit,
             //in_number: this.state.in_number,
             //no_number: this.state.no_number,
             use_campus: this.state.campus,
@@ -378,7 +395,7 @@ class AddEquipment extends React.Component {
                 autoScrollBodyContent={true}
             >
             <div style={{width: "100%", textAlign: "center"}}>
-            校区
+            {/*校区
             <DropDownMenu
                 style={{position: 'relative', top: '20px'}}
                 value={this.state.campus}
@@ -391,20 +408,10 @@ class AddEquipment extends React.Component {
                 <MenuItem value={"bt"} primaryText="趵突泉校区" />
                 <MenuItem value={"xl"} primaryText="兴隆山校区" />
                 <MenuItem value={"rj"} primaryText="软件园校区" />
-            </DropDownMenu>
-            <br />
-            场馆
-            
-                <DropDownMenu
-                    style={{position: 'relative', top: '20px'}}
-                    value={this.state.gym}
-                    onChange={(e, k, v) => this.setState({gym: v})}
-                >
-                    {camGym[this.state.campus].map((e, idx) => {
-                        return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
-                    
-                </DropDownMenu>
+            </DropDownMenu>*/}
+            <GymSelector onChange={(g) => {
+                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+            }} />
             
             </div>
                 <TextField
@@ -427,6 +434,11 @@ class AddEquipment extends React.Component {
                     floatingLabelText="购置数量"
                     value={this.state.buy_number}
                     onChange={(e, v) => this.setState({buy_number: v})}
+                /><br />
+                <TextField
+                    floatingLabelText="规格"
+                    value={this.state.unit}
+                    onChange={(e, v) => this.setState({unit: v})}
                 /><br />
                 {/*<TextField
                     floatingLabelText="在用数量"
@@ -527,9 +539,9 @@ class TransEquipment extends React.Component {
                     value={this.state.belong_gym}
                     onChange={(e, k, v) => this.setState({belong_gym: v})}
                 >
-                    {camGym[this.state.belong_campus].map((e, idx) => {
+                    {/*{camGym[this.state.belong_campus].map((e, idx) => {
                         return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
+                    })}*/}
                     
                 </DropDownMenu>
             
@@ -557,9 +569,9 @@ class TransEquipment extends React.Component {
                     value={this.state.use_gym}
                     onChange={(e, k, v) => this.setState({use_gym: v})}
                 >
-                    {camGym[this.state.use_campus].map((e, idx) => {
+                    {/*{camGym[this.state.use_campus].map((e, idx) => {
                         return <MenuItem key={idx} value={e.name} primaryText={e.label} />
-                    })}
+                    })}*/}
                     
                 </DropDownMenu>
             
