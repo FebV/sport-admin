@@ -39,6 +39,10 @@ const API = {
     queryInnerApplyByTel: tel => `${base}apply/tel/${tel}`,
     queryOuterApplyByTel: tel => `${base}apply/train/tel/${tel}`,
 
+    exportInnerApply: `${base}apply/export`,
+    exportOuterApply: `${base}apply/train/export`,
+
+
 
     //留言板
     getInnerComment: `${base}messages/type/1`, //1内部留言
@@ -60,6 +64,8 @@ const API = {
 
     searchEquipByName: name => `${base}equipments/name/${name}`,
 
+    exportEquipment: `${base}equipments/export`,
+
 
     //新闻相关
     getNews: `${base}news/list`,
@@ -71,6 +77,16 @@ const API = {
     deleteNews: id => `${base}news/id/${id}`,
     //新闻题图
     postCover: `${base}news/picture`,
+
+
+    //管理规定
+    getRegular: `${base}regular/list`,
+    getAllRegular: `${base}regular/list/all`,
+    postRegular: `${base}regular/content`,
+    getRegularDetail: id => `${base}regular/content/id/${id}`,
+    acceptRegular: id => `${base}regular/id/${id}`,
+    putRegular: id => `${base}regular/content/id/${id}`,
+    deleteRegular: id => `${base}regular/id/${id}`,
 
     //通知相关
     getNotice: `${base}notices/list`,

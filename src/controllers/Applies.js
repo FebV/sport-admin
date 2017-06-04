@@ -102,4 +102,20 @@ export default class Applies {
         })
             .then(res => res ? res : null)
     }
+
+    static exportInner({start, end, campus}) {
+        const a = document.createElement('a');
+        a.href = API.exportInnerApply+'?'+Request.parseData({data: {api_token: Auth.getToken(),start, end, campus}});
+        a.download = 'download';
+        a.click();
+        a.remove();
+    }
+
+    static exportOuter({start, end, campus}) {
+        const a = document.createElement('a');
+        a.href = API.exportOuterApply+'?'+Request.parseData({data: {api_token: Auth.getToken(),start, end, campus}});
+        a.download = 'download';
+        a.click();
+        a.remove();
+    }
 }

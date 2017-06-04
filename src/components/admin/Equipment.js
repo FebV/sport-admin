@@ -17,6 +17,7 @@ import User from '../../controllers/User';
 import EquipmentModel from '../../controllers/Equipment';
 import camGym from '../../config/cam-gym';
 import GymSelector from '../common/GymSelector';
+import Exporter from './exporter/Exporter';
 
 export default class Equipment extends React.Component {
     constructor(props) {
@@ -97,6 +98,10 @@ export default class Equipment extends React.Component {
         EquipmentModel.deleteTrans(id);
     }
 
+    export({start, end, campus}) {
+        EquipmentModel.export({start, end, campus});
+    }
+
     render() {
         return (
             
@@ -132,6 +137,7 @@ export default class Equipment extends React.Component {
                 adjustForCheckbox={false}
             >
                 <TableRow>
+                <TableHeaderColumn>校区</TableHeaderColumn>
                 <TableHeaderColumn>体育馆</TableHeaderColumn>
                 <TableHeaderColumn>场馆类型</TableHeaderColumn>
                 <TableHeaderColumn><span onClick={() => {
@@ -153,6 +159,7 @@ export default class Equipment extends React.Component {
             {this.state.equipments.map( (e, idx) => {
                 return (
                     <TableRow key={idx}> 
+                        <TableRowColumn>{e.campus_chinese}</TableRowColumn>
                         <TableRowColumn>{e.gym}</TableRowColumn>
                         <TableRowColumn>{e.type}</TableRowColumn>
                         <TableRowColumn>{e.equipment_name}</TableRowColumn>
@@ -214,6 +221,8 @@ export default class Equipment extends React.Component {
             <FloatingActionButton onClick={() => this.setState({addEquipmentDialogOpen: true})} style={{position: 'fixed', right: "30px", bottom: "30px"}}>
                 <i className="fa fa-plus fa-lg"></i>
             </FloatingActionButton>
+
+            <Exporter export={this.export.bind(this)} title="导出器材记录" />
             
             
             <AddEquipment handleClose={() => this.setState({addEquipmentDialogOpen: false})} open={this.state.addEquipmentDialogOpen} />
@@ -327,6 +336,7 @@ class AddEquipment extends React.Component {
         super(props);
         this.state = {
             campus: '',
+            campus_chinese: '',
             gym: '',
             type: '',
             equipment_name: '',
@@ -346,6 +356,7 @@ class AddEquipment extends React.Component {
         this.props.handleClose();
         EquipmentModel.postEquipment({
             campus: this.state.campus,
+            campus_chinese: this.state.campus_chinese,
             type: this.state.type,
             gym: this.state.gym,
             equipment_name: this.state.equipment_name,
@@ -410,7 +421,7 @@ class AddEquipment extends React.Component {
                 <MenuItem value={"rj"} primaryText="软件园校区" />
             </DropDownMenu>*/}
             <GymSelector onChange={(g) => {
-                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                    this.setState({campus: g.campus, type: g.type, gym: g.gym, campus_chinese: g.campus_chinese});
             }} />
             
             </div>

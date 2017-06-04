@@ -15,7 +15,7 @@ import TextField from 'material-ui/TextField';
 
 import ApplyModel from '../../controllers/Applies';
 import GymSelector from '../common/GymSelector';
-
+import Exporter from './exporter/Exporter';
 
 const tweakClsTime = (oldStr) => {
     return oldStr.split(',').map(e => {
@@ -47,6 +47,7 @@ export default class Apply extends React.Component {
             gym: '',
             type: '',
             remark: '',
+            page: '校内',
             cost: '',
             innerRecords: [],
             outerRecords: [],
@@ -102,11 +103,19 @@ export default class Apply extends React.Component {
         this.setState({gym: v})
     }
 
+    exportInner({start, end, campus}) {
+        ApplyModel.exportInner({start, end, campus});
+    }
+
+    exportOuter({start, end, campus}) {
+        ApplyModel.exportOuter({start, end, campus});
+    }
+
     render() {
         return (
         
             <Tabs>
-            <Tab label="校内申请">
+            <Tab label="校内申请" onActive={() => this.setState({page: '校内'})} >
             <div style={{padding: "20px"}}>
                 
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -221,7 +230,15 @@ export default class Apply extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            
+            {this.state.page == '校内' ?
+            <Exporter export={this.exportInner.bind(this)} title="导出校内申请记录" />
+            :
+            this.state.page == '校外' ?
+            <Exporter export={this.exportOuter.bind(this)} title="导出校外申请记录" />
+            :
+            null
+            }
+
             <InnerDetail
                 handleRemark={(r) => this.setState({remark: r})}
                 handleCost={(r) => this.setState({cost: r})}
@@ -234,7 +251,7 @@ export default class Apply extends React.Component {
             />
             </div>
             </Tab>
-            <Tab label="校外申请" style={{backgroundColor: "rgb(144, 15, 19)"}}>
+            <Tab label="校外申请" style={{backgroundColor: "rgb(144, 15, 19)"}} onActive={() => this.setState({page: '校外'})} >
             <div style={{padding: "20px"}}>
             
             <div style={{display: "flex", justifyContent: "center", alignItems: "center"}}>
@@ -338,7 +355,7 @@ export default class Apply extends React.Component {
             </TableBody>
             </Table>
             </Paper>
-            
+
             <OuterDetail
                 applyId={this.state.applyId}
                 open={this.state.outerDetailDialogOpen}

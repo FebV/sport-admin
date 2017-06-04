@@ -25,15 +25,15 @@ export default class User {
             .then(res => res ? res : [])
     }
 
-    static postEquipment({campus, gym, type, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark, unit}) {
+    static postEquipment({campus, campus_chinese, gym, type, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark, unit}) {
         Request.post({
             url: API.postEquipment,
             data: {
                 api_token: Auth.getToken(),
-                campus, gym, type, equipment_name, buy_date, buy_number, in_number, no_number, use_campus, use_number, price, remark, unit
+                campus, campus_chinese, gym, type, equipment_name, buy_date, buy_number, use_campus, use_number, price, remark, unit
             }
         })
-            .then(res => ED.dispatch({type: 'post equipment ok'}))
+            .then(res => ED.dispatch({type: 'post equipment ok', msg: "器材新增成功"}))
     }
 
     static deleteEquipment(id) {
@@ -75,5 +75,13 @@ export default class User {
             }
         })
             .then(res => ED.dispatch({type: 'delete trans ok', msg: '记录删除成功'}))
+    }
+
+    static export({start, end, campus}) {
+        const a = document.createElement('a');
+        a.href = API.exportEquipment+'?'+Request.parseData({data: {api_token: Auth.getToken(),start, end, campus}});
+        a.download = 'download';
+        a.click();
+        a.remove();
     }
 }

@@ -209,6 +209,7 @@ class PostCommentDialog extends React.Component{
         return (
             
             <Dialog
+                autoScrollBodyContent={true}
                 style={{width: "500px", marginLeft: "calc(50% - 250px)"}}
                 title="发布评论"
                 actions={[

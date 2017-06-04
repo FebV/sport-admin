@@ -37,7 +37,10 @@ export default class GymSelector extends React.Component {
     onSelectCampus(e, k, v) {
         console.log(v);
         // console.log(this.state.campus[k]);
-        this.setState({selectedCampus: v});
+        this.setState({selectedCampus: v}, () => {
+            if(this.props.onChange)
+                this.props.onChange(v);
+        });
         this.setState({gym: []});
         const typeSet = new Set();
         const targetType = this.state.camGym.filter(e => e.campus == v.campus);
@@ -49,25 +52,22 @@ export default class GymSelector extends React.Component {
             return aftLen > oriLen;
         })
         this.setState({type: typeArr});
+
     }
 
     onSelectType(e, k, v) {
         this.setState({selectedType: v});
-        
         const GymSet = new Set();
         const targetGym = this.state.camGym.filter(e => e.campus == this.state.selectedCampus.campus).filter(e => e.type == v.type);
-
-        // const typeArr = targetType.filter(e => {
-        //     const oriLen = typeSet.size;
-        //     typeSet.add(e.type);
-        //     const aftLen = typeSet.size;
-        //     return aftLen > oriLen;
-        // })
-        this.setState({gym: targetGym});
+        this.setState({gym: targetGym}, () => {
+            if(this.props.onChange)
+                this.props.onChange(v);
+        });
     }
 
     onSelectGym(e, k, v) {
         this.setState({selectedGym: v});
+        console.log(v);
         if(this.props.onChange)
             this.props.onChange(v);
     }
@@ -88,7 +88,10 @@ export default class GymSelector extends React.Component {
                     )
                 )}
                 </DropDownMenu>
-                类型
+                {
+                    this.props.dropType !== true ?
+                <span>
+                    类型
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.selectedType}
@@ -99,7 +102,14 @@ export default class GymSelector extends React.Component {
                     })
                 }
                 </DropDownMenu>
-                场馆
+                </span>
+                :
+                null
+                }
+                {
+                    this.props.dropGym !== true ?
+                <span>
+                    场馆
                 <DropDownMenu
                     style={{position: 'relative', top: '20px'}}
                     value={this.state.selectedGym}
@@ -111,6 +121,10 @@ export default class GymSelector extends React.Component {
                 }
                     
                 </DropDownMenu>
+                </span>
+                :
+                null
+                }
             </span>
         )
     }
