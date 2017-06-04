@@ -9,20 +9,39 @@ export default class Finance{
 
     }
 
-    static getFinance(page){
+    static getFinance(page,searchCampus,startTime,endTime){
         return Request.get({
             url:API.getFinance,
             data:{
                 page,
                 rows:15,
                 api_token: Auth.getToken(),
+                campus:searchCampus,
+                start:startTime,
+                end:endTime
                             }
                         })
 
 
 
                 }
+    static exportFinance(page,searchCampus,startTime,endTime){
 
+        return Request.get({
+            url:API.exportFinance,
+            data:{
+                page,
+                rows:15,
+                api_token: Auth.getToken(),
+                campus:searchCampus,
+                start:startTime,
+                end:endTime
+            }
+        })
+
+
+
+    }
 
 
     static deleteFinance(id) {
