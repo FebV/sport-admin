@@ -9,7 +9,7 @@ import ReactDOM from 'react-dom';
 import { Link } from 'react-router-dom';
 
 
-let wid =document.body.clientWidth*0.93+'px';
+let wid =document.body.clientWidth*0.92+'px';
 let hei =(function () {
     // if(document.body.clientWidth>=1100){
     //     return '666px';

@@ -17,7 +17,7 @@ export default class InforComponent extends React.Component{
         super(props);
         this.style = {
 
-            width: '100%',
+            width: '95%',
             margin: "10 20",
 
             display: 'inline-block',
@@ -50,13 +50,13 @@ class InforListComponent extends React.Component{
     render(){
         return(
             <div  style={{textAlign:"left"}}>
-                <Subheader>通知</Subheader>
-                <Divider />
+                <Subheader style={{color:'red',fontSize:'20px'}}>通知</Subheader>
+                <Divider style={{backgroundColor:'red'}}/>
                 <List>
                     {this.state.noticeList.map( (e, idx) => {
                         console.log(e);
                         return (
-                            <Link key={idx} to={`/notice/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<p style={{float:"right"}}>{e.time}</p>} /></Link>
+                            <Link key={idx} to={`/notice/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<span style={{float:"right",fontSize:'8px',marginTop:'0px'}}>{e.time}</span>} /></Link>
                         )
                     })}
 
