@@ -34,7 +34,7 @@ export default class NewsLetterComponent extends React.Component{
     constructor(props){
         super(props);
         this.style = {
-            width: '90%',
+            width: '95%',
             margin: "10 20",
             textAlign: 'center',
             display: 'inline-block',
@@ -70,13 +70,13 @@ class NewsListComponent extends React.Component{
     render(){
         return(
             <div style={{textAlign:"left"}}>
-                <Subheader>近期新闻</Subheader>
-                <Divider />
+                <Subheader style={{color:'red',fontSize:'20px'}}>近期新闻</Subheader>
+                <Divider style={{backgroundColor:'red'}} />
                 <List>
                     {this.state.newsList.map( (e, idx) => {
                         console.log(e);
                         return (
-                            <Link key={idx} to={`/news/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<p style={{float:"right"}}>{e.time}</p>} /></Link>
+                            <Link key={idx} to={`/news/${e.id}`} style={{textDecoration:"none"}}><ListItem primaryText={e.title} secondaryText={<span style={{float:"right",fontSize:'8px',marginTop:'0px'}}>{e.time}</span>} /></Link>
                         )
                     })}
 

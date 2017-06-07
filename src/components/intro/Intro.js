@@ -29,10 +29,6 @@ export default class Intro extends React.Component {
             {
                 label: "活动回顾",
                 ele: <ActiveReview />
-            },
-            {
-                label: "场馆开放时间表",
-                ele: <OpenTime />
             }
         ]
     }
