@@ -353,6 +353,9 @@ class InnerDetail extends React.Component {
                             border-collapse: collapse;
                             text-align: center;
                         }
+                        .apply-sign {
+                            white-space: pre;
+                        }
                     </style>
                     <div style="text-align: center" class="apply-table">
                     <h2>山东大学学生社团活动申请表</h2>
@@ -360,50 +363,52 @@ class InnerDetail extends React.Component {
                     <table border="1" style="width:100%; text-align: center">
                         <tbody>
                         <tr>
-                            <td width="25%">申请校区</td>
-                            <td>${this.props.record.campus_chinese}</td>
-                            <td width="25%">申请场馆</td>
-                            <td>${this.props.record.gym}</td>
+                            <td width="25%">部门/学院</td>
+                            <td></td>
+                            <td width="25%">活动名称</td>
+                            <td></td>
                         </tr>
                         <tr>
-                            <td>使用节次</td>
-                            <td>${targetClsTime}</td>
                             <td>使用时间</td>
-                            <td>${this.props.record.time}</td>
+                            <td colspan="3" width="75%">${this.props.record.time}  ${targetClsTime}</td>
                         </tr>
                         <tr>
-                            <td>参加人数</td>
-                            <td>${this.props.record.pnumber}</td>
-                            <td>费用</td>
-                            <td>${this.props.record.money}</td>
-                        </tr>
-                        <tr>
-                            <td>使用学院</td>
-                            <td colspan="3">${this.props.record.major}</td>
-                        </tr>
-                        <tr>
-                            <td>学院老师</td>
-                            <td>${this.props.record.teacher}</td>
-                            <td>学院老师联系方式</td>
-                            <td colspan="3">${this.props.record.teacher_tel}</td>
+                            <td>活动校区</td>
+                            <td>${this.props.record.major}</td>
+                            <td>活动场地</td>
+                            <td>${this.props.record.gym}</td>
                         </tr>
                         <tr class="apply-table-content">
                             <td>活动内容</td>
-                            <td colspan="3">${this.props.record.content}</td>
+                            <td colspan="3" width="75%">${this.props.record.content}</td>
                         </tr>
                         <tr>
-                            <td>组织者</td>
+                            <td>活动参加人数</td>
+                            <td>${this.props.record.pnumber}</td>
+                            <td></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>活动负责人</td>
                             <td>${this.props.record.charger}</td>
-                            <td>组织者联系方式</td>
+                            <td>联系电话</td>
                             <td>${this.props.record.tel}</td>
                         </tr>
                         <tr>
-                            <td>活动第一负责人（联系方式）</td>
-                            <td colspan="3">asd</td>
+                            <td>学院负责人</td>
+                            <td>${this.props.record.teacher}</td>
+                            <td>联系电话</td>
+                            <td>${this.props.record.teacher_tel}</td>
                         </tr>
-                        <tr class="apply-table-content">
-                            <td>备注</td>
-                            <td colspan="3">${this.props.record.remark}</td>
+                        <tr class="apply-table-content apply-sign">
+                            <td colspan="2" width="50%"><span>申请部门主管领导意见</span><br />
+                            
+
+签字：&nbsp;&nbsp;&nbsp;&nbsp;盖章：</td>
+                            <td colspan="2" width="50%"><span>体育场馆管理中心意见</span><br />
+                            
+                            
+签字：&nbsp;&nbsp;&nbsp;&nbsp;</td>
                         </tr>
                         </tbody>
                     </table>

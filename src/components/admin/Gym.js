@@ -221,7 +221,7 @@ export default class Gym extends React.Component {
             <span>#按住Ctrl键批量修改</span>
             
             </div>
-            <div style={{marginTop: "20px", display: "flex", width: "1800px", justifyContent: "center", alignItems: "center"}}>
+            <div style={{marginTop: "20px", display: "flex", width: "100%", justifyContent: "center", alignItems: "center"}}>
             
             <Paper style={{width: "100%", textAlign: "center"}}>
                 <div style={{width: "40%", display:"flex"}}>
@@ -243,13 +243,13 @@ export default class Gym extends React.Component {
                 adjustForCheckbox={false}
             >
                 <TableRow>
-                <TableHeaderColumn>#</TableHeaderColumn>
+                <TableHeaderColumn style={{width: "150px"}}>#</TableHeaderColumn>
                 {/*<TableHeaderColumn>日期</TableHeaderColumn>
                 <TableHeaderColumn>星期</TableHeaderColumn>*/}
                 {[...Array(14).keys()].map((ele, idx) => idx == 0 ? 
-                 <TableHeaderColumn key={idx}>{`6:00 - 8:00`}</TableHeaderColumn>
+                 <TableHeaderColumn key={idx}>{`6:00`}</TableHeaderColumn> 
                  :
-                 <TableHeaderColumn key={idx}>{`${7 + idx}:00 - ${8 + idx}:00`}</TableHeaderColumn>)}
+                 <TableHeaderColumn key={idx}>{`${7 + idx}:00`}</TableHeaderColumn>)}
                 </TableRow>
             </TableHeader>
             <TableBody
@@ -258,7 +258,7 @@ export default class Gym extends React.Component {
                 {[...Array(this.state.gymNumber).keys()].map((ele, idx) => {
                     return (
                         <TableRow key={idx}>
-                        <TableHeaderColumn>{1 + 1*idx}号{this.state.gym}</TableHeaderColumn>                            
+                        <TableHeaderColumn style={{width: "150px"}}>{1 + 1*idx}号{this.state.gym}</TableHeaderColumn>                            
                         {/*<TableHeaderColumn>{ele.date}</TableHeaderColumn>
                         <TableHeaderColumn>{ele.week}</TableHeaderColumn>*/}
                         {this.serial.map(

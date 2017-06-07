@@ -613,16 +613,26 @@ class EditEquipment extends React.Component {
     constructor(props) {
         super(props);
         this.state = {}
+        this.equip = null;
     }
 
     editEquipment() {
-        console.log(`equip`);
+        this.props.close();
+        EquipmentModel.modEquipment({
+            id:this.props.id,
+            buy_number: this.state.buy_number || this.equip.buy_number,
+            in_number: this.state.in_number || this.equip.in_number,
+            price: this.state.price || this.equip.price,
+            remark: this.state.remark || this.equip.remark,
+            no_number: this.state.no_number || this.equip.no_number,
+        })
     }
 
     render() {
         if(!this.props.id)
             return null;
         const equip = this.props.props.equipments.find(e => e.id == this.props.id);
+        this.equip = equip;
         console.log(equip);
         return (
             
@@ -679,7 +689,12 @@ class EditEquipment extends React.Component {
             /><br />
             <TextField
                 floatingLabelText="采购价格"
-                value={equip.price}
+                value={this.state.price || equip.price}
+                onChange={(e, v) => this.setState({price: v})}
+            /><br />
+            <TextField
+                floatingLabelText="备注"
+                value={this.state.remark || equip.remark}
                 onChange={(e, v) => this.setState({remark: v})}
             /><br />
             </div>

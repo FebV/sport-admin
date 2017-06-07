@@ -57,6 +57,7 @@ const API = {
     getEquipment: (campus) => `${base}equipments/campus/${campus}`,
     postEquipment: `${base}equipments`,
     deleteEquipment: (id) => `${base}equipments/id/${id}`,
+    modEquipment: (id) => `${base}equipments/id/${id}`,
 
     transEquipment: `${base}equipments/adjust`,
     getTrans:  (campus) => `${base}equipments/adjust/campus/${campus}`,

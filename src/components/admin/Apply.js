@@ -41,7 +41,7 @@ export default class Apply extends React.Component {
             'rj': '软件园校区',
         },
         this.state = {
-            start: '',
+            start: this.fitDate(new Date().setDate(1)),
             end: '',
             campus: '',
             gym: '',
@@ -127,6 +127,7 @@ export default class Apply extends React.Component {
                     locale="zh-CN"
                     cancelLabel="取消"
                     okLabel="确定"
+                    defaultDate={new Date(new Date().setDate(1))}
                     onChange={(e, v) => {
                         this.setState({start: v});
                         }}
@@ -146,9 +147,13 @@ export default class Apply extends React.Component {
             
             <div style={{width: "100%", textAlign: "center"}}>
             
-                <GymSelector onChange={(g) => {
-                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
-                }} />
+                <GymSelector
+                    dropType={true}
+                    dropGym={true}
+                    onChange={(g) => {
+                        this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                    }}
+                />
             <RaisedButton
                 label="查询"
                 onClick={this.innerQuery.bind(this)}
@@ -260,6 +265,7 @@ export default class Apply extends React.Component {
                     style={{display: "inline-block"}}
                     hintText="起始日期"
                     DateTimeFormat={Intl.DateTimeFormat}
+                    defaultDate={new Date(new Date().setDate(1))}
                     locale="zh-CN"
                     cancelLabel="取消"
                     okLabel="确定"
@@ -281,9 +287,13 @@ export default class Apply extends React.Component {
             </div>
             
             <div style={{width: "100%", textAlign: "center"}}>
-                <GymSelector onChange={(g) => {
-                    this.setState({campus: g.campus, type: g.type, gym: g.gym})    
-                }} />
+                <GymSelector
+                    dropType={true}
+                    dropGym={true}
+                    onChange={(g) => {
+                        this.setState({campus: g.campus, type: g.type, gym: g.gym})    
+                    }}
+                />
             
             <RaisedButton
                 label="查询"

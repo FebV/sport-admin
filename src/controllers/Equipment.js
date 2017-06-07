@@ -35,6 +35,17 @@ export default class User {
         })
             .then(res => ED.dispatch({type: 'post equipment ok', msg: "器材新增成功"}))
     }
+    
+    static modEquipment({id, buy_number, in_number, price, remark, no_number}) {
+        Request.put({
+            url: API.modEquipment(id),
+            data: {
+                api_token: Auth.getToken(),
+                buy_number, in_number, price, remark, no_number
+            }
+        })
+            .then(res => ED.dispatch({type: 'post equipment ok', msg: "器材修改成功"}))
+    }
 
     static deleteEquipment(id) {
         Request.delete({
