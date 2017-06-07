@@ -228,8 +228,9 @@ export default class NavBar extends React.Component {
     return (
         
         <div>
+        <div style={{height: "48px", width: "100%"}}></div>
         <Tabs
-            style={{padding: "0 10vw"}}
+            style={{padding: "0 10vw", position: "fixed", top: "10vh", width: "100%", zIndex: "800"}}
             onMouseOver={
                 () => {
                 this.setState({popMenuOpen: true});
