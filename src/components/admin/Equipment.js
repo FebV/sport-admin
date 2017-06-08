@@ -625,6 +625,7 @@ class EditEquipment extends React.Component {
             price: this.state.price || this.equip.price,
             remark: this.state.remark || this.equip.remark,
             no_number: this.state.no_number || this.equip.no_number,
+            unit: this.state.unit || this.equip.unit,
         })
     }
 
@@ -676,6 +677,11 @@ class EditEquipment extends React.Component {
                 floatingLabelText="购置数量"
                 value={this.state.buy_number || equip.buy_number}           //buy_number or number
                 onChange={(e, v) => this.setState({buy_number: v})}
+            /><br />
+            <TextField
+                floatingLabelText="规格"
+                value={this.state.unit || equip.unit}           //buy_number or number
+                onChange={(e, v) => this.setState({unit: v})}
             /><br />
             <TextField
                 floatingLabelText="弃置数量"

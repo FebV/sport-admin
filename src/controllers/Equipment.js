@@ -36,12 +36,12 @@ export default class User {
             .then(res => ED.dispatch({type: 'post equipment ok', msg: "器材新增成功"}))
     }
     
-    static modEquipment({id, buy_number, in_number, price, remark, no_number}) {
+    static modEquipment({id, buy_number, in_number, price, remark, no_number, unit}) {
         Request.put({
             url: API.modEquipment(id),
             data: {
                 api_token: Auth.getToken(),
-                buy_number, in_number, price, remark, no_number
+                buy_number, in_number, price, remark, no_number, unit
             }
         })
             .then(res => ED.dispatch({type: 'post equipment ok', msg: "器材修改成功"}))
